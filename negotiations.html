@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Negotiations - GrowToCourt</title>
+    <script src="js/config.js"></script>
+    <script src="js/gcp-integration.js"></script>
+    <style>
+        :root {
+            --primary-black: #1a1a1a;
+            --primary-grey: #2a2a2a;
+            --light-grey: #f5f5f5;
+            --medium-grey: #888888;
+            --white: #ffffff;
+            --accent-grey: #4a4a4a;
+            --success-green: #10b981;
+            --warning-orange: #f59e0b;
+            --danger-red: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--primary-black);
+            background-color: var(--light-grey);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            background: var(--white);
+            border-bottom: 2px solid var(--light-grey);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 300;
+            color: var(--primary-black);
+            text-decoration: none;
+        }
+
+        .nav-breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: var(--medium-grey);
+        }
+
+        .breadcrumb-item {
+            text-decoration: none;
+            color: var(--medium-grey);
+            transition: color 0.3s ease;
+        }
+
+        .breadcrumb-item:hover {
+            color: var(--primary-black);
+        }
+
+        .breadcrumb-current {
+            color: var(--primary-black);
+            font-weight: 500;
+        }
+
+        /* Main Layout */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 350px 1fr 300px;
+            gap: 2rem;
+            margin: 2rem 0;
+            min-height: calc(100vh - 100px);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: var(--white);
+            border-radius: 8px;
+            padding: 2rem;
+            height: fit-content;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar h3 {
+            margin-bottom: 1.5rem;
+            color: var(--primary-black);
+            font-size: 1.3rem;
+        }
+
+        .scenario-info {
+            margin-bottom: 2rem;
+        }
+
+        .scenario-tag {
+            background: var(--light-grey);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: var(--accent-grey);
+            margin-bottom: 1rem;
+        }
+
+        .progress-section {
+            margin-bottom: 2rem;
+        }
+
+        .progress-bar {
+            background: var(--light-grey);
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, var(--success-green), var(--primary-black));
+            height: 100%;
+            width: 60%;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            font-size: 0.9rem;
+            color: var(--medium-grey);
+        }
+
+        .key-points {
+            list-style: none;
+        }
+
+        .key-points li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--light-grey);
+            color: var(--accent-grey);
+        }
+
+        .key-points li:last-child {
+            border-bottom: none;
+        }
+
+        /* Main Content */
+        .main-content {
+            background: var(--white);
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .content-header {
+            margin-bottom: 2rem;
+        }
+
+        .content-title {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-black);
+        }
+
+        .content-subtitle {
+            color: var(--medium-grey);
+            font-size: 1.1rem;
+        }
+
+        /* Negotiation Interface */
+        .negotiation-interface {
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            height: 600px;
+            border: 2px solid var(--light-grey);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background: var(--primary-black);
+            color: var(--white);
+            padding: 1rem;
+            display: flex;
+            justify-content: between;
+            align-items: center;
+        }
+
+        .chat-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--success-green);
+            border-radius: 50%;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            background: var(--light-grey);
+        }
+
+        .message {
+            margin-bottom: 1rem;
+            max-width: 80%;
+        }
+
+        .message.user {
+            margin-left: auto;
+        }
+
+        .message.ai {
+            margin-right: auto;
+        }
+
+        .message-content {
+            padding: 1rem;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .message.user .message-content {
+            background: var(--primary-black);
+            color: var(--white);
+        }
+
+        .message.ai .message-content {
+            background: var(--white);
+            border: 1px solid var(--light-grey);
+        }
+
+        .message-time {
+            font-size: 0.8rem;
+            color: var(--medium-grey);
+            margin-top: 0.5rem;
+            text-align: right;
+        }
+
+        .message.ai .message-time {
+            text-align: left;
+        }
+
+        .chat-input {
+            background: var(--white);
+            border-top: 1px solid var(--light-grey);
+            padding: 1rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid var(--light-grey);
+            border-radius: 6px;
+            font-size: 0.95rem;
+        }
+
+        .chat-input button {
+            background: var(--primary-black);
+            color: var(--white);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.3s ease;
+        }
+
+        .chat-input button:hover {
+            background: var(--primary-grey);
+        }
+
+        .mic-button {
+            background: var(--light-grey) !important;
+            color: var(--accent-grey) !important;
+            border: 1px solid var(--light-grey) !important;
+            padding: 0.75rem !important;
+            border-radius: 6px !important;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mic-button:hover {
+            background: var(--medium-grey) !important;
+            color: var(--white) !important;
+        }
+
+        .mic-button.recording {
+            background: var(--danger-red) !important;
+            color: var(--white) !important;
+            animation: pulse 1.5s infinite;
+        }
+
+        .mic-button.processing {
+            background: var(--warning-orange) !important;
+            color: var(--white) !important;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .speech-status {
+            background: var(--light-grey);
+            padding: 0.75rem 1rem;
+            border-top: 1px solid var(--light-grey);
+            font-size: 0.9rem;
+            color: var(--accent-grey);
+        }
+
+        .recording-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--danger-red);
+            border-radius: 50%;
+            animation: pulse-dot 1s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .transcription-preview {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--success-green);
+            border-radius: 6px;
+            padding: 0.75rem;
+            margin-top: 0.5rem;
+            font-style: italic;
+            color: var(--accent-grey);
+        }
+
+        .confidence-indicator {
+            font-size: 0.8rem;
+            color: var(--medium-grey);
+            margin-top: 0.25rem;
+        }
+
+        /* AI Assistant Panel */
+        .ai-panel {
+            background: var(--white);
+            border-radius: 8px;
+            padding: 1.5rem;
+            height: fit-content;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .ai-panel h3 {
+            margin-bottom: 1rem;
+            color: var(--primary-black);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .mentor-suggestions {
+            margin-bottom: 2rem;
+        }
+
+        .suggestion {
+            background: var(--light-grey);
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--primary-black);
+        }
+
+        .suggestion-type {
+            font-weight: 500;
+            color: var(--primary-black);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .suggestion-text {
+            font-size: 0.9rem;
+            color: var(--accent-grey);
+        }
+
+        .risk-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            background: var(--light-grey);
+            border-radius: 6px;
+            margin-bottom: 1rem;
+        }
+
+        .risk-level {
+            font-weight: 500;
+        }
+
+        .risk-low { color: var(--success-green); }
+        .risk-medium { color: var(--warning-orange); }
+        .risk-high { color: var(--danger-red); }
+
+        /* Perception Meters */
+        .perception-meters {
+            margin-bottom: 2rem;
+        }
+
+        .meter-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .meter-title {
+            font-size: 1rem;
+            color: var(--primary-black);
+            margin-bottom: 0.8rem;
+            font-weight: 500;
+        }
+
+        .meter-container {
+            margin-bottom: 0.5rem;
+        }
+
+        .meter-bar {
+            background: var(--light-grey);
+            height: 12px;
+            border-radius: 6px;
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 0.5rem;
+        }
+
+        .meter-fill {
+            height: 100%;
+            border-radius: 6px;
+            transition: width 0.8s ease-in-out;
+            position: relative;
+        }
+
+        .perception-fill {
+            background: linear-gradient(90deg, var(--danger-red) 0%, var(--warning-orange) 50%, var(--success-green) 100%);
+        }
+
+        .confidence-fill {
+            background: linear-gradient(90deg, var(--warning-orange) 0%, var(--primary-black) 50%, var(--success-green) 100%);
+        }
+
+        .meter-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: var(--medium-grey);
+            margin-bottom: 0.5rem;
+        }
+
+        .meter-status {
+            font-size: 0.9rem;
+            color: var(--accent-grey);
+        }
+
+        .status-favorable {
+            color: var(--success-green);
+            font-weight: 500;
+        }
+
+        .status-confident {
+            color: var(--primary-black);
+            font-weight: 500;
+        }
+
+        .status-hostile {
+            color: var(--danger-red);
+            font-weight: 500;
+        }
+
+        .status-uncertain {
+            color: var(--warning-orange);
+            font-weight: 500;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .action-btn {
+            padding: 0.75rem 1rem;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--primary-black);
+            color: var(--white);
+        }
+
+        .btn-secondary {
+            background: var(--light-grey);
+            color: var(--accent-grey);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-grey);
+        }
+
+        .btn-secondary:hover {
+            background: var(--medium-grey);
+            color: var(--white);
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .ai-panel, .sidebar {
+                order: -1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">GrowToCourt</a>
+                <nav class="nav-breadcrumb">
+                    <a href="index.html" class="breadcrumb-item">Home</a>
+                    <span>→</span>
+                    <span class="breadcrumb-current">Step 3: Negotiations</span>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="main-layout">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="scenario-info">
+                    <h3>Current Scenario</h3>
+                    <div class="scenario-tag">Global Bank Tech Services</div>
+                    <p style="font-size: 0.9rem; color: var(--medium-grey);">
+                        Negotiating cloud services agreement between major international bank and cloud provider.
+                    </p>
+                </div>
+
+                <div class="progress-section">
+                    <h3>Your Progress</h3>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <p class="progress-text">60% Complete - Step 3 of 6</p>
+                </div>
+
+                <div>
+                    <h3>Key Negotiation Points</h3>
+                    <ul class="key-points">
+                        <li>Data Protection & GDPR Compliance</li>
+                        <li>Service Level Agreements (99.95%)</li>
+                        <li>Liability Caps ($50M vs $10M)</li>
+                        <li>Cross-border Data Transfer</li>
+                        <li>IP Licensing Terms</li>
+                        <li>Termination & Exit Clauses</li>
+                    </ul>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="main-content">
+                <div class="content-header">
+                    <h1 class="content-title">AI Negotiation Simulator</h1>
+                    <p class="content-subtitle">Practice your negotiation skills with our AI counterpart representing the cloud provider</p>
+                </div>
+
+                <div class="negotiation-interface">
+                    <div class="chat-header">
+                        <div>
+                            <strong>Negotiating with: CloudTech Solutions (AI)</strong>
+                        </div>
+                        <div class="chat-status">
+                            <div class="status-dot"></div>
+                            <span>Active Session</span>
+                        </div>
+                    </div>
+
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="message ai">
+                            <div class="message-content">
+                                Welcome to the negotiation phase. I represent CloudTech Solutions. I understand your client, Global Banking Corp, is interested in our enterprise cloud services. Let's discuss the terms. 
+                                
+                                Our standard offering includes 99.9% uptime SLA with $5M liability cap. What are your primary concerns?
+                            </div>
+                            <div class="message-time">AI Assistant • Just now</div>
+                        </div>
+
+                        <div class="message user">
+                            <div class="message-content">
+                                Thank you for meeting today. My client requires 99.95% uptime SLA minimum, and we need to discuss liability caps - $5M is insufficient for a bank of this scale. We're looking at $50M liability coverage.
+                            </div>
+                            <div class="message-time">You • 2 minutes ago</div>
+                        </div>
+
+                        <div class="message ai">
+                            <div class="message-content">
+                                I understand the critical nature of banking operations. 99.95% uptime is achievable, though it would require our premium tier. Regarding liability - $50M is quite high. Our maximum is typically $25M for enterprise clients. 
+                                
+                                Would you consider $25M with additional insurance provisions?
+                            </div>
+                            <div class="message-time">AI Assistant • 1 minute ago</div>
+                        </div>
+                    </div>
+
+                    <div class="chat-input">
+                        <input type="text" placeholder="Type your negotiation response or use voice..." id="chatInput">
+                        <button class="mic-button" id="micButton" onclick="toggleRecording()" title="Click to speak">
+                            <svg id="micIcon" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
+                            </svg>
+                        </button>
+                        <button onclick="sendMessage()">Send</button>
+                    </div>
+                    <div class="speech-status" id="speechStatus" style="display: none;">
+                        <div class="recording-indicator">
+                            <div class="pulse-dot"></div>
+                            <span id="statusText">Listening...</span>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <!-- AI Assistant Panel -->
+            <aside class="ai-panel">
+                <h3>
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    MentorChat
+                </h3>
+
+                <div class="mentor-suggestions">
+                    <div class="suggestion">
+                        <div class="suggestion-type">💡 Strategic Advice</div>
+                        <div class="suggestion-text">Good positioning on SLA. Consider bundling the uptime requirement with penalty clauses for downtime.</div>
+                    </div>
+
+                    <div class="suggestion">
+                        <div class="suggestion-type">⚖️ Legal Note</div>
+                        <div class="suggestion-text">$25M liability is reasonable for this type of agreement. Focus on carve-outs for data breaches.</div>
+                    </div>
+
+                    <div class="suggestion">
+                        <div class="suggestion-type">🎯 Next Move</div>
+                        <div class="suggestion-text">Ask about data residency requirements and cross-border transfer protocols next.</div>
+                    </div>
+                </div>
+
+                <div class="risk-indicator">
+                    <span>Current Risk Level:</span>
+                    <span class="risk-level risk-medium">Medium</span>
+                </div>
+
+                <div class="perception-meters">
+                    <div class="meter-section">
+                        <h4 class="meter-title">Counterparty Perception</h4>
+                        <div class="meter-container">
+                            <div class="meter-bar">
+                                <div class="meter-fill perception-fill" style="width: 75%"></div>
+                            </div>
+                            <div class="meter-labels">
+                                <span class="meter-label-left">Hostile</span>
+                                <span class="meter-label-right">Favorable</span>
+                            </div>
+                        </div>
+                        <div class="meter-status">CloudTech views you as: <span class="status-favorable">Professional & Reasonable</span></div>
+                    </div>
+
+                    <div class="meter-section">
+                        <h4 class="meter-title">Confidence Projection</h4>
+                        <div class="meter-container">
+                            <div class="meter-bar">
+                                <div class="meter-fill confidence-fill" style="width: 65%"></div>
+                            </div>
+                            <div class="meter-labels">
+                                <span class="meter-label-left">Uncertain</span>
+                                <span class="meter-label-right">Commanding</span>
+                            </div>
+                        </div>
+                        <div class="meter-status">You appear: <span class="status-confident">Knowledgeable</span></div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="action-btn btn-primary" onclick="getAIAdvice()">Get AI Advice</button>
+                    <button class="action-btn btn-secondary" onclick="reviewPosition()">Review Position</button>
+                    <a href="index.html" class="action-btn btn-secondary">Back to Overview</a>
+                    <button class="action-btn btn-primary" onclick="continueNext()">Continue to Step 4</button>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <script>
+        // Meter management
+        let perceptionLevel = 75; // Current perception level (0-100)
+        let confidenceLevel = 65; // Current confidence level (0-100)
+        
+        // Speech-to-Text integration
+        let speechService = null;
+        let isRecording = false;
+
+        function updatePerceptionMeter(newLevel) {
+            perceptionLevel = Math.max(0, Math.min(100, newLevel));
+            const perceptionFill = document.querySelector('.perception-fill');
+            const perceptionStatus = document.querySelector('.meter-section:first-child .meter-status span');
+            
+            perceptionFill.style.width = perceptionLevel + '%';
+            
+            // Update status text based on level
+            if (perceptionLevel >= 80) {
+                perceptionStatus.textContent = 'Highly Favorable';
+                perceptionStatus.className = 'status-favorable';
+            } else if (perceptionLevel >= 60) {
+                perceptionStatus.textContent = 'Professional & Reasonable';
+                perceptionStatus.className = 'status-favorable';
+            } else if (perceptionLevel >= 40) {
+                perceptionStatus.textContent = 'Neutral';
+                perceptionStatus.className = 'status-confident';
+            } else if (perceptionLevel >= 20) {
+                perceptionStatus.textContent = 'Skeptical';
+                perceptionStatus.className = 'status-uncertain';
+            } else {
+                perceptionStatus.textContent = 'Hostile';
+                perceptionStatus.className = 'status-hostile';
+            }
+        }
+
+        function updateConfidenceMeter(newLevel) {
+            confidenceLevel = Math.max(0, Math.min(100, newLevel));
+            const confidenceFill = document.querySelector('.confidence-fill');
+            const confidenceStatus = document.querySelector('.meter-section:last-child .meter-status span');
+            
+            confidenceFill.style.width = confidenceLevel + '%';
+            
+            // Update status text based on level
+            if (confidenceLevel >= 85) {
+                confidenceStatus.textContent = 'Commanding';
+                confidenceStatus.className = 'status-favorable';
+            } else if (confidenceLevel >= 70) {
+                confidenceStatus.textContent = 'Confident';
+                confidenceStatus.className = 'status-confident';
+            } else if (confidenceLevel >= 55) {
+                confidenceStatus.textContent = 'Knowledgeable';
+                confidenceStatus.className = 'status-confident';
+            } else if (confidenceLevel >= 35) {
+                confidenceStatus.textContent = 'Hesitant';
+                confidenceStatus.className = 'status-uncertain';
+            } else {
+                confidenceStatus.textContent = 'Uncertain';
+                confidenceStatus.className = 'status-uncertain';
+            }
+        }
+
+        function analyzeMessage(message) {
+            // Simple AI analysis of message tone and content
+            const lowerMessage = message.toLowerCase();
+            
+            // Confidence indicators
+            const confidentWords = ['require', 'need', 'must', 'expect', 'insist', 'demand'];
+            const uncertainWords = ['maybe', 'perhaps', 'might', 'possibly', 'unsure', 'think'];
+            const professionalWords = ['understand', 'appreciate', 'consider', 'propose', 'suggest'];
+            const aggressiveWords = ['unacceptable', 'ridiculous', 'impossible', 'never'];
+            
+            let confidentScore = 0;
+            let uncertainScore = 0;
+            let professionalScore = 0;
+            let aggressiveScore = 0;
+            
+            confidentWords.forEach(word => {
+                if (lowerMessage.includes(word)) confidentScore += 15;
+            });
+            
+            uncertainWords.forEach(word => {
+                if (lowerMessage.includes(word)) uncertainScore += 10;
+            });
+            
+            professionalWords.forEach(word => {
+                if (lowerMessage.includes(word)) professionalScore += 10;
+            });
+            
+            aggressiveWords.forEach(word => {
+                if (lowerMessage.includes(word)) aggressiveScore += 20;
+            });
+            
+            // Update confidence based on analysis
+            let confidenceDelta = confidentScore - uncertainScore;
+            if (message.length > 100) confidenceDelta += 5; // Longer messages show more confidence
+            
+            // Update perception based on tone
+            let perceptionDelta = professionalScore - aggressiveScore;
+            if (confidentScore > 0 && aggressiveScore === 0) perceptionDelta += 5;
+            
+            updateConfidenceMeter(confidenceLevel + confidenceDelta);
+            updatePerceptionMeter(perceptionLevel + perceptionDelta);
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const messagesContainer = document.getElementById('chatMessages');
+            
+            if (input.value.trim() === '') return;
+            
+            const userMessage = input.value.trim();
+            
+            // Analyze the message for meter updates
+            analyzeMessage(userMessage);
+            
+            // Add user message
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message user';
+            messageDiv.innerHTML = `
+                <div class="message-content">${userMessage}</div>
+                <div class="message-time">You • Just now</div>
+            `;
+            messagesContainer.appendChild(messageDiv);
+            
+            // Clear input
+            input.value = '';
+            
+            // Simulate AI response after delay
+            setTimeout(() => {
+                const responses = [
+                    "I understand your position. Let me discuss this with my technical team and get back to you with a revised proposal...",
+                    "That's an interesting point. We could potentially accommodate that request with some adjustments to the pricing structure.",
+                    "I appreciate your direct approach. Let me see what flexibility we have on those terms.",
+                    "Your client's requirements are clear. We may need to escalate this to our senior management for approval.",
+                    "I can see this is important to your client. Let's explore some alternative approaches that might work for both parties."
+                ];
+                
+                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                
+                const aiMessage = document.createElement('div');
+                aiMessage.className = 'message ai';
+                aiMessage.innerHTML = `
+                    <div class="message-content">${randomResponse}</div>
+                    <div class="message-time">AI Assistant • Just now</div>
+                `;
+                messagesContainer.appendChild(aiMessage);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }, 1500);
+            
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function getAIAdvice() {
+            const adviceMessages = [
+                'MentorChat: Your counterparty perception is strong. Consider pushing for more favorable terms while maintaining this professional relationship.',
+                'MentorChat: Your confidence level could be higher. Use more decisive language like "require" instead of "would like".',
+                'MentorChat: Good balance of assertiveness and professionalism. Focus on data security provisions next.',
+                'MentorChat: Consider emphasizing the long-term partnership value to improve counterparty perception.'
+            ];
+            
+            const randomAdvice = adviceMessages[Math.floor(Math.random() * adviceMessages.length)];
+            alert(randomAdvice);
+        }
+
+        function reviewPosition() {
+            alert(`Position Review: 
+            • Counterparty Perception: ${perceptionLevel}% - ${perceptionLevel >= 70 ? 'Strong' : perceptionLevel >= 40 ? 'Neutral' : 'Needs Improvement'}
+            • Confidence Projection: ${confidenceLevel}% - ${confidenceLevel >= 70 ? 'Effective' : confidenceLevel >= 40 ? 'Adequate' : 'Needs Work'}
+            
+            Overall: You're making good progress. The counterpart is showing flexibility on SLA terms.`);
+        }
+
+        function continueNext() {
+            alert('Great progress! In a full implementation, this would advance to Step 4: Acceptance & Contract Conclusion.');
+        }
+
+        // Allow Enter key to send messages
+        document.getElementById('chatInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // Speech-to-Text Functions
+        async function initializeSpeechService() {
+            try {
+                const config = initializeConfig();
+                if (!config.isValid) {
+                    console.warn('Speech-to-text disabled: GCP API key not configured');
+                    document.getElementById('micButton').style.display = 'none';
+                    return false;
+                }
+
+                if (!GCPSpeechService.isSupported()) {
+                    console.warn('Speech-to-text not supported in this browser');
+                    document.getElementById('micButton').style.display = 'none';
+                    return false;
+                }
+
+                speechService = new GCPSpeechService(CONFIG.GCP.API_KEY);
+                
+                // Set up callbacks
+                speechService.onTranscription(onTranscriptionReceived);
+                speechService.onError(onSpeechError);
+                
+                // Initialize microphone
+                const initialized = await speechService.initializeMicrophone();
+                if (!initialized) {
+                    document.getElementById('micButton').style.display = 'none';
+                    return false;
+                }
+
+                console.log('✅ Speech-to-text service initialized successfully');
+                return true;
+            } catch (error) {
+                console.error('Failed to initialize speech service:', error);
+                document.getElementById('micButton').style.display = 'none';
+                return false;
+            }
+        }
+
+        function toggleRecording() {
+            if (!speechService) {
+                alert('Speech service not available. Please check your microphone permissions.');
+                return;
+            }
+
+            if (isRecording) {
+                stopRecording();
+            } else {
+                startRecording();
+            }
+        }
+
+        function startRecording() {
+            if (!speechService || isRecording) return;
+
+            const success = speechService.startRecording();
+            if (success) {
+                isRecording = true;
+                updateRecordingUI(true);
+                
+                // Auto-stop after max recording time
+                setTimeout(() => {
+                    if (isRecording) {
+                        stopRecording();
+                    }
+                }, CONFIG.APP.SPEECH_RECOGNITION.MAX_RECORDING_TIME);
+            }
+        }
+
+        function stopRecording() {
+            if (!speechService || !isRecording) return;
+
+            speechService.stopRecording();
+            isRecording = false;
+            updateRecordingUI(false, 'Processing...');
+        }
+
+        function updateRecordingUI(recording, statusText = '') {
+            const micButton = document.getElementById('micButton');
+            const speechStatus = document.getElementById('speechStatus');
+            const statusTextElement = document.getElementById('statusText');
+
+            if (recording) {
+                micButton.classList.add('recording');
+                speechStatus.style.display = 'block';
+                statusTextElement.textContent = 'Listening... Click to stop';
+                micButton.title = 'Click to stop recording';
+            } else if (statusText) {
+                micButton.classList.remove('recording');
+                micButton.classList.add('processing');
+                statusTextElement.textContent = statusText;
+                micButton.title = 'Processing speech...';
+            } else {
+                micButton.classList.remove('recording', 'processing');
+                speechStatus.style.display = 'none';
+                micButton.title = 'Click to speak';
+            }
+        }
+
+        function onTranscriptionReceived(transcript, confidence) {
+            console.log('Transcription received:', transcript, 'Confidence:', confidence);
+            
+            // Display transcription preview
+            const speechStatus = document.getElementById('speechStatus');
+            const statusText = document.getElementById('statusText');
+            
+            if (confidence >= CONFIG.APP.SPEECH_RECOGNITION.CONFIDENCE_THRESHOLD) {
+                // High confidence - add to input
+                const chatInput = document.getElementById('chatInput');
+                chatInput.value = transcript;
+                
+                statusText.innerHTML = `
+                    <div class="transcription-preview">
+                        "${transcript}"
+                        <div class="confidence-indicator">Confidence: ${Math.round(confidence * 100)}%</div>
+                    </div>
+                `;
+                
+                // Auto-send if enabled
+                if (CONFIG.APP.SPEECH_RECOGNITION.AUTO_SEND_TRANSCRIPTION) {
+                    setTimeout(() => {
+                        sendMessage();
+                        updateRecordingUI(false);
+                    }, 1500);
+                } else {
+                    setTimeout(() => updateRecordingUI(false), 3000);
+                }
+            } else {
+                // Low confidence - show for review
+                statusText.innerHTML = `
+                    <div class="transcription-preview" style="border-color: var(--warning-orange);">
+                        "${transcript}"
+                        <div class="confidence-indicator">Low confidence: ${Math.round(confidence * 100)}% - Please review</div>
+                    </div>
+                `;
+                
+                const chatInput = document.getElementById('chatInput');
+                chatInput.value = transcript;
+                chatInput.focus();
+                
+                setTimeout(() => updateRecordingUI(false), 4000);
+            }
+        }
+
+        function onSpeechError(error) {
+            console.error('Speech recognition error:', error);
+            updateRecordingUI(false);
+            
+            // Show user-friendly error
+            const speechStatus = document.getElementById('speechStatus');
+            const statusText = document.getElementById('statusText');
+            
+            speechStatus.style.display = 'block';
+            statusText.innerHTML = `<span style="color: var(--danger-red);">❌ ${error}</span>`;
+            
+            setTimeout(() => {
+                speechStatus.style.display = 'none';
+            }, 3000);
+        }
+
+        // Initialize meters on page load
+        document.addEventListener('DOMContentLoaded', async function() {
+            updatePerceptionMeter(perceptionLevel);
+            updateConfidenceMeter(confidenceLevel);
+            
+            // Initialize speech service
+            await initializeSpeechService();
+        });
+    </script>
+</body>
+</html> 

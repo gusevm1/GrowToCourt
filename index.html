@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GrowToCourt - AI Legal Mentorship Platform</title>
+    <style>
+        :root {
+            --primary-black: #1a1a1a;
+            --primary-grey: #2a2a2a;
+            --light-grey: #f5f5f5;
+            --medium-grey: #888888;
+            --white: #ffffff;
+            --accent-grey: #4a4a4a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--primary-black);
+            background-color: var(--white);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary-black) 0%, var(--primary-grey) 100%);
+            color: var(--white);
+            padding: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .header-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        .demo-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* Scenario Section */
+        .scenario-section {
+            background: var(--light-grey);
+            padding: 4rem 0;
+        }
+
+        .scenario-card {
+            background: var(--white);
+            border-radius: 8px;
+            padding: 3rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid var(--primary-black);
+        }
+
+        .scenario-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--primary-black);
+        }
+
+        .scenario-description {
+            font-size: 1.1rem;
+            color: var(--medium-grey);
+            line-height: 1.8;
+        }
+
+        /* Steps Section */
+        .steps-section {
+            padding: 5rem 0;
+            background: var(--white);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--primary-black);
+            font-weight: 300;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+            padding-top: 1rem;
+        }
+
+        .step-card {
+            background: var(--white);
+            border: 2px solid var(--light-grey);
+            border-radius: 8px;
+            padding: 2rem;
+            padding-top: 3rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: visible;
+            margin-top: 25px;
+        }
+
+        .step-card:hover {
+            border-color: var(--primary-grey);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+            transform: translateY(-5px);
+        }
+
+        .clickable-card {
+            cursor: pointer;
+            position: relative;
+        }
+
+        .clickable-card .card-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(26, 26, 26, 0.9);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 8px;
+        }
+
+        .clickable-card:hover .card-overlay {
+            opacity: 1;
+        }
+
+        .enter-text {
+            font-size: 1.2rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        .step-number {
+            position: absolute;
+            top: -22px;
+            right: 20px;
+            background: var(--primary-black);
+            color: var(--white);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            border: 4px solid var(--white);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+            z-index: 10;
+        }
+
+        .step-title {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            color: var(--primary-black);
+            margin-top: 1rem;
+        }
+
+        .step-description {
+            color: var(--medium-grey);
+            margin-bottom: 1.5rem;
+        }
+
+        .step-features {
+            list-style: none;
+        }
+
+        .step-features li {
+            padding: 0.3rem 0;
+            color: var(--accent-grey);
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .step-features li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--primary-black);
+        }
+
+        /* Features Section */
+        .features-section {
+            background: var(--primary-black);
+            color: var(--white);
+            padding: 5rem 0;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .feature-icon svg {
+            width: 40px;
+            height: 40px;
+            stroke: var(--white);
+            stroke-width: 1.5;
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-description {
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: var(--light-grey);
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: var(--primary-black);
+            color: var(--white);
+            padding: 1rem 3rem;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin-top: 2rem;
+        }
+
+        .cta-button:hover {
+            background: var(--primary-grey);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary-grey);
+            color: var(--white);
+            text-align: center;
+            padding: 2rem 0;
+            opacity: 0.9;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .steps-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .scenario-card {
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-bg"></div>
+        <div class="container">
+            <div class="header-content">
+                <h1>GrowToCourt</h1>
+                <p class="subtitle">AI-Powered Legal Mentorship for the Next Generation</p>
+                <div class="demo-badge">Clifford Chance Hackathon Demo</div>
+            </div>
+        </div>
+    </header>
+
+    <section class="scenario-section">
+        <div class="container">
+            <div class="scenario-card">
+                <h2 class="scenario-title">Demo Scenario: Global Bank Technology Services Agreement</h2>
+                <p class="scenario-description">
+                    Guide a junior lawyer through negotiating a comprehensive cloud technology services agreement between a major international bank and a leading cloud provider. Navigate complex issues including data protection compliance (GDPR), regulatory requirements, service level agreements, liability caps, intellectual property licensing, and cross-border data transfer protocols. This scenario reflects the sophisticated, multi-jurisdictional work that defines Clifford Chance's financial services and technology practices.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="steps-section">
+        <div class="container">
+            <h2 class="section-title">The Complete Contract Journey</h2>
+            
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">Initial Demand</h3>
+                    <p class="step-description">Client approaches with technology service needs</p>
+                    <ul class="step-features">
+                        <li>MentorChat: Understanding client objectives</li>
+                        <li>Risk assessment framework</li>
+                        <li>Regulatory landscape mapping</li>
+                        <li>Speech-to-text client interviews</li>
+                    </ul>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">Client Onboarding & Offer Development</h3>
+                    <p class="step-description">Structure the deal and develop negotiation strategy</p>
+                    <ul class="step-features">
+                        <li>Due diligence checklist automation</li>
+                        <li>Contract template selection</li>
+                        <li>Term sheet development</li>
+                        <li>Video: Clifford Chance deal structuring</li>
+                    </ul>
+                </div>
+
+                <div class="step-card clickable-card" onclick="window.location.href='negotiations.html'">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">Negotiations</h3>
+                    <p class="step-description">Navigate complex commercial and legal negotiations</p>
+                    <ul class="step-features">
+                        <li>AI-powered negotiation simulator</li>
+                        <li>Real-time drafting feedback</li>
+                        <li>Position tracking and analysis</li>
+                        <li>Communication strategy guidance</li>
+                    </ul>
+                    <div class="card-overlay">
+                        <span class="enter-text">Enter Module →</span>
+                    </div>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">4</div>
+                    <h3 class="step-title">Acceptance & Contract Conclusion</h3>
+                    <p class="step-description">Finalize terms and execute the agreement</p>
+                    <ul class="step-features">
+                        <li>Final review checklist</li>
+                        <li>Execution process guidance</li>
+                        <li>Conditions precedent tracking</li>
+                        <li>Post-signature obligations</li>
+                    </ul>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">5</div>
+                    <h3 class="step-title">Non-Performance & Notifications</h3>
+                    <p class="step-description">Handle breaches and performance issues</p>
+                    <ul class="step-features">
+                        <li>Breach identification and assessment</li>
+                        <li>Notice drafting and timing</li>
+                        <li>Remedy analysis and strategy</li>
+                        <li>Client communication protocols</li>
+                    </ul>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">6</div>
+                    <h3 class="step-title">Court Proceedings</h3>
+                    <p class="step-description">Prepare for and navigate litigation</p>
+                    <ul class="step-features">
+                        <li>Litigation risk assessment</li>
+                        <li>Court filing preparation</li>
+                        <li>Evidence gathering strategy</li>
+                        <li>Settlement negotiation tactics</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features-section">
+        <div class="container">
+            <h2 class="section-title">Core Platform Features</h2>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">MentorChat</h3>
+                    <p class="feature-description">AI-powered mentorship providing real-time guidance, feedback, and insights throughout each step of the legal process.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Video Learning</h3>
+                    <p class="feature-description">Interactive video content featuring Clifford Chance partners and technology experts sharing real-world insights.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Speech-to-Text Integration</h3>
+                    <p class="feature-description">Practice client interviews and negotiations with AI-powered speech recognition and analysis (GCP implementation).</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Technology Onboarding</h3>
+                    <p class="feature-description">Familiarize junior lawyers with Clifford Chance's technology stack and digital tools used in modern legal practice.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Progress Tracking</h3>
+                    <p class="feature-description">Comprehensive analytics and feedback loops to measure learning progress and identify areas for improvement.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Collaborative Learning</h3>
+                    <p class="feature-description">Connect with peers and senior lawyers for collaborative problem-solving and knowledge sharing.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="container">
+            <h2>Ready to Transform Legal Education?</h2>
+            <p>Experience the future of legal mentorship and training</p>
+            <a href="#demo" class="cta-button">Start Demo Journey</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 GrowToCourt - Reimagining Legal Education for the Digital Age</p>
+        </div>
+    </footer>
+</body>
+</html>
