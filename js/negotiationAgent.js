@@ -1,7 +1,7 @@
 class NegotiationAgent {
     constructor(apiKey) {
         this.apiKey = apiKey;
-        this.baseURL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent';
+        this.baseURL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
         
         // Agent profile and company information
         this.agentProfile = {
@@ -76,6 +76,27 @@ class NegotiationAgent {
             // Analyze user input and update negotiation state
             this.analyzeUserInput(userMessage);
 
+            // Check if we should use demo mode
+            if (!this.apiKey || this.apiKey.length < 10) {
+                console.log('🎭 Using demo mode for negotiation agent');
+                const demoResponse = this.generateDemoResponse(userMessage);
+                
+                // Add demo response to history
+                this.conversationHistory.push({
+                    speaker: 'agent',
+                    message: demoResponse,
+                    timestamp: new Date(),
+                    type: 'text'
+                });
+
+                return {
+                    message: demoResponse,
+                    agentState: this.negotiationState,
+                    suggestedTopics: this.getSuggestedTopics(),
+                    negotiationProgress: this.calculateProgress()
+                };
+            }
+
             // Generate contextual response using Gemini
             const prompt = this.buildNegotiationPrompt(userMessage);
             const response = await this.callGeminiAPI(prompt);
@@ -97,8 +118,10 @@ class NegotiationAgent {
 
         } catch (error) {
             console.error('Error generating agent response:', error);
+            // Fall back to demo mode on API error
+            const demoResponse = this.generateDemoResponse(userMessage);
             return {
-                message: "I apologize, but I'm having technical difficulties. Could you please repeat your last point?",
+                message: demoResponse,
                 error: error.message
             };
         }
@@ -222,6 +245,96 @@ Your response should sound like a real lawyer in a negotiation, not an AI assist
             console.error('❌ No valid response in data:', data);
             throw new Error('No response generated from Gemini API');
         }
+    }
+
+    generateDemoResponse(userMessage) {
+        const message = userMessage.toLowerCase();
+        
+        // Money/budget related responses
+        if (message.includes('money') || message.includes('cost') || message.includes('budget') || message.includes('price') || message.includes('payment')) {
+            const budgetResponses = [
+                "I understand budget is a key consideration. For a contract of this scope, we're looking at £50M over 3 years, which breaks down to approximately £16.7M annually. This includes our premium cloud infrastructure, 24/7 support, and full GDPR compliance. Given the scale and complexity of GlobalBank's requirements, this represents strong value. What specific budget parameters are you working within?",
+                "Regarding costs, our standard pricing for enterprise clients like GlobalBank is structured around usage tiers and service levels. The base cost is £45M over 3 years, but with your enhanced SLA requirements and data residency needs, we're at £50M total. We can discuss payment terms - would quarterly payments work better than annual?",
+                "Budget discussions are always important. Our proposal is £50M over the 3-year term, which covers all infrastructure, compliance, and support costs. However, I'm authorized to discuss volume discounts if GlobalBank can commit to additional services or extend the contract term. What's your target budget range?",
+                "The financial terms we're proposing reflect the premium nature of our services. At £50M over 3 years, this includes disaster recovery, full EU data residency, and dedicated account management. I understand this is a significant investment, but given the regulatory requirements in financial services, the compliance value alone justifies the premium. Are there specific cost components you'd like to break down?"
+            ];
+            return budgetResponses[Math.floor(Math.random() * budgetResponses.length)];
+        }
+        
+        // SLA related responses
+        if (message.includes('sla') || message.includes('uptime') || message.includes('availability') || message.includes('service level')) {
+            const slaResponses = [
+                "Our standard SLA offers 99.5% uptime with monthly service credits for any shortfall. However, I understand GlobalBank requires higher availability. We can commit to 99.7% uptime, but this would require additional redundancy infrastructure. The cost impact would be approximately £3M over the contract term. Would this meet your requirements?",
+                "For service levels, we typically guarantee 99.5% availability, but I recognize that financial services have stricter requirements. We can offer 99.8% uptime with our premium tier, including dedicated infrastructure and priority support. This would require adjusting our commercial terms. What's your minimum acceptable uptime requirement?",
+                "Service level agreements are critical for your operations. Our enhanced SLA includes 99.7% uptime, 4-hour response times for critical issues, and dedicated technical account management. The service credits would be calculated monthly and applied automatically. Would you prefer quarterly or annual SLA reporting?"
+            ];
+            return slaResponses[Math.floor(Math.random() * slaResponses.length)];
+        }
+        
+        // Liability related responses
+        if (message.includes('liability') || message.includes('insurance') || message.includes('damages') || message.includes('indemnity')) {
+            const liabilityResponses = [
+                "Liability caps are always a key negotiation point. Our standard position is £25M annual liability cap, excluding indirect damages. However, given GlobalBank's scale, I can discuss increasing this to £35M annually, provided we maintain our standard exclusions for consequential damages and data breach scenarios where we're not at fault.",
+                "For liability terms, we typically cap at £25M per incident with standard exclusions. I understand financial institutions often require higher coverage. We could consider £40M annual aggregate, but we'd need to maintain exclusions for indirect damages and require proof of your own cyber insurance coverage.",
+                "Our liability framework is designed to be fair to both parties. The £25M cap covers direct damages from service failures. For a client of GlobalBank's importance, I could propose £35M with quarterly reviews. We'd need to exclude liability for data breaches caused by your internal security failures though."
+            ];
+            return liabilityResponses[Math.floor(Math.random() * liabilityResponses.length)];
+        }
+        
+        // Data privacy/residency responses
+        if (message.includes('data') || message.includes('privacy') || message.includes('gdpr') || message.includes('residency')) {
+            const dataResponses = [
+                "Data residency is absolutely critical for financial services. Our standard offering includes primary EU data centers with disaster recovery flexibility. For GlobalBank, we can commit to strict EU-only processing with no exceptions, but this would require additional infrastructure investment of approximately £2M over the contract term.",
+                "GDPR compliance is built into our core platform. All data processing occurs within EU boundaries, with full audit trails and automated data subject request handling. We can provide additional guarantees around data location if needed, though this may impact our disaster recovery capabilities.",
+                "Data protection is a cornerstone of our service. We offer comprehensive GDPR compliance, including data processing agreements, regular compliance audits, and dedicated data protection officers. For enhanced data residency guarantees, we'd need to discuss additional costs and any impact on service resilience."
+            ];
+            return dataResponses[Math.floor(Math.random() * dataResponses.length)];
+        }
+        
+        // IP related responses
+        if (message.includes('ip') || message.includes('intellectual property') || message.includes('licensing') || message.includes('ownership')) {
+            const ipResponses = [
+                "Intellectual property terms are straightforward in our standard agreement. GlobalBank retains full ownership of your data and any configurations you create. CloudTech retains ownership of our platform IP and any general improvements we make. We're open to discussing specific licensing terms for any custom development work.",
+                "IP ownership is clearly delineated - you own your data and business logic, we own our platform technology. Any custom integrations developed specifically for GlobalBank would be jointly owned, with GlobalBank having unlimited usage rights. Are there specific IP concerns you'd like to address?",
+                "Our IP framework protects both parties' interests. GlobalBank maintains full rights to your data and business processes, while CloudTech retains our platform IP. For any bespoke development, we typically grant perpetual usage licenses to the client while retaining the ability to create similar solutions for other clients."
+            ];
+            return ipResponses[Math.floor(Math.random() * ipResponses.length)];
+        }
+        
+        // Exit/termination responses
+        if (message.includes('exit') || message.includes('termination') || message.includes('migration') || message.includes('transition')) {
+            const exitResponses = [
+                "Exit provisions are important for both parties. Our standard terms include 12 months' notice for termination, with comprehensive data migration support included at no additional cost. We provide data in standard formats and 90 days of transition support. Would you prefer shorter notice periods?",
+                "For contract termination, we offer flexible exit terms including data portability guarantees and transition assistance. The 12-month notice period allows for proper planning, but we can discuss shorter terms for specific circumstances. All data migration is included in our standard service.",
+                "Termination clauses are designed to be fair and practical. We provide comprehensive exit support including data extraction, format conversion, and 60 days of parallel running if needed. The notice period ensures continuity of service during transition. Are there specific exit scenarios you're concerned about?"
+            ];
+            return exitResponses[Math.floor(Math.random() * exitResponses.length)];
+        }
+        
+        // General/greeting responses
+        if (message.includes('hello') || message.includes('hi') || message.includes('start') || message.length < 20) {
+            return "Good morning. I'm Sarah Chen, Senior Legal Counsel at CloudTech Solutions. I'm here to discuss the cloud services agreement for GlobalBank International. I have the draft contract terms ready for review. Shall we begin with service level agreements, or would you prefer to start with another aspect of the contract?";
+        }
+        
+        // Agreement/positive responses
+        if (message.includes('agree') || message.includes('acceptable') || message.includes('yes') || message.includes('good') || message.includes('ok')) {
+            const agreementResponses = [
+                "Excellent, I'm glad we can find common ground on this point. Let me document this agreement and we can move on to the next item. What aspect of the contract would you like to address next?",
+                "That's great progress. I'll make note of our agreement on this term. To keep momentum going, shall we tackle the liability provisions next, or would you prefer to discuss data residency requirements?",
+                "Perfect, I'm pleased we could reach agreement on this issue. I'll have our legal team draft the specific language. What other contract terms are priorities for GlobalBank?"
+            ];
+            return agreementResponses[Math.floor(Math.random() * agreementResponses.length)];
+        }
+        
+        // Default response for other topics
+        const defaultResponses = [
+            "That's an interesting point. Could you elaborate on GlobalBank's specific requirements in this area? I want to make sure we address all your concerns comprehensively.",
+            "I understand your position. Let me consider how we can accommodate this within our standard framework. What flexibility do you have on your side?",
+            "Thank you for raising that issue. It's important we get the details right. Could you walk me through GlobalBank's specific needs and any regulatory requirements we need to consider?",
+            "I appreciate you bringing this up. Let me think about how we can structure this to work for both parties. What would be your ideal outcome on this point?"
+        ];
+        
+        return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
     }
 
     analyzeUserInput(userMessage) {

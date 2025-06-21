@@ -1,7 +1,7 @@
 class MentorAgent {
     constructor(apiKey) {
         this.apiKey = apiKey;
-        this.baseURL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent';
+        this.baseURL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
         
         // Mentor profile
         this.mentorProfile = {
@@ -93,6 +93,23 @@ class MentorAgent {
                 timestamp: new Date()
             });
 
+            // Check if we should use demo mode
+            if (!this.apiKey || this.apiKey.length < 10) {
+                console.log('🎭 Using demo mode for mentor agent');
+                const demoResponse = this.generateDemoResponse(userMessage, clarificationList);
+                
+                this.conversationHistory.push({
+                    speaker: 'mentor',
+                    message: demoResponse,
+                    timestamp: new Date()
+                });
+
+                return {
+                    message: demoResponse,
+                    success: true
+                };
+            }
+
             const prompt = this.buildMentorPrompt(userMessage, clarificationList);
             const response = await this.callGeminiAPI(prompt);
             
@@ -109,12 +126,83 @@ class MentorAgent {
 
         } catch (error) {
             console.error('Error generating mentor response:', error);
+            // Fall back to demo mode on API error
+            const demoResponse = this.generateDemoResponse(userMessage, clarificationList);
             return {
-                message: "I'm having some technical difficulties. Let me try a different approach to help you with your analysis.",
+                message: demoResponse,
                 success: false,
                 error: error.message
             };
         }
+    }
+
+    generateDemoResponse(userMessage, clarificationList = []) {
+        const message = userMessage.toLowerCase();
+        
+        // Negotiation strategy questions
+        if (message.includes('strategy') || message.includes('approach') || message.includes('negotiate')) {
+            const strategyResponses = [
+                "That's a great question about negotiation strategy. What patterns are you noticing in how Sarah Chen is positioning her arguments? Think about whether she's being collaborative or competitive, and how that might affect your approach.",
+                "Good thinking about strategy. Consider what you've learned about the counterparty's priorities from their responses. Are there areas where their interests might align with yours? How might you use that to create win-win solutions?",
+                "Excellent strategic thinking. What leverage points do you think each party has in this negotiation? Remember, successful negotiations often involve understanding what the other side truly needs, not just what they're asking for."
+            ];
+            return strategyResponses[Math.floor(Math.random() * strategyResponses.length)];
+        }
+        
+        // Progress and feedback questions
+        if (message.includes('progress') || message.includes('doing') || message.includes('feedback') || message.includes('how am i')) {
+            const progressResponses = [
+                "You're making solid progress in identifying the key issues. I notice you're starting to think about the commercial implications, which is excellent. What patterns are you seeing in how different contract terms interconnect?",
+                "Good work so far. You're demonstrating strong analytical skills. One area to focus on next: are you considering the business context behind each legal position? What might be driving the counterparty's requirements?",
+                "You're developing good negotiation instincts. I can see you're thinking about both legal and practical considerations. How might you test whether your proposed solutions actually address the underlying business needs?"
+            ];
+            return progressResponses[Math.floor(Math.random() * progressResponses.length)];
+        }
+        
+        // Questions about specific issues
+        if (message.includes('liability') || message.includes('damages')) {
+            return "Liability is always a complex area. What do you think drives each party's position on liability caps? Consider both the legal risks and the business realities - what would happen if something actually went wrong?";
+        }
+        
+        if (message.includes('data') || message.includes('privacy') || message.includes('gdpr')) {
+            return "Data privacy is crucial in this context. Are you thinking about why data residency matters so much to financial institutions? What are the real business and regulatory drivers behind these requirements?";
+        }
+        
+        if (message.includes('sla') || message.includes('uptime') || message.includes('service')) {
+            return "Service levels are interesting to analyze. What do you think the real cost difference is between 99.5% and 99.9% uptime? How might that affect your negotiation position?";
+        }
+        
+        if (message.includes('money') || message.includes('cost') || message.includes('budget') || message.includes('price')) {
+            return "Budget discussions are always revealing. What do you think the counterparty's response tells you about their pricing flexibility? Are there ways to structure the commercial terms that might work better for both parties?";
+        }
+        
+        if (message.includes('ip') || message.includes('intellectual property')) {
+            return "IP ownership is fundamental in technology contracts. What concerns do you think each party has about their intellectual property? How might you address those concerns while protecting your client's interests?";
+        }
+        
+        // Questions about resolution or agreement
+        if (message.includes('resolved') || message.includes('agreed') || message.includes('settled')) {
+            return "Good observation about reaching agreement. What made that particular issue easier to resolve? Can you apply those same principles to the remaining open items?";
+        }
+        
+        // General guidance and encouragement
+        if (message.includes('stuck') || message.includes('difficult') || message.includes('hard')) {
+            return "I understand this feels challenging - that's normal for complex commercial negotiations. Try stepping back and asking: what does each party really need here? Sometimes the stated position isn't the underlying interest.";
+        }
+        
+        if (message.includes('next') || message.includes('what should')) {
+            return "That's good forward thinking. Look at what issues remain unresolved and consider which ones might be easier to tackle first. Sometimes building momentum on smaller items helps with the bigger challenges.";
+        }
+        
+        // Default Socratic responses
+        const defaultResponses = [
+            "That's an interesting observation. What do you think might be driving that particular position? Try to think about the business reasons behind the legal requirements.",
+            "Good question. Let me turn that back to you - what patterns are you noticing in how the counterparty responds to different types of proposals?",
+            "I can see you're thinking carefully about this. What would you do if you were in the counterparty's position? How might that inform your approach?",
+            "That's worth exploring further. What are the potential consequences if this issue isn't resolved properly? How might that affect your negotiation priorities?"
+        ];
+        
+        return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
     }
 
     buildMentorPrompt(userMessage, clarificationList) {
