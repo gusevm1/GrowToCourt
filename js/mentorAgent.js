@@ -1,7 +1,7 @@
 class MentorAgent {
     constructor(apiKey) {
         this.apiKey = apiKey;
-        this.baseURL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent';
+        this.baseURL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent';
         
         // Mentor profile
         this.mentorProfile = {

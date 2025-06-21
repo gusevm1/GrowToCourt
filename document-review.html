@@ -6,19 +6,16 @@
     <title>Document Review & Research - GrowToCourt</title>
     <style>
         :root {
-            --primary-black: #1a1a1a;
-            --primary-grey: #2a2a2a;
-            --light-grey: #f5f5f5;
-            --medium-grey: #888888;
+            --primary-black: #000000;
             --white: #ffffff;
-            --accent-grey: #4a4a4a;
+            --clifford-teal: #4a9b9b;
+            --light-grey: #f8f9fa;
+            --medium-grey: #6c757d;
+            --accent-grey: #495057;
             --success-green: #28a745;
             --warning-orange: #fd7e14;
             --danger-red: #dc3545;
             --info-blue: #17a2b8;
-            --client-blue: #2563eb;
-            --document-beige: #faf8f3;
-            --knowledge-purple: #6366f1;
         }
 
         * {
@@ -35,20 +32,20 @@
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1700px; /* Increased from 1200px for better screen utilization */
             margin: 0 auto;
             padding: 0 20px;
         }
 
         /* Header */
         header {
-            background: linear-gradient(135deg, var(--knowledge-purple) 0%, var(--primary-grey) 100%);
+            background: var(--primary-black);
             color: var(--white);
             padding: 1.5rem 0;
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.15);
         }
 
         .header-content {
@@ -68,6 +65,7 @@
             font-weight: 300;
             text-decoration: none;
             color: var(--white);
+            letter-spacing: -0.5px;
         }
 
         .step-indicator {
@@ -80,13 +78,59 @@
 
         .step-number {
             background: rgba(255, 255, 255, 0.2);
-            width: 30px;
-            height: 30px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* Header Training Progress */
+        .header-training-progress {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .header-steps {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .header-step {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .header-step.current {
+            border-color: var(--white);
+            background: var(--white);
+            color: var(--primary-black);
+        }
+
+        .header-step.completed {
+            border-color: var(--clifford-teal);
+            color: var(--clifford-teal);
+        }
+
+        .header-progress-label {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 500;
         }
 
         .nav-buttons {
@@ -95,17 +139,19 @@
         }
 
         .nav-btn {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.15);
             color: var(--white);
-            padding: 0.5rem 1rem;
+            padding: 0.6rem 1.2rem;
             text-decoration: none;
-            border-radius: 4px;
+            border-radius: 6px;
             transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            font-weight: 500;
         }
 
         .nav-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-1px);
         }
 
         .nav-btn.disabled {
@@ -119,175 +165,190 @@
             min-height: calc(100vh - 80px);
         }
 
-        .scenario-intro {
-            background: var(--light-grey);
-            padding: 2rem;
-            border-radius: 8px;
-            margin-bottom: 2rem;
+        .intro-section {
             text-align: center;
+            margin-bottom: 3rem;
         }
 
-        .scenario-intro h2 {
-            color: var(--knowledge-purple);
+        .intro-section h2 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            color: var(--primary-black);
             margin-bottom: 1rem;
+            letter-spacing: -1px;
         }
 
-        .scenario-intro p {
+        .intro-section p {
+            font-size: 1.2rem;
             color: var(--medium-grey);
-            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
         }
 
         .document-library {
             display: grid;
-            grid-template-columns: 1fr 300px;
-            gap: 2rem;
+            grid-template-columns: 2fr 1fr;
+            gap: 3rem;
             margin-top: 2rem;
         }
 
         .documents-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
         }
 
         .document-card {
             background: var(--white);
-            border-radius: 8px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            border-left: 4px solid var(--knowledge-purple);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.08);
+            border: 1px solid #e5e7eb;
             cursor: pointer;
             transition: all 0.3s ease;
             position: relative;
+            border-left: 4px solid var(--medium-grey);
         }
 
         .document-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 25px rgba(0,0,0,0.15);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 40px rgba(0,0,0,0.12);
         }
 
         .document-card.read {
-            border-left-color: var(--success-green);
-            background: #f8fff8;
+            border-left-color: var(--clifford-teal);
+            background: linear-gradient(135deg, #f8ffff, var(--white));
         }
 
         .document-header {
             display: flex;
             align-items: center;
             gap: 1rem;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
 
         .document-icon {
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
+            font-size: 1.5rem;
+            background: var(--primary-black);
             color: var(--white);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
         .document-icon.policy {
-            background: var(--info-blue);
+            background: linear-gradient(135deg, var(--clifford-teal), var(--primary-black));
         }
 
         .document-icon.precedent {
-            background: var(--warning-orange);
+            background: linear-gradient(135deg, var(--warning-orange), var(--danger-red));
         }
 
         .document-icon.regulation {
-            background: var(--danger-red);
+            background: linear-gradient(135deg, var(--danger-red), var(--primary-black));
         }
 
         .document-icon.template {
-            background: var(--success-green);
+            background: linear-gradient(135deg, var(--success-green), var(--clifford-teal));
         }
 
         .document-title {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             font-weight: 600;
             color: var(--primary-black);
+            margin-bottom: 0.25rem;
         }
 
         .document-type {
-            font-size: 0.8rem;
-            color: var(--medium-grey);
+            font-size: 0.85rem;
+            color: var(--clifford-teal);
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            font-weight: 600;
         }
 
         .document-description {
             color: var(--accent-grey);
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-            line-height: 1.5;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
         }
 
         .document-meta {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             color: var(--medium-grey);
+            padding-top: 1rem;
+            border-top: 1px solid #e9ecef;
         }
 
         .read-status {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            width: 12px;
-            height: 12px;
+            top: 15px;
+            right: 15px;
+            width: 16px;
+            height: 16px;
             border-radius: 50%;
             background: var(--medium-grey);
+            transition: all 0.3s ease;
         }
 
         .read-status.read {
-            background: var(--success-green);
+            background: var(--clifford-teal);
+            box-shadow: 0 0 0 3px rgba(74, 155, 155, 0.2);
         }
 
         /* Progress Tracker */
         .progress-tracker {
             background: var(--white);
-            border-radius: 8px;
-            padding: 2rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.08);
+            border: 1px solid #e5e7eb;
             height: fit-content;
             position: sticky;
-            top: 100px;
+            top: 120px;
         }
 
         .progress-title {
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             color: var(--primary-black);
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            font-weight: 600;
         }
 
         .progress-bar {
             background: var(--light-grey);
-            border-radius: 10px;
-            height: 20px;
+            border-radius: 12px;
+            height: 16px;
             margin-bottom: 1rem;
             overflow: hidden;
         }
 
         .progress-fill {
-            background: linear-gradient(90deg, var(--knowledge-purple), var(--success-green));
+            background: linear-gradient(90deg, var(--clifford-teal), var(--primary-black));
             height: 100%;
-            border-radius: 10px;
-            transition: width 0.3s ease;
+            border-radius: 12px;
+            transition: width 0.5s ease;
             width: 0%;
         }
 
         .progress-text {
             text-align: center;
-            font-size: 0.9rem;
+            font-size: 1rem;
             color: var(--medium-grey);
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
+            font-weight: 500;
         }
 
         .document-checklist {
@@ -295,11 +356,12 @@
         }
 
         .document-checklist li {
-            padding: 0.5rem 0;
-            border-bottom: 1px solid var(--light-grey);
+            padding: 1rem 0;
+            border-bottom: 1px solid #e9ecef;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 1rem;
+            transition: all 0.3s ease;
         }
 
         .document-checklist li:last-child {
@@ -307,55 +369,70 @@
         }
 
         .checklist-icon {
-            width: 20px;
-            height: 20px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             background: var(--light-grey);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.8rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            border: 2px solid #e9ecef;
         }
 
         .checklist-icon.completed {
-            background: var(--success-green);
+            background: var(--clifford-teal);
             color: var(--white);
+            border-color: var(--clifford-teal);
+            transform: scale(1.1);
+        }
+
+        .checklist-text {
+            font-weight: 500;
+            color: var(--accent-grey);
+        }
+
+        .checklist-text.completed {
+            color: var(--clifford-teal);
+            font-weight: 600;
         }
 
         .mentor-section {
-            background: #f0f9ff;
-            border: 1px solid var(--info-blue);
-            border-radius: 6px;
-            padding: 1rem;
-            margin-top: 1.5rem;
+            background: linear-gradient(135deg, #e8f4fd, #f0f8ff);
+            border: 1px solid var(--clifford-teal);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 2rem;
         }
 
         .mentor-section h4 {
-            color: var(--info-blue);
-            margin-bottom: 0.5rem;
+            color: var(--primary-black);
+            margin-bottom: 0.75rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            font-weight: 600;
         }
 
         .mentor-tip {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             color: var(--accent-grey);
-            margin-bottom: 0.5rem;
+            line-height: 1.6;
         }
 
         .proceed-button {
-            background: var(--success-green);
+            background: linear-gradient(135deg, var(--clifford-teal), var(--primary-black));
             color: var(--white);
             border: none;
             padding: 1rem 2rem;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
-            font-weight: 500;
+            font-weight: 600;
             font-size: 1rem;
             width: 100%;
-            margin-top: 1rem;
-            transition: background-color 0.3s ease;
+            margin-top: 1.5rem;
+            transition: all 0.3s ease;
             opacity: 0.5;
             cursor: not-allowed;
         }
@@ -366,7 +443,197 @@
         }
 
         .proceed-button:hover.enabled {
-            background: #1f7a2e;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(74, 155, 155, 0.4);
+        }
+
+        /* Additional Resources Section */
+        .additional-resources {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.08);
+            border: 1px solid #e5e7eb;
+            margin-top: 2rem;
+        }
+
+        .resources-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid var(--light-grey);
+        }
+
+        .resources-header .section-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--primary-black);
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            flex-shrink: 0;
+        }
+
+        .resources-header .section-icon svg {
+            width: 24px;
+            height: 24px;
+            stroke: var(--white);
+            stroke-width: 2;
+        }
+
+        .resources-header h3 {
+            color: var(--primary-black);
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .resources-header p {
+            color: var(--medium-grey);
+            font-size: 1rem;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .resource-card {
+            background: var(--light-grey);
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            position: relative;
+        }
+
+        .resource-card:hover {
+            border-color: var(--clifford-teal);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(74, 155, 155, 0.15);
+        }
+
+        .resource-category {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 1rem;
+        }
+
+        .resource-category.ai {
+            background: linear-gradient(135deg, var(--clifford-blue), var(--clifford-teal));
+            color: var(--white);
+        }
+
+        .resource-category.sla {
+            background: linear-gradient(135deg, var(--clifford-teal), var(--clifford-purple));
+            color: var(--white);
+        }
+
+        .resource-category.case-law {
+            background: linear-gradient(135deg, var(--clifford-purple), var(--clifford-orange));
+            color: var(--white);
+        }
+
+        .resource-category.regulatory {
+            background: linear-gradient(135deg, var(--clifford-orange), var(--clifford-blue));
+            color: var(--white);
+        }
+
+        .resource-category.liability {
+            background: linear-gradient(135deg, var(--primary-black), var(--clifford-teal));
+            color: var(--white);
+        }
+
+        .resource-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary-black);
+            margin: 0 0 0.75rem 0;
+            line-height: 1.3;
+        }
+
+        .resource-description {
+            color: var(--medium-grey);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .resource-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-size: 0.8rem;
+            color: var(--accent-grey);
+        }
+
+        .resource-source {
+            font-weight: 600;
+        }
+
+        .resource-date {
+            opacity: 0.8;
+        }
+
+        .resource-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--primary-black);
+            color: var(--white);
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            width: fit-content;
+        }
+
+        .resource-link:hover {
+            background: var(--clifford-teal);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(74, 155, 155, 0.3);
+        }
+
+        .resources-note {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            background: linear-gradient(135deg, #e8f4fd, #f0f8ff);
+            border: 1px solid var(--clifford-teal);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .note-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .note-content {
+            color: var(--accent-grey);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .note-content strong {
+            color: var(--primary-black);
         }
 
         /* Modal for document content */
@@ -378,33 +645,36 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.5);
+            background-color: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
         }
 
         .modal-content {
             background-color: var(--white);
             margin: 2% auto;
-            padding: 2rem;
-            border-radius: 8px;
-            width: 80%;
-            max-width: 800px;
-            max-height: 80vh;
+            padding: 3rem;
+            border-radius: 12px;
+            width: 85%;
+            max-width: 900px;
+            max-height: 85vh;
             overflow-y: auto;
             position: relative;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
 
         .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
             padding-bottom: 1rem;
             border-bottom: 2px solid var(--light-grey);
         }
 
         .modal-title {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             color: var(--primary-black);
+            font-weight: 600;
         }
 
         .close-modal {
@@ -413,47 +683,129 @@
             font-size: 2rem;
             cursor: pointer;
             color: var(--medium-grey);
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: all 0.3s ease;
         }
 
         .close-modal:hover {
             color: var(--primary-black);
+            background: var(--light-grey);
         }
 
         .modal-body {
             line-height: 1.8;
             color: var(--primary-black);
+            font-size: 1rem;
         }
 
         .modal-body h3 {
-            color: var(--knowledge-purple);
-            margin: 1.5rem 0 1rem 0;
+            color: var(--primary-black);
+            margin: 2rem 0 1rem 0;
+            font-weight: 600;
+            font-size: 1.3rem;
         }
 
         .modal-body p {
-            margin-bottom: 1rem;
+            margin-bottom: 1.2rem;
         }
 
         .modal-body ul {
-            margin: 1rem 0 1rem 2rem;
+            margin: 1rem 0 1.5rem 2rem;
         }
 
         .modal-body li {
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.7rem;
         }
 
         .mark-read-btn {
-            background: var(--success-green);
+            background: linear-gradient(135deg, var(--clifford-teal), var(--primary-black));
             color: var(--white);
             border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 4px;
+            padding: 1rem 2rem;
+            border-radius: 8px;
             cursor: pointer;
-            margin-top: 1.5rem;
-            font-weight: 500;
+            margin-top: 2rem;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
         }
 
         .mark-read-btn:hover {
-            background: #1f7a2e;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(74, 155, 155, 0.4);
+        }
+
+        /* Responsive */
+        @media (max-width: 1600px) {
+            .document-library {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .progress-tracker {
+                position: static;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .header-left {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .header-training-progress {
+                order: -1;
+            }
+
+            .header-progress-label {
+                display: none;
+            }
+
+            .intro-section h2 {
+                font-size: 2rem;
+            }
+
+            .documents-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                width: 95%;
+                padding: 2rem;
+                margin: 5% auto;
+            }
+
+            .additional-resources {
+                padding: 1.5rem;
+                margin-top: 1.5rem;
+            }
+
+            .resources-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .resources-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 0.5rem;
+            }
+
+            .resources-note {
+                flex-direction: column;
+                text-align: center;
+                gap: 0.5rem;
+            }
+
+            .resource-card {
+                padding: 1.25rem;
+            }
         }
     </style>
 </head>
@@ -464,13 +816,22 @@
                 <div class="header-left">
                     <a href="index.html" class="logo">GrowToCourt</a>
                     <div class="step-indicator">
-                        <div class="step-number">2</div>
                         <span>Document Review & Research</span>
+                    </div>
+                    <!-- Header Training Progress -->
+                    <div class="header-training-progress">
+                        <div class="header-steps">
+                            <div class="header-step completed" id="headerStep1">1</div>
+                            <div class="header-step current" id="headerStep2">2</div>
+                            <div class="header-step" id="headerStep3">3</div>
+                            <div class="header-step" id="headerStep4">4</div>
+                        </div>
+                        <span class="header-progress-label">Training Progress</span>
                     </div>
                 </div>
                 <div class="nav-buttons">
-                    <a href="initial-demand.html" class="nav-btn">← Previous: Initial Demand</a>
-                    <a href="client-consultation.html" class="nav-btn" id="nextBtn">Next: Client Consultation →</a>
+                    <a href="initial-demand.html" class="nav-btn">← Home</a>
+                    <a href="client-consultation.html" class="nav-btn" id="nextBtn">Next Step →</a>
                 </div>
             </div>
         </div>
@@ -478,8 +839,8 @@
 
     <div class="container">
         <div class="main-content">
-            <div class="scenario-intro">
-                <h2>Research & Preparation Phase</h2>
+            <div class="intro-section">
+                <h2>📚 Research & Preparation Phase</h2>
                 <p>Before meeting with the client, review these essential documents to understand the legal landscape, industry standards, and best practices for cloud services agreements.</p>
             </div>
 
@@ -603,7 +964,7 @@
                 <!-- Progress Tracker -->
                 <div class="progress-tracker">
                     <h3 class="progress-title">
-                        📚 Reading Progress
+                        Reading Progress
                     </h3>
                     
                     <div class="progress-bar">
@@ -614,40 +975,142 @@
                     <ul class="document-checklist">
                         <li id="check-policy1">
                             <div class="checklist-icon" id="icon-policy1">📋</div>
-                            <span>Firm Guidelines</span>
+                            <span class="checklist-text" id="text-policy1">Firm Guidelines</span>
                         </li>
                         <li id="check-precedent1">
                             <div class="checklist-icon" id="icon-precedent1">📄</div>
-                            <span>Banking Precedent</span>
+                            <span class="checklist-text" id="text-precedent1">Banking Precedent</span>
                         </li>
                         <li id="check-regulation1">
                             <div class="checklist-icon" id="icon-regulation1">⚖️</div>
-                            <span>FCA Guidance</span>
+                            <span class="checklist-text" id="text-regulation1">FCA Guidance</span>
                         </li>
                         <li id="check-template1">
                             <div class="checklist-icon" id="icon-template1">📊</div>
-                            <span>Industry Benchmarks</span>
+                            <span class="checklist-text" id="text-template1">Industry Benchmarks</span>
                         </li>
                         <li id="check-regulation2">
                             <div class="checklist-icon" id="icon-regulation2">🔒</div>
-                            <span>GDPR Compliance</span>
+                            <span class="checklist-text" id="text-regulation2">GDPR Compliance</span>
                         </li>
                         <li id="check-policy2">
                             <div class="checklist-icon" id="icon-policy2">🎯</div>
-                            <span>Negotiation Playbook</span>
+                            <span class="checklist-text" id="text-policy2">Negotiation Playbook</span>
                         </li>
                     </ul>
 
                     <div class="mentor-section">
-                        <h4>🤖 Mentor Tip</h4>
+                        <h4>💡 Mentor Tip</h4>
                         <div class="mentor-tip">
                             Focus on understanding the regulatory requirements and industry standards first, then review the negotiation strategies. This will help you ask better questions during the client consultation.
                         </div>
                     </div>
 
                     <button class="proceed-button" id="proceedBtn" onclick="proceedToClientConsultation()">
-                        Proceed to Client Consultation
+                        Complete Research Phase
                     </button>
+                </div>
+
+                <!-- Additional Resources Section -->
+                <div class="additional-resources">
+                    <div class="resources-header">
+                        <div class="section-icon">
+                            <svg fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3>Additional Legal Resources</h3>
+                            <p>Essential reading from leading law firms on AI contracts and technology agreements</p>
+                        </div>
+                    </div>
+
+                    <div class="resources-grid">
+                        <div class="resource-card">
+                            <div class="resource-category ai">AI Contracts</div>
+                            <h4 class="resource-title">AI and Commercial Contracts: Five Key Clauses</h4>
+                            <p class="resource-description">Kennedys Law analysis of essential contractual clauses for AI agreements, covering IP, data usage, audit rights, liability, and regulatory compliance.</p>
+                            <div class="resource-meta">
+                                <span class="resource-source">Kennedys Law</span>
+                                <span class="resource-date">May 2025</span>
+                            </div>
+                            <a href="https://kennedyslaw.com/en/thought-leadership/article/2025/ai-and-commercial-contracts-five-clauses-in-house-legal-teams-should-review-now-ukeu/" target="_blank" class="resource-link">
+                                Read Article →
+                            </a>
+                        </div>
+
+                        <div class="resource-card">
+                            <div class="resource-category sla">Service Levels</div>
+                            <h4 class="resource-title">Service Level Agreements: Key Points</h4>
+                            <p class="resource-description">Comprehensive guide to SLAs covering response times, escalation procedures, service credits, and termination provisions for technology services.</p>
+                            <div class="resource-meta">
+                                <span class="resource-source">Gannons Solicitors</span>
+                                <span class="resource-date">March 2025</span>
+                            </div>
+                            <a href="https://www.gannons.co.uk/insights/service-level-agreements-what-are-they-and-what-do-they-cover/" target="_blank" class="resource-link">
+                                Read Guide →
+                            </a>
+                        </div>
+
+                        <div class="resource-card">
+                            <div class="resource-category ai">AI as a Service</div>
+                            <h4 class="resource-title">AI as a Service Agreements</h4>
+                            <p class="resource-description">EM Law's practical guidance on structuring AI service agreements, including data processing, IP ownership, and performance obligations.</p>
+                            <div class="resource-meta">
+                                <span class="resource-source">EM Law</span>
+                                <span class="resource-date">2025</span>
+                            </div>
+                            <a href="https://emlaw.co.uk/ai-as-a-service-agreement/" target="_blank" class="resource-link">
+                                Read Article →
+                            </a>
+                        </div>
+
+                        <div class="resource-card">
+                            <div class="resource-category case-law">Case Law</div>
+                            <h4 class="resource-title">De Beers v Atos: Key Lessons</h4>
+                            <p class="resource-description">Analysis of the landmark case highlighting the importance of clear scope definition and change management in technology contracts.</p>
+                            <div class="resource-meta">
+                                <span class="resource-source">Pinsent Masons</span>
+                                <span class="resource-date">2025</span>
+                            </div>
+                            <a href="https://www.pinsentmasons.com/out-law/guides/de-beers-v-atos" target="_blank" class="resource-link">
+                                Read Analysis →
+                            </a>
+                        </div>
+
+                        <div class="resource-card">
+                            <div class="resource-category regulatory">Financial Services</div>
+                            <h4 class="resource-title">Cloud Contracts in Financial Services</h4>
+                            <p class="resource-description">Regulatory considerations for cloud technology agreements in the financial sector, including FCA and PRA requirements.</p>
+                            <div class="resource-meta">
+                                <span class="resource-source">Pinsent Masons</span>
+                                <span class="resource-date">2025</span>
+                            </div>
+                            <a href="https://www.pinsentmasons.com/out-law/analysis/cloud-contracts-in-financial-services-regulatory-issues-to-address" target="_blank" class="resource-link">
+                                Read Analysis →
+                            </a>
+                        </div>
+
+                        <div class="resource-card">
+                            <div class="resource-category liability">Liability</div>
+                            <h4 class="resource-title">Limitation of Liability Clauses</h4>
+                            <p class="resource-description">Comprehensive guide to drafting effective liability limitation clauses, including caps, carve-outs, and enforceability considerations.</p>
+                            <div class="resource-meta">
+                                <span class="resource-source">Sirion AI</span>
+                                <span class="resource-date">2025</span>
+                            </div>
+                            <a href="https://www.sirion.ai/library/contract-clauses/limitation-of-liability-clauses/" target="_blank" class="resource-link">
+                                Read Guide →
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="resources-note">
+                        <div class="note-icon">💡</div>
+                        <div class="note-content">
+                            <strong>Pro Tip:</strong> These resources complement the firm documents above and provide current market perspectives on AI and technology contract negotiations. Review them to understand how other firms approach similar challenges.
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -695,6 +1158,7 @@
                 readDocuments.add(currentDocument);
                 updateDocumentStatus(currentDocument);
                 updateProgress();
+                updateStepProgress();
                 closeModal();
             }
         }
@@ -703,10 +1167,12 @@
             // Update visual status
             const statusEl = document.getElementById(`status-${docId}`);
             const iconEl = document.getElementById(`icon-${docId}`);
+            const textEl = document.getElementById(`text-${docId}`);
             const cardEl = document.querySelector(`[data-doc="${docId}"]`);
             
             if (statusEl) statusEl.classList.add('read');
             if (iconEl) iconEl.classList.add('completed');
+            if (textEl) textEl.classList.add('completed');
             if (cardEl) cardEl.classList.add('read');
         }
 
@@ -726,11 +1192,24 @@
             }
         }
 
+        function updateStepProgress() {
+            const totalDocs = 6;
+            const readCount = readDocuments.size;
+            const headerStep2 = document.getElementById('headerStep2');
+            
+            if (headerStep2 && readCount === totalDocs) {
+                // Mark step 2 as completed
+                headerStep2.classList.remove('current');
+                headerStep2.classList.add('completed');
+            }
+        }
+
         function proceedToClientConsultation() {
             if (readDocuments.size === 6) {
                 // Save completion status
                 localStorage.setItem('stepCompleted_documentReview', 'true');
                 localStorage.setItem('documentsRead', JSON.stringify([...readDocuments]));
+                localStorage.setItem('step2Complete', 'true');
                 
                 // Navigate to client consultation
                 window.location.href = 'client-consultation.html';
@@ -739,6 +1218,13 @@
 
         // Load saved progress
         window.addEventListener('DOMContentLoaded', () => {
+            // Check if step 1 is completed
+            const step1Complete = localStorage.getItem('step1Complete');
+            if (step1Complete) {
+                document.getElementById('headerStep1').classList.remove('current');
+                document.getElementById('headerStep1').classList.add('completed');
+            }
+
             const savedDocs = localStorage.getItem('documentsRead');
             if (savedDocs) {
                 readDocuments = new Set(JSON.parse(savedDocs));
@@ -746,6 +1232,7 @@
                     updateDocumentStatus(docId);
                 });
                 updateProgress();
+                updateStepProgress();
             }
         });
 

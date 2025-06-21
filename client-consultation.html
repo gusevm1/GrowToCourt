@@ -6,17 +6,17 @@
     <title>Client Consultation - GrowToCourt</title>
     <style>
         :root {
-            --primary-black: #1a1a1a;
-            --primary-grey: #2a2a2a;
-            --light-grey: #f5f5f5;
-            --medium-grey: #888888;
+            --primary-black: #000000;
             --white: #ffffff;
-            --accent-grey: #4a4a4a;
+            --clifford-teal: #4a9b9b;
+            --light-grey: #f8f9fa;
+            --medium-grey: #6c757d;
+            --accent-grey: #495057;
             --success-green: #28a745;
             --warning-orange: #fd7e14;
             --danger-red: #dc3545;
             --info-blue: #17a2b8;
-            --client-blue: #2563eb;
+            --highlight-yellow: #fff3cd;
         }
 
         * {
@@ -33,20 +33,20 @@
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1700px;
             margin: 0 auto;
             padding: 0 20px;
         }
 
         /* Header */
         header {
-            background: linear-gradient(135deg, var(--client-blue) 0%, var(--primary-grey) 100%);
+            background: var(--primary-black);
             color: var(--white);
             padding: 1.5rem 0;
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.15);
         }
 
         .header-content {
@@ -66,6 +66,7 @@
             font-weight: 300;
             text-decoration: none;
             color: var(--white);
+            letter-spacing: -0.5px;
         }
 
         .step-indicator {
@@ -76,15 +77,49 @@
             opacity: 0.9;
         }
 
-        .step-number {
-            background: rgba(255, 255, 255, 0.2);
-            width: 30px;
-            height: 30px;
+        /* Header Training Progress */
+        .header-training-progress {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .header-steps {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .header-step {
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .header-step.current {
+            border-color: var(--white);
+            background: var(--white);
+            color: var(--primary-black);
+        }
+
+        .header-step.completed {
+            border-color: var(--clifford-teal);
+            color: var(--clifford-teal);
+        }
+
+        .header-progress-label {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 500;
         }
 
         .nav-buttons {
@@ -93,17 +128,19 @@
         }
 
         .nav-btn {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.15);
             color: var(--white);
-            padding: 0.5rem 1rem;
+            padding: 0.6rem 1.2rem;
             text-decoration: none;
-            border-radius: 4px;
+            border-radius: 6px;
             transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            font-weight: 500;
         }
 
         .nav-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-1px);
         }
 
         .nav-btn.disabled {
@@ -112,167 +149,112 @@
         }
 
         /* Main Layout */
-        .main-layout {
-            display: grid;
-            grid-template-columns: 300px 1fr 300px;
-            gap: 2rem;
+        .main-content {
             padding: 2rem 0;
             min-height: calc(100vh - 80px);
         }
 
-        .left-sidebar {
-            background: var(--light-grey);
-            border-radius: 8px;
-            padding: 1.5rem;
-            height: fit-content;
-            position: sticky;
-            top: 100px;
+        .intro-section {
+            text-align: center;
+            margin-bottom: 3rem;
         }
 
-        .consultation-area {
+        .intro-section h2 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            color: var(--primary-black);
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+        }
+
+        .intro-section p {
+            font-size: 1.2rem;
+            color: var(--medium-grey);
+            max-width: 900px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        /* Left Side - Client Conversation */
+        .conversation-panel {
             background: var(--white);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .right-sidebar {
-            background: var(--light-grey);
-            border-radius: 8px;
-            padding: 1.5rem;
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.08);
+            border: 1px solid #e5e7eb;
             height: fit-content;
-            position: sticky;
-            top: 100px;
         }
 
-        /* Client Requirements Customization */
-        .requirements-section {
+        .client-profile {
+            background: linear-gradient(135deg, #e8f4fd, #f0f8ff);
+            border: 1px solid var(--clifford-teal);
+            border-radius: 12px;
+            padding: 1.5rem;
             margin-bottom: 2rem;
         }
 
-        .requirements-title {
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
-            color: var(--primary-black);
+        .client-info {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-        }
-
-        .requirement-item {
-            background: var(--white);
-            border-radius: 6px;
-            padding: 1rem;
+            gap: 1rem;
             margin-bottom: 1rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
-        .requirement-label {
-            font-size: 0.9rem;
-            color: var(--medium-grey);
-            margin-bottom: 0.5rem;
+        .client-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--clifford-teal), var(--primary-black));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 1.5rem;
+            font-weight: 600;
         }
 
-        .requirement-slider {
-            width: 100%;
-            margin: 0.5rem 0;
-        }
-
-        .requirement-value {
-            font-weight: bold;
-            color: var(--client-blue);
-        }
-
-        .dropdown-select {
-            width: 100%;
-            padding: 0.5rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            background: var(--white);
-        }
-
-        /* Phase Progress */
-        .phase-tracker {
-            margin-bottom: 2rem;
-        }
-
-        .phase-title {
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
+        .client-details h3 {
             color: var(--primary-black);
-        }
-
-        .phase-item {
-            padding: 0.75rem;
-            margin-bottom: 0.5rem;
-            border-radius: 4px;
-            border-left: 4px solid #ddd;
-            background: var(--white);
-        }
-
-        .phase-item.active {
-            border-left-color: var(--client-blue);
-            background: #f0f9ff;
-        }
-
-        .phase-item.completed {
-            border-left-color: var(--success-green);
-            background: #f0fdf4;
-        }
-
-        .phase-label {
-            font-weight: 500;
+            font-size: 1.3rem;
+            font-weight: 600;
             margin-bottom: 0.25rem;
         }
 
-        .phase-description {
-            font-size: 0.85rem;
+        .client-details p {
             color: var(--medium-grey);
+            font-size: 0.95rem;
+        }
+
+        .meeting-context {
+            color: var(--accent-grey);
+            font-size: 0.9rem;
+            line-height: 1.5;
         }
 
         /* Chat Interface */
-        .consultation-interface {
-            background: var(--white);
-            border-radius: 8px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            display: flex;
-            flex-direction: column;
-            height: 600px;
-        }
-
-        .consultation-header {
-            background: linear-gradient(135deg, var(--client-blue) 0%, #1e40af 100%);
-            color: var(--white);
-            padding: 1.5rem;
-            border-radius: 8px 8px 0 0;
-            text-align: center;
-        }
-
-        .consultation-title {
-            font-size: 1.4rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .current-phase {
-            font-size: 0.9rem;
-            opacity: 0.9;
-        }
-
-        .consultation-content {
-            flex: 1;
-            padding: 1.5rem;
+        .chat-container {
+            max-height: 500px;
             overflow-y: auto;
-            background: #fafafa;
+            border: 2px solid var(--light-grey);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            background: var(--white);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
         .message {
-            margin-bottom: 1.5rem;
             display: flex;
-            gap: 1rem;
-            max-width: 100%;
-        }
-
-        .message.client {
-            flex-direction: row;
+            gap: 0.8rem;
+            margin-bottom: 1.5rem;
+            align-items: flex-start;
         }
 
         .message.user {
@@ -286,46 +268,56 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
-            color: var(--white);
+            font-size: 0.9rem;
+            font-weight: 600;
             flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
         .message.client .message-avatar {
-            background: var(--client-blue);
+            background: linear-gradient(135deg, var(--clifford-teal), var(--primary-black));
+            color: var(--white);
         }
 
         .message.user .message-avatar {
-            background: var(--primary-grey);
+            background: var(--primary-black);
+            color: var(--white);
         }
 
         .message-content {
-            flex: 1;
-            min-width: 0;
+            background: var(--white);
+            padding: 1.2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            max-width: 85%;
+            line-height: 1.6;
+        }
+
+        .message.user .message-content {
+            background: var(--light-grey);
+            color: var(--primary-black);
         }
 
         .message-sender {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: var(--medium-grey);
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
         }
 
         .message-text {
-            background: var(--white);
-            padding: 1rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            line-height: 1.5;
+            font-size: 0.95rem;
         }
 
+        /* Input Section */
         .input-section {
+            background: var(--light-grey);
+            border-radius: 12px;
             padding: 1.5rem;
-            background: var(--white);
-            border-top: 1px solid #eee;
-            border-radius: 0 0 8px 8px;
+            margin-bottom: 1.5rem;
         }
 
-        .text-input-row {
+        .input-controls {
             display: flex;
             gap: 1rem;
             margin-bottom: 1rem;
@@ -333,137 +325,269 @@
 
         .text-input {
             flex: 1;
-            padding: 0.75rem;
-            border: 2px solid #eee;
-            border-radius: 6px;
-            font-size: 1rem;
+            min-height: 60px;
+            padding: 0.8rem;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            resize: vertical;
             transition: border-color 0.3s ease;
         }
 
         .text-input:focus {
             outline: none;
-            border-color: var(--client-blue);
+            border-color: var(--primary-black);
+            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
         }
 
-        .send-text-btn {
-            background: var(--client-blue);
+        .voice-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .voice-btn, .send-btn {
+            background: linear-gradient(135deg, var(--clifford-teal), var(--primary-black));
             color: var(--white);
             border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 6px;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
             cursor: pointer;
-            font-weight: 500;
-            transition: background-color 0.3s ease;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
         }
 
-        .send-text-btn:hover {
-            background: #1d4ed8;
+        .voice-btn:hover, .send-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(74, 155, 155, 0.4);
         }
 
-        /* Next Steps Guide */
-        .next-steps {
+        .voice-btn.recording {
+            background: linear-gradient(135deg, var(--danger-red), #b91c1c);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .voice-status {
+            font-size: 0.8rem;
+            color: var(--medium-grey);
+            text-align: center;
+            margin-top: 0.5rem;
+        }
+
+        /* Right Side - Requirements Tracking */
+        .requirements-panel {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.08);
+            border: 1px solid #e5e7eb;
+            height: fit-content;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
             margin-bottom: 2rem;
         }
 
-        .next-steps-title {
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--primary-black);
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .section-icon svg {
+            width: 24px;
+            height: 24px;
+            stroke: var(--white);
+            stroke-width: 2;
+        }
+
+        .section-header h3 {
             color: var(--primary-black);
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .requirements-list {
+            list-style: none;
+        }
+
+        .requirement-category {
+            margin-bottom: 2rem;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--light-grey);
+        }
+
+        .category-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary-black);
+        }
+
+        .category-status {
+            background: var(--medium-grey);
+            color: var(--white);
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .category-status.established {
+            background: var(--clifford-teal);
+        }
+
+        .requirement-items {
+            list-style: none;
+        }
+
+        .requirement-item {
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            background: var(--light-grey);
+            border-radius: 8px;
+            border-left: 4px solid var(--medium-grey);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            transition: all 0.3s ease;
+        }
+
+        .requirement-item.established {
+            border-left-color: var(--clifford-teal);
+            background: linear-gradient(135deg, #f8ffff, var(--light-grey));
+        }
+
+        .progress-section {
+            background: linear-gradient(135deg, #e8f4fd, #f0f8ff);
+            border: 1px solid var(--clifford-teal);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .progress-title {
+            color: var(--primary-black);
+            font-weight: 600;
+            margin-bottom: 1rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
 
-        .next-step-item {
-            background: var(--white);
-            border-radius: 6px;
-            padding: 1rem;
-            margin-bottom: 0.75rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            border-left: 4px solid var(--client-blue);
-        }
-
-        .next-step-text {
-            font-size: 0.9rem;
-            color: var(--primary-black);
-        }
-
-        /* MentorChat */
-        .mentor-chat {
-            background: var(--white);
-            border-radius: 8px;
-            padding: 1.5rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .mentor-header {
-            font-size: 1.1rem;
+        .progress-bar {
+            background: var(--light-grey);
+            border-radius: 12px;
+            height: 12px;
             margin-bottom: 1rem;
-            color: var(--primary-black);
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, var(--clifford-teal), var(--primary-black));
+            height: 100%;
+            border-radius: 12px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        .progress-text {
+            font-size: 0.9rem;
+            color: var(--medium-grey);
             text-align: center;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid var(--light-grey);
         }
 
-        .mentor-content {
-            max-height: 250px;
-            overflow-y: auto;
-            margin-bottom: 1rem;
-        }
-
-        .mentor-message {
-            background: #f8f9fa;
-            padding: 0.75rem;
-            border-radius: 6px;
-            margin-bottom: 0.75rem;
-            font-size: 0.9rem;
-            line-height: 1.4;
-        }
-
-        .mentor-input {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .mentor-input input {
-            flex: 1;
-            padding: 0.5rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 0.9rem;
-        }
-
-        .mentor-input button {
-            background: var(--primary-grey);
-            color: var(--white);
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
-
-        .proceed-btn {
-            background: var(--success-green);
+        .proceed-button {
+            background: linear-gradient(135deg, var(--clifford-teal), var(--primary-black));
             color: var(--white);
             border: none;
             padding: 1rem 2rem;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
-            font-weight: 500;
+            font-weight: 600;
             font-size: 1rem;
             width: 100%;
-            margin-top: 1rem;
-            transition: background-color 0.3s ease;
-        }
-
-        .proceed-btn:hover {
-            background: #1f7a2e;
-        }
-
-        .proceed-btn:disabled {
-            background: var(--medium-grey);
+            margin-top: 1.5rem;
+            transition: all 0.3s ease;
+            opacity: 0.5;
             cursor: not-allowed;
+        }
+
+        .proceed-button.enabled {
+            opacity: 1;
+            cursor: pointer;
+        }
+
+        .proceed-button:hover.enabled {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(74, 155, 155, 0.4);
+        }
+
+        /* Responsive */
+        @media (max-width: 1600px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .header-left {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .header-training-progress {
+                order: -1;
+            }
+
+            .header-progress-label {
+                display: none;
+            }
+
+            .intro-section h2 {
+                font-size: 2rem;
+            }
+
+            .conversation-panel, .requirements-panel {
+                padding: 1.5rem;
+            }
+
+            .input-controls {
+                flex-direction: column;
+            }
+
+            .voice-controls {
+                flex-direction: row;
+                justify-content: center;
+            }
         }
     </style>
 </head>
@@ -474,175 +598,604 @@
                 <div class="header-left">
                     <a href="index.html" class="logo">GrowToCourt</a>
                     <div class="step-indicator">
-                        <div class="step-number">1</div>
-                        <span>Client Consultation Phase</span>
+                        <span>Client Consultation</span>
+                    </div>
+                    <!-- Header Training Progress -->
+                    <div class="header-training-progress">
+                        <div class="header-steps">
+                            <div class="header-step completed" id="headerStep1">1</div>
+                            <div class="header-step completed" id="headerStep2">2</div>
+                            <div class="header-step current" id="headerStep3">3</div>
+                            <div class="header-step" id="headerStep4">4</div>
+                        </div>
+                        <span class="header-progress-label">Training Progress</span>
                     </div>
                 </div>
                 <div class="nav-buttons">
-                    <a href="index.html" class="nav-btn">← Back to Overview</a>
-                    <a href="negotiations.html" class="nav-btn disabled" id="proceedBtn">Proceed to Negotiation →</a>
+                    <a href="document-review.html" class="nav-btn">← Previous Step</a>
+                    <a href="negotiations.html" class="nav-btn" id="nextBtn">Next Step →</a>
                 </div>
             </div>
         </div>
     </header>
 
     <div class="container">
-        <div class="scenario-context" style="background: var(--light-grey); padding: 2rem; border-radius: 8px; margin-bottom: 2rem;">
-            <h2 style="color: var(--client-blue); margin-bottom: 1rem;">Initial Client Consultation</h2>
-            <p style="margin-bottom: 1rem;">You are a junior associate at Clifford Chance working with Marcus Thompson, CTO of GlobalBank International. Your task is to understand their requirements for a major cloud technology services agreement before negotiating with the service provider.</p>
-            
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1.5rem;">
-                <div>
-                    <h4 style="color: var(--primary-black); margin-bottom: 0.5rem;">Your Role</h4>
-                    <p style="color: var(--medium-grey);">Junior Legal Associate - Ask probing questions, understand business needs, identify legal risks, and prepare for negotiation.</p>
-                </div>
-                <div>
-                    <h4 style="color: var(--primary-black); margin-bottom: 0.5rem;">Client Profile</h4>
-                    <p style="color: var(--medium-grey);">Marcus Thompson, CTO at GlobalBank - Experienced executive leading a critical infrastructure migration project.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="main-layout">
-            <!-- Left Sidebar - Client Requirements Customization -->
-            <div class="left-sidebar">
-                <div class="requirements-section">
-                    <h3 class="requirements-title">
-                        ⚙️ Client Profile Settings
-                    </h3>
-                    
-                    <div class="requirement-item">
-                        <div class="requirement-label">Project Budget Range</div>
-                        <input type="range" class="requirement-slider" id="budgetSlider" min="35" max="70" value="50">
-                        <div class="requirement-value" id="budgetValue">£50M</div>
-                    </div>
-                    
-                    <div class="requirement-item">
-                        <div class="requirement-label">SLA Requirements</div>
-                        <input type="range" class="requirement-slider" id="slaSlider" min="99.0" max="99.99" step="0.01" value="99.9">
-                        <div class="requirement-value" id="slaValue">99.9%</div>
-                    </div>
-                    
-                    <div class="requirement-item">
-                        <div class="requirement-label">Payment Preference</div>
-                        <select class="dropdown-select" id="paymentSelect">
-                            <option value="monthly">Monthly Payments</option>
-                            <option value="quarterly" selected>Quarterly Payments</option>
-                            <option value="bi-annual">Bi-Annual Payments</option>
-                            <option value="annual">Annual Payments</option>
-                        </select>
-                    </div>
-                    
-                    <div class="requirement-item">
-                        <div class="requirement-label">Liability Cap</div>
-                        <input type="range" class="requirement-slider" id="liabilitySlider" min="25" max="100" value="50">
-                        <div class="requirement-value" id="liabilityValue">£50M</div>
-                    </div>
-                </div>
-
-                <div class="phase-tracker">
-                    <h3 class="phase-title">Consultation Progress</h3>
-                    <div class="phase-item active" id="discoveryPhase">
-                        <div class="phase-label">Discovery</div>
-                        <div class="phase-description">Understanding basic requirements</div>
-                    </div>
-                    <div class="phase-item" id="clarificationPhase">
-                        <div class="phase-label">Clarification</div>
-                        <div class="phase-description">Exploring priorities and constraints</div>
-                    </div>
-                    <div class="phase-item" id="finalizationPhase">
-                        <div class="phase-label">Finalization</div>
-                        <div class="phase-description">Ready for negotiation</div>
-                    </div>
-                </div>
+        <div class="main-content">
+            <div class="intro-section">
+                <h2>🤝 Client Consultation Session</h2>
+                <p>Conduct a professional consultation with Marcus Thompson (CTO, GlobalBank International) to establish clear requirements for the cloud technology services agreement. Use speech or text to communicate.</p>
             </div>
 
-            <!-- Main Chat Area -->
-            <div class="consultation-area">
-                <div class="consultation-interface">
-                    <div class="consultation-header">
-                        <h3 class="consultation-title">Client Consultation Session</h3>
-                        <p class="current-phase" id="currentPhaseText">Discovery Phase: Understanding client's basic requirements</p>
+            <div class="main-layout">
+                <!-- Left Side - Client Conversation -->
+                <div class="conversation-panel">
+                    <div class="client-profile">
+                        <div class="client-info">
+                            <div class="client-avatar">RC</div>
+                            <div class="client-details">
+                                <h3>Dr. Rachel Chen</h3>
+                                <p>Chief Technology Officer, QuantumLink AI Ltd</p>
+                            </div>
+                        </div>
+                        <div class="meeting-context">
+                            <strong>Meeting Purpose:</strong> Negotiate Technology Services Agreement with NeuroSys Technologies Inc. for cloud infrastructure to support AI document automation tools. Need to establish clear requirements across IP ownership, SLAs, data privacy, commercial terms, exit strategy, and liability provisions.
+                        </div>
                     </div>
-                    
-                    <div class="consultation-content" id="consultationContent">
+
+                    <div class="chat-container" id="chatContainer">
                         <div class="message client">
-                            <div class="message-avatar">MT</div>
+                            <div class="message-avatar">RC</div>
                             <div class="message-content">
-                                <div class="message-sender">Marcus Thompson - GlobalBank CTO</div>
+                                <div class="message-sender">Dr. Rachel Chen - QuantumLink CTO</div>
                                 <div class="message-text">
-                                    Thanks for meeting with me today. We're looking at a major cloud migration project - moving our core banking infrastructure to a cloud provider. This is a critical initiative for GlobalBank, and I need to make sure we get the legal framework right. Can you help me think through what we need to consider?
+                                    Thanks for meeting with me today. We're negotiating a critical technology services agreement with NeuroSys Technologies for our AI document automation platform. As a UK-based AI startup, we need to get this contract structure right - our investors and board are counting on this partnership. I have specific questions across six key areas that I need your legal guidance on. Shall we start with intellectual property concerns?
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="input-section">
-                        <div class="text-input-row">
-                            <input type="text" class="text-input" placeholder="Ask about client requirements, concerns, or constraints..." id="clientTextInput">
-                            <button class="send-text-btn" id="sendClientBtn">Send</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Right Sidebar - Guidance and MentorChat -->
-            <div class="right-sidebar">
-                <div class="next-steps">
-                    <h3 class="next-steps-title">
-                        🎯 Next Steps
-                    </h3>
-                    <div id="nextStepsContainer">
-                        <div class="next-step-item">
-                            <div class="next-step-text">Explore: Financial Terms</div>
-                        </div>
-                        <div class="next-step-item">
-                            <div class="next-step-text">Ask about business drivers</div>
-                        </div>
-                        <div class="next-step-item">
-                            <div class="next-step-text">Understand constraints</div>
+                        <div class="input-controls">
+                            <textarea id="messageInput" class="text-input" placeholder="Ask about client requirements, priorities, or concerns..."></textarea>
+                            <div class="voice-controls">
+                                <button id="voiceBtn" class="voice-btn">🎤 Voice</button>
+                                <button id="sendBtn" class="send-btn">Send</button>
+                                <div id="voiceStatus" class="voice-status"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="mentor-chat">
-                    <div class="mentor-header">
-                        🤖 MentorChat
-                    </div>
-                    <div class="mentor-content" id="mentorContent">
-                        <div class="mentor-message">
-                            <strong>AI Mentor:</strong> Great start! Remember to ask open-ended questions that help you understand not just what the client wants, but WHY they want it. Understanding business drivers will help you negotiate more effectively.
+                <!-- Right Side - Requirements Tracking -->
+                <div class="requirements-panel">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <svg fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
                         </div>
-                        <div class="mentor-message">
-                            <strong>Tip:</strong> Focus on discovering the client's priorities, hard constraints, and areas where they might have flexibility. This will be crucial when you negotiate with CloudTech.
+                        <div>
+                            <h3>Requirements Established</h3>
                         </div>
                     </div>
-                    <div class="mentor-input">
-                        <input type="text" placeholder="Ask the AI mentor..." id="mentorInput">
-                        <button onclick="askMentor()">Ask</button>
-                    </div>
-                </div>
 
-                <button class="proceed-btn" id="proceedToNegotiation" disabled>
-                    Proceed to Negotiation Phase
-                </button>
+                    <div class="requirements-list">
+                        <!-- IP Ownership Category -->
+                        <div class="requirement-category">
+                            <div class="category-header">
+                                <div class="category-title">🔐 Intellectual Property</div>
+                                <div class="category-status" id="status-ip">0/5</div>
+                            </div>
+                            <ul class="requirement-items">
+                                <li class="requirement-item" id="req-ip-0">
+                                    Open-source/partner-licensed datasets ingestion on NeuroSys platform
+                                </li>
+                                <li class="requirement-item" id="req-ip-1">
+                                    Co-development of existing IP (models, code, data) with NeuroSys engineers
+                                </li>
+                                <li class="requirement-item" id="req-ip-2">
+                                    Downstream rights on AI outputs (sublicensing, resale reservations)
+                                </li>
+                                <li class="requirement-item" id="req-ip-3">
+                                    Background IP ownership and licensing arrangements
+                                </li>
+                                <li class="requirement-item" id="req-ip-4">
+                                    IP indemnification and warranty provisions
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Technical SLA Category -->
+                        <div class="requirement-category">
+                            <div class="category-header">
+                                <div class="category-title">⚡ Technical SLAs</div>
+                                <div class="category-status" id="status-sla">0/5</div>
+                            </div>
+                            <ul class="requirement-items">
+                                <li class="requirement-item" id="req-sla-0">
+                                    Minimum availability and performance requirements for end-users
+                                </li>
+                                <li class="requirement-item" id="req-sla-1">
+                                    Issue acknowledgment vs full remediation timeframes
+                                </li>
+                                <li class="requirement-item" id="req-sla-2">
+                                    Service credits/fee relief levels that make downtime "financially noticeable"
+                                </li>
+                                <li class="requirement-item" id="req-sla-3">
+                                    Planned vs unplanned downtime distinctions
+                                </li>
+                                <li class="requirement-item" id="req-sla-4">
+                                    Escalation procedures for service failures
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Data Privacy Category -->
+                        <div class="requirement-category">
+                            <div class="category-header">
+                                <div class="category-title">🛡️ Data Privacy</div>
+                                <div class="category-status" id="status-privacy">0/5</div>
+                            </div>
+                            <ul class="requirement-items">
+                                <li class="requirement-item" id="req-privacy-0">
+                                    Processing requirements in non-EU/UK regions for redundancy
+                                </li>
+                                <li class="requirement-item" id="req-privacy-1">
+                                    Approved security certifications list (ISO 27001, SOC 2, etc.)
+                                </li>
+                                <li class="requirement-item" id="req-privacy-2">
+                                    Audit rights frequency and scope (on-site vs remote)
+                                </li>
+                                <li class="requirement-item" id="req-privacy-3">
+                                    GDPR compliance mechanisms and data processing agreements
+                                </li>
+                                <li class="requirement-item" id="req-privacy-4">
+                                    Data breach notification and response procedures
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Commercial Risk Category -->
+                        <div class="requirement-category">
+                            <div class="category-header">
+                                <div class="category-title">💰 Commercial Risk</div>
+                                <div class="category-status" id="status-commercial">0/5</div>
+                            </div>
+                            <ul class="requirement-items">
+                                <li class="requirement-item" id="req-commercial-0">
+                                    Budget tolerance for annual or usage-based fee increases
+                                </li>
+                                <li class="requirement-item" id="req-commercial-1">
+                                    Back-to-back terms matching downstream client contracts
+                                </li>
+                                <li class="requirement-item" id="req-commercial-2">
+                                    Insurance levels currently carried vs NeuroSys requirements
+                                </li>
+                                <li class="requirement-item" id="req-commercial-3">
+                                    Contract value and payment terms clarity
+                                </li>
+                                <li class="requirement-item" id="req-commercial-4">
+                                    Risk allocation and cost control mechanisms
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Exit Strategy Category -->
+                        <div class="requirement-category">
+                            <div class="category-header">
+                                <div class="category-title">🚪 Exit Strategy</div>
+                                <div class="category-status" id="status-exit">0/5</div>
+                            </div>
+                            <ul class="requirement-items">
+                                <li class="requirement-item" id="req-exit-0">
+                                    Transition support window length for new provider onboarding
+                                </li>
+                                <li class="requirement-item" id="req-exit-1">
+                                    NeuroSys technical migration assistance (model redeployment)
+                                </li>
+                                <li class="requirement-item" id="req-exit-2">
+                                    Acceptable maximum fee for exit assistance services
+                                </li>
+                                <li class="requirement-item" id="req-exit-3">
+                                    Data deletion and return procedures
+                                </li>
+                                <li class="requirement-item" id="req-exit-4">
+                                    Business continuity during provider transition
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Liability Category -->
+                        <div class="requirement-category">
+                            <div class="category-header">
+                                <div class="category-title">⚖️ Liability & Indemnity</div>
+                                <div class="category-status" id="status-liability">0/5</div>
+                            </div>
+                            <ul class="requirement-items">
+                                <li class="requirement-item" id="req-liability-0">
+                                    Overall liability cap level reasonable for potential exposure
+                                </li>
+                                <li class="requirement-item" id="req-liability-1">
+                                    Risks that must sit outside the cap (data-breach fines, IP claims)
+                                </li>
+                                <li class="requirement-item" id="req-liability-2">
+                                    NeuroSys specific coverage requirements (cyber-liability insurance)
+                                </li>
+                                <li class="requirement-item" id="req-liability-3">
+                                    Data breach indemnification and liability allocation
+                                </li>
+                                <li class="requirement-item" id="req-liability-4">
+                                    IP infringement indemnification scope and coverage
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="progress-section">
+                        <div class="progress-title">
+                            📊 Consultation Progress
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                        <div class="progress-text" id="progressText">0 of 30 requirements established</div>
+                    </div>
+
+                    <button class="proceed-button" id="proceedBtn" onclick="proceedToNegotiation()">
+                        Complete Client Consultation
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- Include JavaScript modules -->
-    <script src="js/env-loader.js"></script>
     <script src="js/gcpConfig.js"></script>
+    <script src="js/speechAPI.js"></script>
     <script src="js/clientAgent.js"></script>
-    <script src="js/clientConsultationApp.js"></script>
-    
-    <!-- Initialize the application -->
     <script>
-        // Initialize the client consultation app when the page loads
-        window.addEventListener('DOMContentLoaded', () => {
-            window.clientConsultationApp = new ClientConsultationApp();
-            console.log('🚀 GrowToCourt Client Consultation Platform initialized');
+        // Global variables
+        let clientAgent = null;
+        let speechAPI = null;
+        let isRecording = false;
+        let mediaRecorder = null;
+        let audioChunks = [];
+        let establishedRequirements = new Set();
+
+                 // Template solution for automatic requirement tracking
+         const templateSolution = {
+             intellectual_property: [
+                 "Open-source/partner-licensed datasets ingestion on NeuroSys platform",
+                 "Co-development of existing IP (models, code, data) with NeuroSys engineers",
+                 "Downstream rights on AI outputs (sublicensing, resale reservations)",
+                 "Background IP ownership and licensing arrangements",
+                 "IP indemnification and warranty provisions"
+             ],
+             technical_sla: [
+                 "Minimum availability and performance requirements for end-users",
+                 "Issue acknowledgment vs full remediation timeframes",
+                 "Service credits/fee relief levels that make downtime 'financially noticeable'",
+                 "Planned vs unplanned downtime distinctions",
+                 "Escalation procedures for service failures"
+             ],
+             data_privacy: [
+                 "Processing requirements in non-EU/UK regions for redundancy",
+                 "Approved security certifications list (ISO 27001, SOC 2, etc.)",
+                 "Audit rights frequency and scope (on-site vs remote)",
+                 "GDPR compliance mechanisms and data processing agreements",
+                 "Data breach notification and response procedures"
+             ],
+             commercial_risk: [
+                 "Budget tolerance for annual or usage-based fee increases",
+                 "Back-to-back terms matching downstream client contracts",
+                 "Insurance levels currently carried vs NeuroSys requirements",
+                 "Contract value and payment terms clarity",
+                 "Risk allocation and cost control mechanisms"
+             ],
+             exit_termination: [
+                 "Transition support window length for new provider onboarding",
+                 "NeuroSys technical migration assistance (model redeployment)",
+                 "Acceptable maximum fee for exit assistance services",
+                 "Data deletion and return procedures",
+                 "Business continuity during provider transition"
+             ],
+             liability_indemnity: [
+                 "Overall liability cap level reasonable for potential exposure",
+                 "Risks that must sit outside the cap (data-breach fines, IP claims)",
+                 "NeuroSys specific coverage requirements (cyber-liability insurance)",
+                 "Data breach indemnification and liability allocation",
+                 "IP infringement indemnification scope and coverage"
+             ]
+         };
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                // Load GCP configuration
+                const config = await loadGCPConfig();
+                
+                // Initialize client agent
+                clientAgent = new ClientAgent(config.apiKey);
+                console.log('🏦 Client Agent initialized');
+
+                // Initialize speech API
+                speechAPI = new SpeechAPI(config.apiKey);
+                console.log('🎤 Speech API initialized');
+
+                // Load saved progress
+                loadProgress();
+
+                // Set up event listeners
+                setupEventListeners();
+
+            } catch (error) {
+                console.error('❌ Failed to initialize application:', error);
+                document.getElementById('voiceStatus').textContent = 'Voice features unavailable';
+            }
         });
+
+        function setupEventListeners() {
+            // Send button
+            document.getElementById('sendBtn').addEventListener('click', sendMessage);
+
+            // Enter key in text input
+            document.getElementById('messageInput').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                }
+            });
+
+            // Voice button
+            document.getElementById('voiceBtn').addEventListener('click', toggleRecording);
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            
+            if (!message || !clientAgent) return;
+
+            // Add user message to chat
+            addMessageToChat(message, 'user');
+            input.value = '';
+
+            try {
+                // Get client response
+                const response = await clientAgent.generateResponse(message);
+                
+                // Add client response to chat
+                addMessageToChat(response.message, 'client');
+
+                // Analyze conversation for requirement establishment
+                analyzeConversationForRequirements(message, response.message);
+
+            } catch (error) {
+                console.error('Error getting client response:', error);
+                addMessageToChat('I apologize, but I\'m having some technical difficulties. Could you please repeat your question?', 'client');
+            }
+        }
+
+        async function toggleRecording() {
+            const voiceBtn = document.getElementById('voiceBtn');
+            const voiceStatus = document.getElementById('voiceStatus');
+
+            if (!isRecording) {
+                try {
+                    // Start recording
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    mediaRecorder = new MediaRecorder(stream);
+                    audioChunks = [];
+
+                    mediaRecorder.ondataavailable = (event) => {
+                        audioChunks.push(event.data);
+                    };
+
+                    mediaRecorder.onstop = async () => {
+                        const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                        voiceStatus.textContent = 'Transcribing...';
+                        
+                        try {
+                            const result = await speechAPI.transcribeAudio(audioBlob);
+                            if (result.success && result.transcription) {
+                                document.getElementById('messageInput').value = result.transcription;
+                                voiceStatus.textContent = `Transcribed (${Math.round(result.confidence * 100)}% confidence)`;
+                            } else {
+                                voiceStatus.textContent = 'Transcription failed. Please try again.';
+                            }
+                        } catch (error) {
+                            console.error('Transcription error:', error);
+                            voiceStatus.textContent = 'Voice recognition error';
+                        }
+                    };
+
+                    mediaRecorder.start();
+                    isRecording = true;
+                    voiceBtn.classList.add('recording');
+                    voiceBtn.textContent = '⏹️ Stop';
+                    voiceStatus.textContent = 'Recording... Click stop when finished';
+
+                } catch (error) {
+                    console.error('Error starting recording:', error);
+                    voiceStatus.textContent = 'Microphone access denied';
+                }
+            } else {
+                // Stop recording
+                mediaRecorder.stop();
+                mediaRecorder.stream.getTracks().forEach(track => track.stop());
+                isRecording = false;
+                voiceBtn.classList.remove('recording');
+                voiceBtn.textContent = '🎤 Voice';
+            }
+        }
+
+        function addMessageToChat(message, sender) {
+            const chatContainer = document.getElementById('chatContainer');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+
+                         const avatarDiv = document.createElement('div');
+             avatarDiv.className = 'message-avatar';
+             avatarDiv.textContent = sender === 'client' ? 'RC' : 'You';
+ 
+             const contentDiv = document.createElement('div');
+             contentDiv.className = 'message-content';
+             
+             const senderDiv = document.createElement('div');
+             senderDiv.className = 'message-sender';
+             senderDiv.textContent = sender === 'client' ? 'Dr. Rachel Chen - QuantumLink CTO' : 'You - Junior Associate';
+
+            const textDiv = document.createElement('div');
+            textDiv.className = 'message-text';
+            textDiv.textContent = message;
+
+            contentDiv.appendChild(senderDiv);
+            contentDiv.appendChild(textDiv);
+            messageDiv.appendChild(avatarDiv);
+            messageDiv.appendChild(contentDiv);
+            chatContainer.appendChild(messageDiv);
+
+            // Scroll to bottom
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function analyzeConversationForRequirements(userMessage, clientResponse) {
+            // Simple keyword-based analysis to automatically mark requirements as established
+            const combinedText = (userMessage + ' ' + clientResponse).toLowerCase();
+            
+                         // Define keywords for each category
+             const keywords = {
+                 'ip': ['intellectual property', 'ip', 'proprietary', 'ownership', 'licensing', 'open-source', 'datasets', 'co-development', 'sublicensing', 'resale', 'ai outputs'],
+                 'sla': ['sla', 'service level', 'uptime', 'availability', 'performance', 'end-users', 'acknowledgment', 'remediation', 'credits', 'fee relief', 'downtime'],
+                 'privacy': ['data privacy', 'gdpr', 'processing', 'non-eu', 'uk regions', 'redundancy', 'certifications', 'iso 27001', 'soc 2', 'audit rights', 'on-site', 'remote'],
+                 'commercial': ['commercial', 'budget tolerance', 'fee increases', 'back-to-back', 'downstream', 'insurance', 'neurosys requirements', 'cost', 'pricing'],
+                 'exit': ['exit', 'termination', 'transition support', 'migration assistance', 'redeployment', 'exit fee', 'data deletion', 'continuity'],
+                 'liability': ['liability', 'indemnity', 'cap', 'carve-out', 'data-breach fines', 'ip claims', 'cyber-liability', 'coverage', 'infringement']
+             };
+
+            // Check each category for keyword matches
+            Object.keys(keywords).forEach(category => {
+                const categoryKeywords = keywords[category];
+                const hasKeywords = categoryKeywords.some(keyword => combinedText.includes(keyword));
+                
+                if (hasKeywords) {
+                    // Mark some requirements in this category as established
+                    const categoryRequirements = getRequirementsByCategory(category);
+                    const numToEstablish = Math.min(2, categoryRequirements.length); // Establish up to 2 per conversation
+                    
+                    for (let i = 0; i < numToEstablish; i++) {
+                        const reqId = `req-${category}-${i}`;
+                        if (!establishedRequirements.has(reqId)) {
+                            establishedRequirements.add(reqId);
+                            markRequirementEstablished(reqId);
+                        }
+                    }
+                }
+            });
+
+            updateProgress();
+            saveProgress();
+        }
+
+        function getRequirementsByCategory(category) {
+            const categoryMap = {
+                'ip': 'intellectual_property',
+                'sla': 'technical_sla',
+                'privacy': 'data_privacy',
+                'commercial': 'commercial_risk',
+                'exit': 'exit_termination',
+                'liability': 'liability_indemnity'
+            };
+            
+            return templateSolution[categoryMap[category]] || [];
+        }
+
+        function markRequirementEstablished(reqId) {
+            const element = document.getElementById(reqId);
+            if (element) {
+                element.classList.add('established');
+            }
+        }
+
+        function updateProgress() {
+            const totalRequirements = 30;
+            const establishedCount = establishedRequirements.size;
+            const percentage = (establishedCount / totalRequirements) * 100;
+
+            // Update overall progress
+            document.getElementById('progressFill').style.width = percentage + '%';
+            document.getElementById('progressText').textContent = `${establishedCount} of ${totalRequirements} requirements established`;
+
+            // Update category statuses
+            const categories = ['ip', 'sla', 'privacy', 'commercial', 'exit', 'liability'];
+            categories.forEach(category => {
+                const categoryItems = Array.from(establishedRequirements).filter(item => item.includes(`req-${category}`));
+                const statusElement = document.getElementById(`status-${category}`);
+                if (statusElement) {
+                    statusElement.textContent = `${categoryItems.length}/5`;
+                    statusElement.classList.toggle('established', categoryItems.length === 5);
+                }
+            });
+
+            // Enable proceed button when sufficient requirements are established (e.g., 80%)
+            const proceedBtn = document.getElementById('proceedBtn');
+            if (establishedCount >= 24) { // 80% of 30
+                proceedBtn.classList.add('enabled');
+                proceedBtn.textContent = 'Requirements Established - Proceed to Negotiation →';
+                
+                // Update header step progress
+                const headerStep3 = document.getElementById('headerStep3');
+                if (headerStep3) {
+                    headerStep3.classList.remove('current');
+                    headerStep3.classList.add('completed');
+                }
+            } else {
+                proceedBtn.classList.remove('enabled');
+                proceedBtn.textContent = 'Complete Client Consultation';
+            }
+        }
+
+        function saveProgress() {
+            localStorage.setItem('clientConsultationProgress', JSON.stringify(Array.from(establishedRequirements)));
+        }
+
+        function loadProgress() {
+            // Check if previous steps are completed
+            const step1Complete = localStorage.getItem('step1Complete');
+            const step2Complete = localStorage.getItem('step2Complete');
+            
+            if (step1Complete) {
+                document.getElementById('headerStep1').classList.add('completed');
+            }
+            if (step2Complete) {
+                document.getElementById('headerStep2').classList.add('completed');
+            }
+
+            // Load consultation progress
+            const saved = localStorage.getItem('clientConsultationProgress');
+            if (saved) {
+                establishedRequirements = new Set(JSON.parse(saved));
+                
+                // Update UI
+                establishedRequirements.forEach(reqId => {
+                    markRequirementEstablished(reqId);
+                });
+                
+                updateProgress();
+            }
+        }
+
+        function proceedToNegotiation() {
+            if (establishedRequirements.size >= 24) {
+                // Save completion status
+                localStorage.setItem('stepCompleted_clientConsultation', 'true');
+                localStorage.setItem('step3Complete', 'true');
+                localStorage.setItem('clientRequirements', JSON.stringify(Array.from(establishedRequirements)));
+                
+                // Navigate to negotiation
+                window.location.href = 'negotiations.html';
+            }
+        }
     </script>
 </body>
 </html> 

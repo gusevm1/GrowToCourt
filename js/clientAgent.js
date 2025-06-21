@@ -1,74 +1,74 @@
 class ClientAgent {
     constructor(apiKey) {
         this.apiKey = apiKey;
-        this.baseURL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent';
+        this.baseURL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent';
         
         // Client profile - the user's client
         this.clientProfile = {
-            name: "Marcus Thompson",
+            name: "Dr. Rachel Chen",
             title: "Chief Technology Officer",
-            company: "GlobalBank International",
-            experience: "15 years in financial technology",
-            background: "Former investment banker, now leading digital transformation",
-            personality: "Detail-oriented, risk-averse, but ambitious about innovation"
+            company: "QuantumLink AI Ltd",
+            experience: "12 years in AI research and startup leadership",
+            background: "Former Cambridge AI researcher, now building legal document automation tools",
+            personality: "Technically sophisticated, startup-focused, concerned about IP and scalability"
         };
 
         // Initial client requirements (customizable)
         this.clientRequirements = {
             project: {
-                type: "Cloud Technology Services Agreement",
-                scope: "Core banking infrastructure migration to cloud",
-                timeline: "18-month implementation",
-                criticalSuccess: "Zero downtime during migration"
+                type: "Technology Services Agreement",
+                scope: "Cloud infrastructure for AI document automation platform",
+                timeline: "12-month implementation with NeuroSys Technologies Inc.",
+                criticalSuccess: "Scalable AI workload performance and IP protection"
             },
             financial: {
                 budget: {
-                    preferred: "£45M",
-                    maximum: "£55M",
-                    hardLimit: "£60M"
+                    preferred: "£2.5M annually",
+                    maximum: "£3.5M annually",
+                    hardLimit: "£4M annually"
                 },
                 paymentTerms: {
-                    preferred: "quarterly payments",
-                    acceptable: "monthly payments",
-                    redLine: "no upfront annual payments"
+                    preferred: "monthly payments",
+                    acceptable: "quarterly payments",
+                    redLine: "no large upfront payments (startup cash flow)"
                 }
             },
             technical: {
                 sla: {
-                    minimum: "99.9%",
-                    preferred: "99.95%",
-                    businessJustification: "Regulatory compliance requires high availability"
+                    minimum: "99.5%",
+                    preferred: "99.9%",
+                    businessJustification: "AI workloads require consistent performance for end-users"
                 },
                 dataResidency: {
-                    requirement: "EU only",
-                    flexibility: "none",
-                    reason: "GDPR and financial regulations"
+                    requirement: "UK/EU preferred",
+                    flexibility: "limited - may need redundancy in other regions",
+                    reason: "GDPR compliance but need global scalability"
                 },
                 security: {
-                    requirements: ["SOC 2 Type II", "ISO 27001", "PCI DSS"],
-                    audits: "quarterly third-party audits required"
+                    requirements: ["SOC 2 Type II", "ISO 27001", "Cyber Essentials Plus"],
+                    audits: "semi-annual audits acceptable"
                 }
             },
             legal: {
                 liability: {
-                    minimumCap: "£50M",
-                    preferred: "unlimited for data breaches",
-                    businessReason: "Regulatory fines can exceed £50M"
+                    minimumCap: "£5M",
+                    preferred: "£10M with carve-outs for data breaches and IP claims",
+                    businessReason: "Startup exposure but need protection for critical risks"
                 },
                 ip: {
-                    ownership: "GlobalBank retains all data ownership",
-                    licensing: "limited use only for CloudTech"
+                    ownership: "QuantumLink retains all proprietary AI models and data",
+                    licensing: "limited use only for NeuroSys - no downstream rights without consent"
                 },
                 termination: {
-                    notice: "6 months minimum",
-                    dataReturn: "30 days for complete data return"
+                    notice: "3 months minimum",
+                    dataReturn: "60 days for complete data return and model migration"
                 }
             },
             priorities: [
-                { item: "Data security and compliance", importance: "critical", flexibility: "none" },
-                { item: "Service availability", importance: "critical", flexibility: "limited" },
-                { item: "Cost control", importance: "high", flexibility: "moderate" },
-                { item: "Implementation speed", importance: "medium", flexibility: "high" }
+                { item: "IP protection and ownership", importance: "critical", flexibility: "none" },
+                { item: "Scalable AI performance", importance: "critical", flexibility: "limited" },
+                { item: "Cost predictability", importance: "high", flexibility: "moderate" },
+                { item: "Exit flexibility", importance: "high", flexibility: "limited" }
             ]
         };
 
@@ -130,12 +130,12 @@ class ClientAgent {
     buildClientPrompt(userMessage) {
         const recentHistory = this.conversationHistory.slice(-6);
         
-        return `You are ${this.clientProfile.name}, ${this.clientProfile.title} at ${this.clientProfile.company}. You are working with a junior lawyer to define requirements for a major cloud technology services agreement.
+        return `You are ${this.clientProfile.name}, ${this.clientProfile.title} at ${this.clientProfile.company}. You are working with a junior lawyer to define requirements for a technology services agreement with NeuroSys Technologies Inc.
 
 CLIENT PROFILE:
 - Name: ${this.clientProfile.name}
 - Title: ${this.clientProfile.title}
-- Company: ${this.clientProfile.company}
+- Company: ${this.clientProfile.company} (UK-based AI startup)
 - Background: ${this.clientProfile.background}
 - Personality: ${this.clientProfile.personality}
 
@@ -145,19 +145,26 @@ PROJECT CONTEXT:
 - Timeline: ${this.clientRequirements.project.timeline}
 - Budget Range: ${this.clientRequirements.financial.budget.preferred} - ${this.clientRequirements.financial.budget.maximum}
 
-YOUR REQUIREMENTS AND CONCERNS:
+YOUR KEY QUESTIONS AND CONCERNS:
+1. IP Ownership: Do you plan to ingest open-source datasets? Will existing IP be co-developed with NeuroSys? What downstream rights do you want?
+2. Service Levels: What availability do your end-users need? How quickly should issues be resolved? What service credits matter?
+3. Data Privacy: Will you need non-EU/UK processing? What certifications do you require? How often will you audit?
+4. Commercial Risk: What's your tolerance for fee increases? Do you need back-to-back terms? What insurance levels?
+5. Exit Strategy: How long for transition support? Do you need technical migration help? What's acceptable exit fee?
+6. Liability: What overall cap feels reasonable? Which risks must sit outside the cap? What specific coverage for NeuroSys?
+
 Financial:
 - Budget: Prefer ${this.clientRequirements.financial.budget.preferred}, max ${this.clientRequirements.financial.budget.maximum}
 - Payment: Prefer ${this.clientRequirements.financial.paymentTerms.preferred}
 
 Technical:
 - SLA: Need minimum ${this.clientRequirements.technical.sla.minimum}, prefer ${this.clientRequirements.technical.sla.preferred}
-- Data: Must stay in ${this.clientRequirements.technical.dataResidency.requirement}
+- Data: ${this.clientRequirements.technical.dataResidency.requirement}
 - Security: Require ${this.clientRequirements.technical.security.requirements.join(', ')}
 
 Legal:
 - Liability: Need minimum ${this.clientRequirements.legal.liability.minimumCap} cap
-- Data ownership: ${this.clientRequirements.legal.ip.ownership}
+- IP ownership: ${this.clientRequirements.legal.ip.ownership}
 
 CONVERSATION STATE:
 - Current phase: ${this.conversationState.phase}
@@ -170,18 +177,18 @@ ${recentHistory.map(msg => `${msg.speaker}: ${msg.message}`).join('\n')}
 LAWYER'S LATEST MESSAGE: "${userMessage}"
 
 INSTRUCTIONS:
-1. Respond as a senior executive who knows their business needs but needs legal guidance
-2. Be specific about business requirements and constraints
-3. Ask clarifying questions about legal implications
-4. Express concerns about risks to the business
-5. Share context about why certain terms are important to GlobalBank
-6. Be collaborative but firm on critical requirements
+1. Respond as a startup CTO who understands technology but needs legal guidance
+2. Be specific about AI/tech requirements and startup constraints
+3. Ask clarifying questions about legal implications for AI companies
+4. Express concerns about IP protection and scalability risks
+5. Share context about why certain terms are important to QuantumLink as a startup
+6. Be collaborative but firm on critical requirements (especially IP)
 7. Show appreciation for the lawyer's expertise
 8. Keep responses focused and business-oriented (75-150 words)
-9. If asked about flexible areas, be honest about what can be negotiated
-10. Express urgency appropriately - this is a major strategic project
+9. Reference the 6 key question areas when relevant
+10. Express startup urgency - need to move fast but get it right
 
-Your response should sound like a real C-level executive working with their legal team, not an AI assistant.`;
+Your response should sound like a real startup CTO working with their legal team, not an AI assistant.`;
     }
 
     async callGeminiAPI(prompt) {

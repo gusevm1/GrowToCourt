@@ -6,18 +6,13 @@
     <title>Initial Client Demand - GrowToCourt</title>
     <style>
         :root {
-            --primary-black: #1a1a1a;
-            --primary-grey: #2a2a2a;
+            --primary-black: #000000;
+            --primary-grey: #2c3e50;
             --light-grey: #f8f9fa;
             --medium-grey: #6c757d;
             --white: #ffffff;
             --accent-grey: #495057;
-            --clifford-blue: #0066cc;
             --clifford-teal: #4a9b9b;
-            --clifford-purple: #8b5a96;
-            --clifford-orange: #e67e22;
-            --clifford-light-blue: #e8f4fd;
-            --clifford-dark: #2c3e50;
             --document-beige: #faf8f3;
             --highlight-yellow: #fff3cd;
             --success-green: #28a745;
@@ -37,14 +32,134 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1700px; /* Increased from 1200px for better screen utilization */
             margin: 0 auto;
             padding: 0 20px;
         }
 
+
+
+        /* Analysis Progress Meter */
+        .analysis-progress {
+            background: var(--light-grey);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-left: 4px solid var(--clifford-teal);
+        }
+
+        .analysis-progress-header {
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--primary-black);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .analysis-progress-bar {
+            width: 100%;
+            height: 12px;
+            background: #e9ecef;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .analysis-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--clifford-teal), var(--primary-black));
+            border-radius: 6px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        .analysis-progress-text {
+            font-size: 0.85rem;
+            color: var(--medium-grey);
+            text-align: center;
+        }
+
+        /* Feedback Section */
+        .feedback-section {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, var(--light-grey), #f8f9fa);
+            border-radius: 12px;
+            border: 1px solid #e9ecef;
+            text-align: center;
+        }
+
+        .feedback-caption {
+            font-size: 0.9rem;
+            color: var(--medium-grey);
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+
+        .feedback-btn {
+            width: 100%;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, var(--clifford-teal), var(--primary-black));
+            border: none;
+            color: white;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .feedback-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(74, 155, 155, 0.4);
+        }
+
+        /* Continue Button */
+        .continue-section {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #e8f4fd, #f0f8ff);
+            border-radius: 12px;
+            border: 1px solid var(--clifford-teal);
+            text-align: center;
+        }
+
+        .continue-caption {
+            font-size: 0.9rem;
+            color: var(--medium-grey);
+            margin-bottom: 1rem;
+        }
+
+        .continue-btn {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, var(--clifford-teal), var(--primary-black));
+            border: none;
+            color: white;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .continue-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(74, 155, 155, 0.4);
+        }
+
+        .continue-btn:disabled {
+            background: #e9ecef;
+            color: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+
+
         /* Header */
         header {
-            background: linear-gradient(135deg, var(--clifford-dark) 0%, var(--clifford-blue) 100%);
+            background: var(--primary-black);
             color: var(--white);
             padding: 1.5rem 0;
             position: sticky;
@@ -114,6 +229,52 @@
             transform: translateY(-1px);
         }
 
+        /* Header Training Progress */
+        .header-training-progress {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .header-steps {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .header-step {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .header-step.current {
+            border-color: var(--clifford-teal);
+            background: rgba(74, 155, 155, 0.2);
+            color: var(--white);
+        }
+
+        .header-step.completed {
+            background: var(--clifford-teal);
+            border-color: var(--clifford-teal);
+            color: var(--white);
+        }
+
+        .header-progress-label {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 500;
+        }
+
         .nav-btn.disabled {
             opacity: 0.4;
             cursor: not-allowed;
@@ -130,12 +291,12 @@
         }
 
         .intro-section {
-            background: var(--clifford-light-blue);
+            background: var(--light-grey);
             border-radius: 12px;
             padding: 3rem;
             margin-bottom: 3rem;
             text-align: center;
-            border-left: 4px solid var(--clifford-blue);
+            border-left: 4px solid var(--primary-black);
         }
 
         .intro-section h2 {
@@ -156,8 +317,8 @@
         /* Document Layout */
         .document-layout {
             display: grid;
-            grid-template-columns: 1.5fr 1fr;
-            gap: 3rem;
+            grid-template-columns: 3fr 1fr 3fr;
+            gap: 1.5rem;
             margin-top: 2rem;
         }
 
@@ -177,7 +338,7 @@
             left: 0;
             right: 0;
             height: 4px;
-            background: linear-gradient(90deg, var(--clifford-blue), var(--clifford-teal));
+            background: linear-gradient(90deg, var(--primary-black), var(--clifford-teal));
             border-radius: 12px 12px 0 0;
         }
 
@@ -189,7 +350,7 @@
         }
 
         .letterhead h1 {
-            color: var(--clifford-blue);
+            color: var(--primary-black);
             font-size: 2rem;
             font-weight: 600;
             margin-bottom: 0.5rem;
@@ -214,7 +375,7 @@
             padding: 1.5rem;
             background: var(--light-grey);
             border-radius: 8px;
-            border-left: 3px solid var(--clifford-blue);
+            border-left: 3px solid var(--primary-black);
         }
 
         .letter-meta strong {
@@ -225,13 +386,13 @@
         }
 
         .letter-content {
-            line-height: 1.8;
+            line-height: 1.9; /* Increased from 1.8 for better readability */
             color: var(--primary-black);
             font-size: 1rem;
         }
 
         .letter-content h3 {
-            color: var(--clifford-blue);
+            color: var(--primary-black);
             margin: 2rem 0 1rem 0;
             font-size: 1.3rem;
             font-weight: 600;
@@ -257,11 +418,11 @@
         }
 
         .signature strong {
-            color: var(--clifford-blue);
+            color: var(--primary-black);
         }
 
-        /* Analysis Panel */
-        .analysis-panel {
+        /* Clarification Panel */
+        .clarification-panel {
             background: var(--white);
             border-radius: 12px;
             padding: 2rem;
@@ -272,25 +433,38 @@
             top: 120px;
         }
 
+        /* Chat Panel */
+        .chat-panel {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.08);
+            border: 1px solid #e5e7eb;
+            height: fit-content;
+            position: sticky;
+            top: 120px;
+            min-width: 0; /* Prevent text overflow */
+        }
+
         .mentor-header {
             display: flex;
             align-items: center;
             gap: 1rem;
             margin-bottom: 1.5rem;
             padding-bottom: 1rem;
-            border-bottom: 2px solid var(--clifford-light-blue);
+            border-bottom: 2px solid var(--light-grey);
         }
 
         .mentor-icon {
             width: 50px;
             height: 50px;
-            background: linear-gradient(135deg, var(--clifford-blue), var(--clifford-teal));
+            background: var(--primary-black);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 12px;
-            box-shadow: 0 4px 15px rgba(0, 102, 204, 0.2);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
         .mentor-icon svg {
@@ -317,7 +491,7 @@
         .section-icon {
             width: 32px;
             height: 32px;
-            background: rgba(0, 102, 204, 0.1);
+            background: rgba(0, 0, 0, 0.1);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -328,12 +502,12 @@
         .section-icon svg {
             width: 18px;
             height: 18px;
-            stroke: var(--clifford-blue);
+            stroke: var(--primary-black);
             stroke-width: 2;
         }
 
         .section-header h4 {
-            color: var(--clifford-blue);
+            color: var(--primary-black);
             font-size: 1.1rem;
             font-weight: 600;
             margin: 0;
@@ -344,7 +518,7 @@
         }
 
         .analysis-section h4 {
-            color: var(--clifford-blue);
+            color: var(--primary-black);
             margin-bottom: 1rem;
             font-size: 1.1rem;
             font-weight: 600;
@@ -367,14 +541,14 @@
 
         /* Chat Interface */
         .chat-container {
-            max-height: 400px;
+            max-height: 600px; /* Increased for better readability */
             overflow-y: auto;
-            border: 2px solid var(--clifford-light-blue);
+            border: 2px solid var(--light-grey);
             border-radius: 12px;
             padding: 1.5rem;
             margin-bottom: 1.5rem;
             background: var(--white);
-            box-shadow: 0 4px 15px rgba(0, 102, 204, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
         .mentor-message, .user-message {
@@ -409,11 +583,11 @@
         }
 
         .mentor-message .message-avatar {
-            background: linear-gradient(135deg, var(--clifford-blue), var(--clifford-teal));
+            background: var(--primary-black);
         }
 
         .user-message .message-avatar {
-            background: linear-gradient(135deg, var(--clifford-purple), var(--clifford-orange));
+            background: var(--clifford-teal);
         }
 
         .message-content {
@@ -426,8 +600,8 @@
         }
 
         .user-message .message-content {
-            background: linear-gradient(135deg, var(--clifford-purple), var(--clifford-blue));
-            color: var(--white);
+            background: var(--light-grey);
+            color: var(--primary-black);
         }
 
         .message-content p {
@@ -463,8 +637,8 @@
 
         #chatInput:focus {
             outline: none;
-            border-color: var(--clifford-blue);
-            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+            border-color: var(--primary-black);
+            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
         }
 
         /* Clarification Section */
@@ -498,8 +672,8 @@
 
         #newClarification:focus {
             outline: none;
-            border-color: var(--clifford-blue);
-            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+            border-color: var(--primary-black);
+            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
         }
 
         .user-list {
@@ -624,18 +798,28 @@
         }
 
         /* Responsive */
-        @media (max-width: 1024px) {
+        @media (max-width: 1600px) {
             .document-layout {
                 grid-template-columns: 1fr;
                 gap: 2rem;
             }
+        }
 
-            .analysis-panel {
-                position: static;
+        @media (min-width: 1401px) {
+            .document-layout {
+                gap: 2rem; /* More space on larger screens */
             }
         }
 
         @media (max-width: 768px) {
+            .progress-meter {
+                position: relative;
+                top: 0;
+                left: 0;
+                margin-bottom: 1rem;
+                margin: 0 20px 1rem 20px;
+            }
+
             .header-content {
                 flex-direction: column;
                 gap: 1rem;
@@ -644,6 +828,14 @@
             .header-left {
                 flex-direction: column;
                 gap: 1rem;
+            }
+
+            .header-training-progress {
+                order: -1; /* Show progress at top on mobile */
+            }
+
+            .header-progress-label {
+                display: none; /* Hide label on mobile to save space */
             }
 
             .intro-section {
@@ -662,20 +854,34 @@
             .action-buttons {
                 flex-direction: column;
             }
+
+            .chat-container {
+                max-height: 400px; /* Smaller on mobile */
+            }
         }
     </style>
     <script src="js/gcpConfig.js"></script>
     <script src="js/mentorAgent.js"></script>
 </head>
 <body>
+
     <header>
         <div class="container">
             <div class="header-content">
                 <div class="header-left">
                     <a href="index.html" class="logo">GrowToCourt</a>
                     <div class="step-indicator">
-                        <div class="step-number">1</div>
                         <span>Initial Client Demand</span>
+                    </div>
+                    <!-- Header Training Progress -->
+                    <div class="header-training-progress">
+                        <div class="header-steps">
+                            <div class="header-step current" id="headerStep1">1</div>
+                            <div class="header-step" id="headerStep2">2</div>
+                            <div class="header-step" id="headerStep3">3</div>
+                            <div class="header-step" id="headerStep4">4</div>
+                        </div>
+                        <span class="header-progress-label">Training Progress</span>
                     </div>
                 </div>
                 <div class="nav-buttons">
@@ -697,6 +903,8 @@
                     <strong>Goal:</strong> Build a thorough clarification list that demonstrates your analytical thinking. The AI Mentor will guide you with hints and provide feedback on your analysis.
                 </p>
             </div>
+
+
 
             <div class="document-layout">
                 <div class="document-section">
@@ -775,7 +983,58 @@
                     </div>
                 </div>
 
-                <div class="analysis-panel">
+                <!-- Center Column: Clarification List -->
+                <div class="clarification-panel">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                            </svg>
+                        </div>
+                        <h4>Your Clarification List</h4>
+                    </div>
+
+                    <!-- Analysis Progress Meter -->
+                    <div class="analysis-progress">
+                        <div class="analysis-progress-header">
+                            Analysis Progress
+                        </div>
+                        <div class="analysis-progress-bar">
+                            <div class="analysis-progress-fill" id="analysisProgressFill"></div>
+                        </div>
+                        <div class="analysis-progress-text" id="analysisProgressText">
+                            Keep building your list...
+                        </div>
+                    </div>
+                    
+                    <p class="section-description">Build your own list of areas that need clarification:</p>
+                    
+                    <div class="add-item-container">
+                        <input type="text" id="newClarification" placeholder="What needs clarification? (e.g., 'Specific SLA requirements')" />
+                        <button onclick="addClarification()" class="btn btn-secondary btn-small">Add</button>
+                    </div>
+                    
+                    <ul id="clarificationList" class="user-list">
+                        <!-- User's clarification items will appear here -->
+                    </ul>
+                    
+                    <div class="feedback-section" id="feedbackSection" style="display: none;">
+                        <p class="feedback-caption">Ready for expert guidance on your analysis?</p>
+                        <button onclick="requestFeedback()" class="btn btn-primary feedback-btn" id="feedbackBtn">
+                            Get Mentor Feedback
+                        </button>
+                    </div>
+
+                    <div class="continue-section" id="continueSection">
+                        <p class="continue-caption" id="continueCaption">Complete your analysis to unlock the next step</p>
+                        <button onclick="continueToNextStep()" class="continue-btn" id="continueBtn" disabled>
+                            Continue to Research Phase
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right Column: AI Mentor Chat -->
+                <div class="chat-panel">
                     <div class="mentor-header">
                         <div class="mentor-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -804,48 +1063,6 @@
                     <div class="chat-input-container">
                         <textarea id="chatInput" placeholder="Ask me for hints about what to look for, or share your thoughts..."></textarea>
                         <button onclick="sendMessage()" class="btn btn-primary">Send</button>
-                    </div>
-
-                    <div class="clarification-section">
-                        <div class="section-header">
-                            <div class="section-icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
-                                </svg>
-                            </div>
-                            <h4>Your Clarification List</h4>
-                        </div>
-                        <p class="section-description">Build your own list of areas that need clarification:</p>
-                        
-                        <div class="add-item-container">
-                            <input type="text" id="newClarification" placeholder="What needs clarification? (e.g., 'Specific SLA requirements')" />
-                            <button onclick="addClarification()" class="btn btn-secondary btn-small">Add</button>
-                        </div>
-                        
-                        <ul id="clarificationList" class="user-list">
-                            <!-- User's clarification items will appear here -->
-                        </ul>
-                        
-                        <button onclick="requestFeedback()" class="btn btn-primary" id="feedbackBtn" style="display: none;">
-                            Get Mentor Feedback 🎯
-                        </button>
-                    </div>
-
-                    <div class="notes-section">
-                        <div class="section-header">
-                            <div class="section-icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                </svg>
-                            </div>
-                            <h4>Your Notes</h4>
-                        </div>
-                        <textarea id="notes" placeholder="Record your thoughts and observations..."></textarea>
-                        <button onclick="saveNotes()" class="btn btn-secondary btn-small">Save Notes</button>
-                    </div>
-
-                    <div class="action-buttons">
-                        <a href="document-review.html" class="btn btn-primary">Continue to Research →</a>
                     </div>
                 </div>
             </div>
@@ -1782,9 +1999,15 @@
             if (savedItems) {
                 clarificationItems = JSON.parse(savedItems);
                 updateClarificationList();
+                updateProgressMeter();
+                updateContinueButton();
                 if (clarificationItems.length > 0) {
-                    document.getElementById('feedbackBtn').style.display = 'block';
+                    document.getElementById('feedbackSection').style.display = 'block';
                 }
+            } else {
+                // Initialize empty progress meter and continue button
+                updateProgressMeter();
+                updateContinueButton();
             }
         });
 
@@ -1939,15 +2162,143 @@
                 clarificationItems.push(text);
                 input.value = '';
                 updateClarificationList();
+                updateProgressMeter();
                 
-                // Show feedback button if this is the first item
+                // Show feedback section if this is the first item
                 if (clarificationItems.length === 1) {
-                    document.getElementById('feedbackBtn').style.display = 'block';
+                    document.getElementById('feedbackSection').style.display = 'block';
                 }
+
+                // Update continue button state
+                updateContinueButton();
                 
                 // Save to localStorage
                 localStorage.setItem('clarificationItems', JSON.stringify(clarificationItems));
             }
+        }
+
+        // Update progress meter based on clarification items
+        function updateProgressMeter() {
+            const progressFill = document.getElementById('analysisProgressFill');
+            const progressText = document.getElementById('analysisProgressText');
+            
+            if (!progressFill || !progressText) return;
+            
+            const itemCount = clarificationItems.length;
+            let progress = 0;
+            let message = '';
+            
+            // Smart progress calculation - full at 5 items
+            if (itemCount === 0) {
+                progress = 0;
+                message = "Start building your clarification list...";
+            } else if (itemCount === 1) {
+                progress = 20;
+                message = "Good start! Keep identifying key areas...";
+            } else if (itemCount === 2) {
+                progress = 40;
+                message = "Making progress! Look for more specific details...";
+            } else if (itemCount === 3) {
+                progress = 60;
+                message = "Strong analysis! Consider edge cases and risks...";
+            } else if (itemCount === 4) {
+                progress = 80;
+                message = "Excellent thoroughness! Almost there...";
+            } else {
+                progress = 100;
+                message = "Comprehensive analysis! Well done!";
+            }
+            
+            // Apply smart bonus based on coverage of key areas
+            const coverage = calculateSmartCoverage();
+            progress = Math.min(100, progress + coverage.bonus);
+            
+            // Update the visual progress bar
+            progressFill.style.width = progress + '%';
+            progressText.textContent = message;
+            
+            // Add completion indicator (no emoji, just styling)
+            if (progress >= 85) {
+                progressText.innerHTML = message + ' <span style="color: var(--clifford-teal); font-weight: 600;">✓</span>';
+            }
+        }
+
+        // Calculate smart coverage bonus based on key areas
+        function calculateSmartCoverage() {
+            const keyAreas = ['ip', 'sla', 'data', 'server', 'commercial', 'liability', 'privacy', 'gdpr'];
+            const userText = clarificationItems.join(' ').toLowerCase();
+            
+            let coverage = 0;
+            keyAreas.forEach(area => {
+                if (userText.includes(area) || 
+                    (area === 'ip' && (userText.includes('intellectual') || userText.includes('property'))) ||
+                    (area === 'sla' && (userText.includes('service level') || userText.includes('uptime'))) ||
+                    (area === 'data' && (userText.includes('privacy') || userText.includes('protection'))) ||
+                    (area === 'server' && (userText.includes('location') || userText.includes('jurisdiction'))) ||
+                    (area === 'commercial' && (userText.includes('cost') || userText.includes('payment'))) ||
+                    (area === 'liability' && (userText.includes('indemnity') || userText.includes('risk')))) {
+                    coverage++;
+                }
+            });
+            
+            return {
+                coverage: coverage,
+                bonus: Math.round((coverage / keyAreas.length) * 20) // Up to 20% bonus
+            };
+        }
+
+        // Update continue button state based on analysis progress
+        function updateContinueButton() {
+            const continueBtn = document.getElementById('continueBtn');
+            const continueCaption = document.getElementById('continueCaption');
+            
+            if (!continueBtn || !continueCaption) return;
+            
+            const itemCount = clarificationItems.length;
+            const coverage = calculateSmartCoverage();
+            
+            // Enable button when user has good analysis coverage
+            if (itemCount >= 5 && coverage.coverage >= 3) {
+                continueBtn.disabled = false;
+                continueCaption.textContent = "Great analysis! Ready to move to the research phase";
+                continueCaption.style.color = 'var(--clifford-teal)';
+                updateStepProgress(true); // Mark step 1 as completed
+            } else if (itemCount >= 3) {
+                continueBtn.disabled = false;
+                continueCaption.textContent = "Good progress! You can continue or add more items";
+                continueCaption.style.color = 'var(--medium-grey)';
+                updateStepProgress(false); // Step 1 still in progress
+            } else {
+                continueBtn.disabled = true;
+                continueCaption.textContent = "Add at least 3 clarification items to continue";
+                continueCaption.style.color = 'var(--medium-grey)';
+                updateStepProgress(false); // Step 1 still in progress
+            }
+        }
+
+        // Update step progress indicator
+        function updateStepProgress(step1Completed) {
+            // Update header progress indicator
+            const headerStep1 = document.getElementById('headerStep1');
+            if (headerStep1) {
+                if (step1Completed) {
+                    headerStep1.classList.remove('current');
+                    headerStep1.classList.add('completed');
+                } else {
+                    headerStep1.classList.remove('completed');
+                    headerStep1.classList.add('current');
+                }
+            }
+        }
+
+        // Continue to next step
+        function continueToNextStep() {
+            // Save current progress
+            localStorage.setItem('clarificationItems', JSON.stringify(clarificationItems));
+            localStorage.setItem('step1Complete', 'true');
+            
+            // Navigate to next step
+            window.location.href = 'document-review.html';
         }
 
         // Update the clarification list display
@@ -1969,11 +2320,15 @@
         function removeClarification(index) {
             clarificationItems.splice(index, 1);
             updateClarificationList();
+            updateProgressMeter();
             
-            // Hide feedback button if no items left
+            // Hide feedback section if no items left
             if (clarificationItems.length === 0) {
-                document.getElementById('feedbackBtn').style.display = 'none';
+                document.getElementById('feedbackSection').style.display = 'none';
             }
+
+            // Update continue button state
+            updateContinueButton();
             
             // Save to localStorage
             localStorage.setItem('clarificationItems', JSON.stringify(clarificationItems));
