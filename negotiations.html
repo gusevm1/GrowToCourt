@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Negotiations - GrowToCourt</title>
-    <script src="js/config.js"></script>
-    <script src="js/gcp-integration.js"></script>
     <style>
         :root {
             --primary-black: #1a1a1a;
@@ -14,9 +12,10 @@
             --medium-grey: #888888;
             --white: #ffffff;
             --accent-grey: #4a4a4a;
-            --success-green: #10b981;
-            --warning-orange: #f59e0b;
-            --danger-red: #ef4444;
+            --success-green: #28a745;
+            --warning-orange: #fd7e14;
+            --danger-red: #dc3545;
+            --info-blue: #17a2b8;
         }
 
         * {
@@ -29,7 +28,7 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             color: var(--primary-black);
-            background-color: var(--light-grey);
+            background-color: var(--white);
         }
 
         .container {
@@ -39,14 +38,14 @@
         }
 
         /* Header */
-        .header {
-            background: var(--white);
-            border-bottom: 2px solid var(--light-grey);
-            padding: 1rem 0;
+        header {
+            background: linear-gradient(135deg, var(--primary-black) 0%, var(--primary-grey) 100%);
+            color: var(--white);
+            padding: 1.5rem 0;
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
         .header-content {
@@ -55,272 +54,433 @@
             align-items: center;
         }
 
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
         .logo {
             font-size: 1.8rem;
             font-weight: 300;
-            color: var(--primary-black);
             text-decoration: none;
+            color: var(--white);
         }
 
-        .nav-breadcrumb {
+        .step-indicator {
             display: flex;
             align-items: center;
             gap: 1rem;
-            color: var(--medium-grey);
+            font-size: 1rem;
+            opacity: 0.9;
         }
 
-        .breadcrumb-item {
+        .step-number {
+            background: rgba(255, 255, 255, 0.2);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .home-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--white);
+            padding: 0.5rem 1rem;
             text-decoration: none;
-            color: var(--medium-grey);
-            transition: color 0.3s ease;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
-        .breadcrumb-item:hover {
-            color: var(--primary-black);
-        }
-
-        .breadcrumb-current {
-            color: var(--primary-black);
-            font-weight: 500;
+        .home-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
         }
 
         /* Main Layout */
         .main-layout {
             display: grid;
-            grid-template-columns: 350px 1fr 300px;
+            grid-template-columns: 300px 1fr 300px;
             gap: 2rem;
-            margin: 2rem 0;
-            min-height: calc(100vh - 100px);
+            padding: 2rem 0;
+            min-height: calc(100vh - 80px);
         }
 
-        /* Sidebar */
-        .sidebar {
-            background: var(--white);
+        .left-sidebar {
+            background: var(--light-grey);
             border-radius: 8px;
-            padding: 2rem;
+            padding: 1.5rem;
             height: fit-content;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 100px;
         }
 
-        .sidebar h3 {
-            margin-bottom: 1.5rem;
-            color: var(--primary-black);
-            font-size: 1.3rem;
-        }
-
-        .scenario-info {
-            margin-bottom: 2rem;
-        }
-
-        .scenario-tag {
-            background: var(--light-grey);
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            color: var(--accent-grey);
-            margin-bottom: 1rem;
-        }
-
-        .progress-section {
-            margin-bottom: 2rem;
-        }
-
-        .progress-bar {
-            background: var(--light-grey);
-            height: 8px;
-            border-radius: 4px;
-            overflow: hidden;
-            margin-bottom: 0.5rem;
-        }
-
-        .progress-fill {
-            background: linear-gradient(90deg, var(--success-green), var(--primary-black));
-            height: 100%;
-            width: 60%;
-            transition: width 0.3s ease;
-        }
-
-        .progress-text {
-            font-size: 0.9rem;
-            color: var(--medium-grey);
-        }
-
-        .key-points {
-            list-style: none;
-        }
-
-        .key-points li {
-            padding: 0.5rem 0;
-            border-bottom: 1px solid var(--light-grey);
-            color: var(--accent-grey);
-        }
-
-        .key-points li:last-child {
-            border-bottom: none;
-        }
-
-        /* Main Content */
-        .main-content {
+        .negotiation-area {
             background: var(--white);
-            border-radius: 8px;
-            padding: 2rem;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
         }
 
-        .content-header {
+        .right-sidebar {
+            background: var(--light-grey);
+            border-radius: 8px;
+            padding: 1.5rem;
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+
+        .sidebar {
+            background: var(--light-grey);
+            border-radius: 8px;
+            padding: 1.5rem;
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+
+        /* Performance Metrics */
+        .metrics-section {
             margin-bottom: 2rem;
         }
 
-        .content-title {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
+        .metrics-title {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
             color: var(--primary-black);
-        }
-
-        .content-subtitle {
-            color: var(--medium-grey);
-            font-size: 1.1rem;
-        }
-
-        /* Negotiation Interface */
-        .negotiation-interface {
-            display: grid;
-            grid-template-rows: auto 1fr auto;
-            height: 600px;
-            border: 2px solid var(--light-grey);
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        .chat-header {
-            background: var(--primary-black);
-            color: var(--white);
-            padding: 1rem;
-            display: flex;
-            justify-content: between;
-            align-items: center;
-        }
-
-        .chat-status {
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
 
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            background: var(--success-green);
-            border-radius: 50%;
-        }
-
-        .chat-messages {
-            flex: 1;
+        .metric-card {
+            background: var(--white);
+            border-radius: 6px;
             padding: 1rem;
-            overflow-y: auto;
-            background: var(--light-grey);
-        }
-
-        .message {
             margin-bottom: 1rem;
-            max-width: 80%;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
-        .message.user {
-            margin-left: auto;
+        .metric-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
         }
 
-        .message.ai {
-            margin-right: auto;
+        .metric-label {
+            font-size: 0.9rem;
+            color: var(--medium-grey);
         }
 
-        .message-content {
-            padding: 1rem;
-            border-radius: 12px;
-            font-size: 0.95rem;
+        .metric-value {
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        .meter {
+            width: 100%;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .meter-fill {
+            height: 100%;
+            transition: width 0.5s ease;
+            border-radius: 4px;
+        }
+
+        .confidence-meter .meter-fill {
+            background: linear-gradient(90deg, var(--danger-red) 0%, var(--warning-orange) 50%, var(--success-green) 100%);
+        }
+
+        .performance-meter .meter-fill {
+            background: linear-gradient(90deg, var(--info-blue) 0%, var(--success-green) 100%);
+        }
+
+        /* Scenario Context */
+        .scenario-context {
+            background: var(--primary-black);
+            color: var(--white);
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+
+        .scenario-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .scenario-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        .scenario-details h4 {
+            color: var(--white);
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .scenario-details p {
+            opacity: 0.9;
+            font-size: 0.9rem;
             line-height: 1.5;
         }
 
-        .message.user .message-content {
-            background: var(--primary-black);
+        /* Negotiation Interface */
+        .negotiation-interface {
+            background: var(--white);
+            border: 2px solid var(--light-grey);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .negotiation-header {
+            background: var(--light-grey);
+            padding: 1rem 2rem;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .negotiation-title {
+            font-size: 1.2rem;
+            color: var(--primary-black);
+            margin-bottom: 0.5rem;
+        }
+
+        .current-topic {
+            color: var(--medium-grey);
+            font-size: 0.9rem;
+        }
+
+        .negotiation-content {
+            flex: 1;
+            height: 500px;
+            overflow-y: auto;
+            padding: 1.5rem 2rem;
+        }
+
+        .message {
+            margin-bottom: 1.5rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+        }
+
+        .counterparty .message-avatar {
+            background: var(--primary-grey);
             color: var(--white);
         }
 
-        .message.ai .message-content {
-            background: var(--white);
-            border: 1px solid var(--light-grey);
+        .user .message-avatar {
+            background: var(--info-blue);
+            color: var(--white);
         }
 
-        .message-time {
-            font-size: 0.8rem;
-            color: var(--medium-grey);
-            margin-top: 0.5rem;
-            text-align: right;
+        .message-content {
+            flex: 1;
         }
 
-        .message.ai .message-time {
-            text-align: left;
+        .message-sender {
+            font-weight: bold;
+            margin-bottom: 0.25rem;
+            font-size: 0.9rem;
         }
 
-        .chat-input {
-            background: var(--white);
-            border-top: 1px solid var(--light-grey);
+        .message-text {
+            background: var(--light-grey);
             padding: 1rem;
+            border-radius: 8px;
+            line-height: 1.5;
+        }
+
+        .user .message-text {
+            background: #e3f2fd;
+        }
+
+        /* Input Section */
+        .input-section {
+            border-top: 1px solid #dee2e6;
+            padding: 1.5rem 2rem;
+            background: var(--white);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .text-input-row {
             display: flex;
             gap: 1rem;
             align-items: center;
         }
 
-        .chat-input input {
+        .text-input {
             flex: 1;
             padding: 0.75rem;
-            border: 1px solid var(--light-grey);
+            border: 2px solid var(--light-grey);
             border-radius: 6px;
-            font-size: 0.95rem;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
         }
 
-        .chat-input button {
+        .text-input:focus {
+            outline: none;
+            border-color: var(--info-blue);
+        }
+
+        .send-text-btn {
             background: var(--primary-black);
             color: var(--white);
             border: none;
             padding: 0.75rem 1.5rem;
             border-radius: 6px;
             cursor: pointer;
-            font-weight: 500;
-            transition: background 0.3s ease;
+            font-size: 1rem;
+            transition: all 0.3s ease;
         }
 
-        .chat-input button:hover {
+        .send-text-btn:hover {
             background: var(--primary-grey);
         }
 
-        .mic-button {
-            background: var(--light-grey) !important;
-            color: var(--accent-grey) !important;
-            border: 1px solid var(--light-grey) !important;
-            padding: 0.75rem !important;
-            border-radius: 6px !important;
-            cursor: pointer;
-            transition: all 0.3s ease;
+        .send-text-btn:disabled {
+            background: var(--medium-grey);
+            cursor: not-allowed;
+        }
+
+        .input-divider {
+            text-align: center;
+            color: var(--medium-grey);
+            font-size: 0.9rem;
+            position: relative;
+        }
+
+        .input-divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: var(--light-grey);
+            z-index: 1;
+        }
+
+        .input-divider span {
+            background: var(--white);
+            padding: 0 1rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* MentorChat */
+        .mentor-chat {
+            background: var(--white);
+            border-radius: 8px;
+            margin-top: 1.5rem;
+            border: 2px solid var(--light-grey);
+            overflow: hidden;
+        }
+
+        .mentor-header {
+            background: var(--primary-black);
+            color: var(--white);
+            padding: 1rem;
             display: flex;
             align-items: center;
-            justify-content: center;
+            gap: 0.5rem;
         }
 
-        .mic-button:hover {
-            background: var(--medium-grey) !important;
-            color: var(--white) !important;
+        .mentor-content {
+            padding: 1rem;
+            max-height: 300px;
+            overflow-y: auto;
         }
 
-        .mic-button.recording {
-            background: var(--danger-red) !important;
-            color: var(--white) !important;
-            animation: pulse 1.5s infinite;
+        .mentor-message {
+            background: var(--light-grey);
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            line-height: 1.5;
         }
 
-        .mic-button.processing {
-            background: var(--warning-orange) !important;
-            color: var(--white) !important;
+        .mentor-input {
+            display: flex;
+            gap: 0.5rem;
+            padding: 1rem;
+            border-top: 1px solid var(--light-grey);
+        }
+
+        .mentor-input input {
+            flex: 1;
+            padding: 0.5rem;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        .mentor-input button {
+            background: var(--primary-black);
+            color: var(--white);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        /* Speech Interface */
+        .speech-section {
+            background: var(--white);
+            border: 2px solid var(--light-grey);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .speech-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .speech-btn {
+            background: var(--danger-red);
+            color: var(--white);
+            border: none;
+            padding: 1rem;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .speech-btn.recording {
+            background: var(--success-green);
+            animation: pulse 1s infinite;
         }
 
         @keyframes pulse {
@@ -330,200 +490,126 @@
         }
 
         .speech-status {
-            background: var(--light-grey);
-            padding: 0.75rem 1rem;
-            border-top: 1px solid var(--light-grey);
             font-size: 0.9rem;
-            color: var(--accent-grey);
-        }
-
-        .recording-indicator {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .pulse-dot {
-            width: 8px;
-            height: 8px;
-            background: var(--danger-red);
-            border-radius: 50%;
-            animation: pulse-dot 1s infinite;
-        }
-
-        @keyframes pulse-dot {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-
-        .transcription-preview {
-            background: rgba(16, 185, 129, 0.1);
-            border: 1px solid var(--success-green);
-            border-radius: 6px;
-            padding: 0.75rem;
-            margin-top: 0.5rem;
-            font-style: italic;
-            color: var(--accent-grey);
-        }
-
-        .confidence-indicator {
-            font-size: 0.8rem;
             color: var(--medium-grey);
-            margin-top: 0.25rem;
         }
 
-        /* AI Assistant Panel */
-        .ai-panel {
+        /* Progress Tracker */
+        .progress-tracker {
             background: var(--white);
             border-radius: 8px;
             padding: 1.5rem;
-            height: fit-content;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .ai-panel h3 {
-            margin-bottom: 1rem;
-            color: var(--primary-black);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .mentor-suggestions {
-            margin-bottom: 2rem;
-        }
-
-        .suggestion {
-            background: var(--light-grey);
-            padding: 1rem;
-            border-radius: 6px;
-            margin-bottom: 1rem;
-            border-left: 4px solid var(--primary-black);
-        }
-
-        .suggestion-type {
-            font-weight: 500;
-            color: var(--primary-black);
-            font-size: 0.9rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .suggestion-text {
-            font-size: 0.9rem;
-            color: var(--accent-grey);
-        }
-
-        .risk-indicator {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 1rem;
-            background: var(--light-grey);
-            border-radius: 6px;
-            margin-bottom: 1rem;
-        }
-
-        .risk-level {
-            font-weight: 500;
-        }
-
-        .risk-low { color: var(--success-green); }
-        .risk-medium { color: var(--warning-orange); }
-        .risk-high { color: var(--danger-red); }
-
-        /* Perception Meters */
-        .perception-meters {
-            margin-bottom: 2rem;
-        }
-
-        .meter-section {
             margin-bottom: 1.5rem;
+            border: 2px solid var(--light-grey);
         }
 
-        .meter-title {
-            font-size: 1rem;
+        .progress-title {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
             color: var(--primary-black);
-            margin-bottom: 0.8rem;
-            font-weight: 500;
         }
 
-        .meter-container {
-            margin-bottom: 0.5rem;
-        }
-
-        .meter-bar {
-            background: var(--light-grey);
-            height: 12px;
-            border-radius: 6px;
-            overflow: hidden;
-            position: relative;
-            margin-bottom: 0.5rem;
-        }
-
-        .meter-fill {
-            height: 100%;
-            border-radius: 6px;
-            transition: width 0.8s ease-in-out;
-            position: relative;
-        }
-
-        .perception-fill {
-            background: linear-gradient(90deg, var(--danger-red) 0%, var(--warning-orange) 50%, var(--success-green) 100%);
-        }
-
-        .confidence-fill {
-            background: linear-gradient(90deg, var(--warning-orange) 0%, var(--primary-black) 50%, var(--success-green) 100%);
-        }
-
-        .meter-labels {
+        .progress-item {
             display: flex;
             justify-content: space-between;
-            font-size: 0.8rem;
-            color: var(--medium-grey);
-            margin-bottom: 0.5rem;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--light-grey);
         }
 
-        .meter-status {
+        .progress-item:last-child {
+            border-bottom: none;
+        }
+
+        .progress-label {
             font-size: 0.9rem;
             color: var(--accent-grey);
         }
 
-        .status-favorable {
-            color: var(--success-green);
-            font-weight: 500;
+        .progress-status {
+            font-size: 0.8rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+            color: var(--white);
         }
 
-        .status-confident {
+        .status-completed { background: var(--success-green); }
+        .status-current { background: var(--info-blue); }
+        .status-pending { background: var(--medium-grey); }
+
+        /* Configuration Dialog */
+        .config-dialog {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1000;
+        }
+
+        .config-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .config-modal {
+            background: var(--white);
+            border-radius: 8px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .config-form {
+            margin: 1.5rem 0;
+        }
+
+        .config-field {
+            margin-bottom: 1rem;
+        }
+
+        .config-field label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
             color: var(--primary-black);
-            font-weight: 500;
         }
 
-        .status-hostile {
-            color: var(--danger-red);
-            font-weight: 500;
-        }
-
-        .status-uncertain {
-            color: var(--warning-orange);
-            font-weight: 500;
-        }
-
-        .action-buttons {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-
-        .action-btn {
-            padding: 0.75rem 1rem;
+        .config-field input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid var(--light-grey);
             border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        .config-field input:focus {
+            outline: none;
+            border-color: var(--info-blue);
+        }
+
+        .config-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
             border: none;
+            border-radius: 6px;
             cursor: pointer;
-            font-weight: 500;
+            font-size: 1rem;
             transition: all 0.3s ease;
-            text-align: center;
-            text-decoration: none;
         }
 
         .btn-primary {
@@ -531,18 +617,90 @@
             color: var(--white);
         }
 
-        .btn-secondary {
-            background: var(--light-grey);
-            color: var(--accent-grey);
-        }
-
         .btn-primary:hover {
             background: var(--primary-grey);
         }
 
-        .btn-secondary:hover {
+        .btn-secondary {
             background: var(--medium-grey);
             color: var(--white);
+        }
+
+        .btn-secondary:hover {
+            background: var(--accent-grey);
+        }
+
+        .config-help {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--light-grey);
+            font-size: 0.9rem;
+            color: var(--medium-grey);
+        }
+
+        .config-help a {
+            color: var(--info-blue);
+            text-decoration: none;
+        }
+
+        .config-help a:hover {
+            text-decoration: underline;
+        }
+
+        /* Configuration Status */
+        .config-status {
+            margin-bottom: 1rem;
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+        }
+
+        .alert-info {
+            background-color: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+        }
+
+        /* Typing Indicator */
+        .typing-indicator .message-text {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+        }
+
+        .typing-dots span {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--medium-grey);
+            animation: typing 1.4s infinite ease-in-out both;
+        }
+
+        .typing-dots span:nth-child(1) {
+            animation-delay: -0.32s;
+        }
+
+        .typing-dots span:nth-child(2) {
+            animation-delay: -0.16s;
+        }
+
+        @keyframes typing {
+            0%, 80%, 100% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+            40% {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
 
         /* Responsive */
@@ -551,544 +709,251 @@
                 grid-template-columns: 1fr;
                 gap: 1rem;
             }
+            
+            .left-sidebar, .right-sidebar {
+                position: static;
+            }
+        }
 
-            .ai-panel, .sidebar {
-                order: -1;
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 15px;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .scenario-details {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .negotiation-content {
+                height: 300px;
+            }
+
+            .config-modal {
+                width: 95%;
+                padding: 1.5rem;
+            }
+
+            .config-actions {
+                flex-direction: column;
             }
         }
     </style>
 </head>
 <body>
-    <header class="header">
+    <header>
         <div class="container">
             <div class="header-content">
-                <a href="index.html" class="logo">GrowToCourt</a>
-                <nav class="nav-breadcrumb">
-                    <a href="index.html" class="breadcrumb-item">Home</a>
-                    <span>→</span>
-                    <span class="breadcrumb-current">Step 3: Negotiations</span>
-                </nav>
+                <div class="header-left">
+                    <a href="index.html" class="logo">GrowToCourt</a>
+                    <div class="step-indicator">
+                        <div class="step-number">3</div>
+                        <span>Negotiations Module</span>
+                    </div>
+                </div>
+                <a href="index.html" class="home-btn">← Back to Overview</a>
             </div>
         </div>
     </header>
 
     <div class="container">
-        <div class="main-layout">
-            <!-- Sidebar -->
-            <aside class="sidebar">
-                <div class="scenario-info">
-                    <h3>Current Scenario</h3>
-                    <div class="scenario-tag">Global Bank Tech Services</div>
-                    <p style="font-size: 0.9rem; color: var(--medium-grey);">
-                        Negotiating cloud services agreement between major international bank and cloud provider.
-                    </p>
-                </div>
-
-                <div class="progress-section">
-                    <h3>Your Progress</h3>
-                    <div class="progress-bar">
-                        <div class="progress-fill"></div>
-                    </div>
-                    <p class="progress-text">60% Complete - Step 3 of 6</p>
-                </div>
-
+        <div class="scenario-context">
+            <h2 class="scenario-title">Global Bank Technology Services Agreement - Negotiation Phase</h2>
+            <p>You are representing GlobalBank International in negotiations with CloudTech Solutions for a comprehensive cloud technology services agreement. Focus on data protection compliance, liability limitations, and service level commitments.</p>
+            
+            <div class="scenario-details">
                 <div>
-                    <h3>Key Negotiation Points</h3>
-                    <ul class="key-points">
-                        <li>Data Protection & GDPR Compliance</li>
-                        <li>Service Level Agreements (99.95%)</li>
-                        <li>Liability Caps ($50M vs $10M)</li>
-                        <li>Cross-border Data Transfer</li>
-                        <li>IP Licensing Terms</li>
-                        <li>Termination & Exit Clauses</li>
-                    </ul>
+                    <h4>Your Client Position</h4>
+                    <p>GlobalBank requires strict GDPR compliance, 99.9% uptime guarantee, and liability caps not exceeding £50M. EU data residency is non-negotiable.</p>
                 </div>
-            </aside>
-
-            <!-- Main Content -->
-            <main class="main-content">
-                <div class="content-header">
-                    <h1 class="content-title">AI Negotiation Simulator</h1>
-                    <p class="content-subtitle">Practice your negotiation skills with our AI counterpart representing the cloud provider</p>
+                <div>
+                    <h4>Counterparty Position</h4>
+                    <p>CloudTech offers 99.5% uptime, £25M liability cap, and flexible data residency. They're pushing for broader IP licensing terms.</p>
                 </div>
+            </div>
+        </div>
 
+        <div class="main-layout">
+            <!-- Left Sidebar -->
+            <div class="left-sidebar">
+                <!-- Progress Tracker -->
+                <div class="progress-tracker">
+                    <h3 class="progress-title">Negotiation Progress</h3>
+                    <div class="progress-item">
+                        <span class="progress-label">Service Levels</span>
+                        <span class="progress-status status-current">In Progress</span>
+                    </div>
+                    <div class="progress-item">
+                        <span class="progress-label">Liability Terms</span>
+                        <span class="progress-status status-current">In Progress</span>
+                    </div>
+                    <div class="progress-item">
+                        <span class="progress-label">Data Residency</span>
+                        <span class="progress-status status-pending">Pending</span>
+                    </div>
+                    <div class="progress-item">
+                        <span class="progress-label">IP Licensing</span>
+                        <span class="progress-status status-pending">Pending</span>
+                    </div>
+                    <div class="progress-item">
+                        <span class="progress-label">Payment Terms</span>
+                        <span class="progress-status status-pending">Pending</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Chat Area -->
+            <div class="negotiation-area">
                 <div class="negotiation-interface">
-                    <div class="chat-header">
+                    <div class="negotiation-header">
                         <div>
-                            <strong>Negotiating with: CloudTech Solutions (AI)</strong>
-                        </div>
-                        <div class="chat-status">
-                            <div class="status-dot"></div>
-                            <span>Active Session</span>
+                            <h3 class="negotiation-title">Live Negotiation Session</h3>
+                            <p class="current-topic">Current Topic: Service Level Agreements & Liability Caps</p>
                         </div>
                     </div>
-
-                    <div class="chat-messages" id="chatMessages">
-                        <div class="message ai">
+                    
+                    <div class="negotiation-content" id="negotiationContent">
+                        <div class="message counterparty">
+                            <div class="message-avatar">CT</div>
                             <div class="message-content">
-                                Welcome to the negotiation phase. I represent CloudTech Solutions. I understand your client, Global Banking Corp, is interested in our enterprise cloud services. Let's discuss the terms. 
-                                
-                                Our standard offering includes 99.9% uptime SLA with $5M liability cap. What are your primary concerns?
+                                <div class="message-sender">Sarah Chen - CloudTech Legal Counsel</div>
+                                <div class="message-text">
+                                    "We appreciate GlobalBank's requirements, but our standard SLA offers 99.5% uptime, which is industry-leading. Regarding liability, our insurance coverage supports a £25M cap. For data residency, we can accommodate EU requirements but need flexibility for disaster recovery scenarios."
+                                </div>
                             </div>
-                            <div class="message-time">AI Assistant • Just now</div>
-                        </div>
-
-                        <div class="message user">
-                            <div class="message-content">
-                                Thank you for meeting today. My client requires 99.95% uptime SLA minimum, and we need to discuss liability caps - $5M is insufficient for a bank of this scale. We're looking at $50M liability coverage.
-                            </div>
-                            <div class="message-time">You • 2 minutes ago</div>
-                        </div>
-
-                        <div class="message ai">
-                            <div class="message-content">
-                                I understand the critical nature of banking operations. 99.95% uptime is achievable, though it would require our premium tier. Regarding liability - $50M is quite high. Our maximum is typically $25M for enterprise clients. 
-                                
-                                Would you consider $25M with additional insurance provisions?
-                            </div>
-                            <div class="message-time">AI Assistant • 1 minute ago</div>
                         </div>
                     </div>
+                    
+                    <div class="input-section">
+                        <div class="text-input-row">
+                            <input type="text" class="text-input" placeholder="Type your response..." id="textInput">
+                            <button class="send-text-btn" id="sendTextBtn">Send</button>
+                        </div>
+                        
+                        <div class="input-divider">
+                            <span>OR</span>
+                        </div>
+                        
+                        <div class="speech-section">
+                            <div class="speech-header">
+                                <h4>Voice Response</h4>
+                                <div class="speech-status" id="speechStatus">Ready to record</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <button class="speech-btn" id="speechBtn">🎤</button>
+                                <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--medium-grey);">Click to record your response</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-                    <div class="chat-input">
-                        <input type="text" placeholder="Type your negotiation response or use voice..." id="chatInput">
-                        <button class="mic-button" id="micButton" onclick="toggleRecording()" title="Click to speak">
-                            <svg id="micIcon" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
-                            </svg>
+            <!-- Right Sidebar -->
+            <div class="right-sidebar">
+                <!-- Performance Metrics -->
+                <div class="metrics-section">
+                    <h3 class="metrics-title">
+                        📊 Performance Metrics
+                    </h3>
+                    
+                    <div class="metric-card confidence-meter">
+                        <div class="metric-header">
+                            <span class="metric-label">Negotiation Confidence</span>
+                            <span class="metric-value" id="confidenceValue">72%</span>
+                        </div>
+                        <div class="meter">
+                            <div class="meter-fill" style="width: 72%" id="confidenceFill"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card performance-meter">
+                        <div class="metric-header">
+                            <span class="metric-label">Communication Performance</span>
+                            <span class="metric-value" id="performanceValue">68%</span>
+                        </div>
+                        <div class="meter">
+                            <div class="meter-fill" style="width: 68%" id="performanceFill"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Progress Tracker -->
+                <div class="progress-tracker">
+                    <h3 class="progress-title">Negotiation Progress</h3>
+                    <div class="progress-item">
+                        <span class="progress-label">Service Levels</span>
+                        <span class="progress-status status-current">In Progress</span>
+                    </div>
+                    <div class="progress-item">
+                        <span class="progress-label">Liability Terms</span>
+                        <span class="progress-status status-current">In Progress</span>
+                    </div>
+                    <div class="progress-item">
+                        <span class="progress-label">Data Residency</span>
+                        <span class="progress-status status-pending">Pending</span>
+                    </div>
+                    <div class="progress-item">
+                        <span class="progress-label">IP Licensing</span>
+                        <span class="progress-status status-pending">Pending</span>
+                    </div>
+                    <div class="progress-item">
+                        <span class="progress-label">Payment Terms</span>
+                        <span class="progress-status status-pending">Pending</span>
+                    </div>
+                </div>
+
+                <!-- MentorChat -->
+                <div class="mentor-chat">
+                    <div class="mentor-header">
+                        🤖 MentorChat
+                    </div>
+                    <div class="mentor-content" id="mentorContent">
+                        <div class="mentor-message">
+                            <strong>AI Mentor:</strong> Strong start! You're showing good commercial awareness by suggesting a tiered SLA structure. Remember, in negotiations like this, always look for mutual value creation opportunities.
+                        </div>
+                        <div class="mentor-message">
+                            <strong>Tip:</strong> Consider how CloudTech's disaster recovery concerns align with your client's business continuity requirements. There might be a creative solution here.
+                        </div>
+                    </div>
+                    <div class="mentor-input">
+                        <input type="text" placeholder="Ask the AI mentor..." id="mentorInput">
+                        <button onclick="askMentor()">Ask</button>
+                    </div>
+                    <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #ddd;">
+                        <button onclick="window.negotiationApp.testAPIConnection()" style="width: 100%; padding: 0.5rem; background: var(--primary-grey); color: white; border: none; border-radius: 4px; cursor: pointer;">
+                            🧪 Test API Connection
                         </button>
-                        <button onclick="sendMessage()">Send</button>
-                    </div>
-                    <div class="speech-status" id="speechStatus" style="display: none;">
-                        <div class="recording-indicator">
-                            <div class="pulse-dot"></div>
-                            <span id="statusText">Listening...</span>
-                        </div>
                     </div>
                 </div>
-            </main>
-
-            <!-- AI Assistant Panel -->
-            <aside class="ai-panel">
-                <h3>
-                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
-                    MentorChat
-                </h3>
-
-                <div class="mentor-suggestions">
-                    <div class="suggestion">
-                        <div class="suggestion-type">💡 Strategic Advice</div>
-                        <div class="suggestion-text">Good positioning on SLA. Consider bundling the uptime requirement with penalty clauses for downtime.</div>
-                    </div>
-
-                    <div class="suggestion">
-                        <div class="suggestion-type">⚖️ Legal Note</div>
-                        <div class="suggestion-text">$25M liability is reasonable for this type of agreement. Focus on carve-outs for data breaches.</div>
-                    </div>
-
-                    <div class="suggestion">
-                        <div class="suggestion-type">🎯 Next Move</div>
-                        <div class="suggestion-text">Ask about data residency requirements and cross-border transfer protocols next.</div>
-                    </div>
-                </div>
-
-                <div class="risk-indicator">
-                    <span>Current Risk Level:</span>
-                    <span class="risk-level risk-medium">Medium</span>
-                </div>
-
-                <div class="perception-meters">
-                    <div class="meter-section">
-                        <h4 class="meter-title">Counterparty Perception</h4>
-                        <div class="meter-container">
-                            <div class="meter-bar">
-                                <div class="meter-fill perception-fill" style="width: 75%"></div>
-                            </div>
-                            <div class="meter-labels">
-                                <span class="meter-label-left">Hostile</span>
-                                <span class="meter-label-right">Favorable</span>
-                            </div>
-                        </div>
-                        <div class="meter-status">CloudTech views you as: <span class="status-favorable">Professional & Reasonable</span></div>
-                    </div>
-
-                    <div class="meter-section">
-                        <h4 class="meter-title">Confidence Projection</h4>
-                        <div class="meter-container">
-                            <div class="meter-bar">
-                                <div class="meter-fill confidence-fill" style="width: 65%"></div>
-                            </div>
-                            <div class="meter-labels">
-                                <span class="meter-label-left">Uncertain</span>
-                                <span class="meter-label-right">Commanding</span>
-                            </div>
-                        </div>
-                        <div class="meter-status">You appear: <span class="status-confident">Knowledgeable</span></div>
-                    </div>
-                </div>
-
-                <div class="action-buttons">
-                    <button class="action-btn btn-primary" onclick="getAIAdvice()">Get AI Advice</button>
-                    <button class="action-btn btn-secondary" onclick="reviewPosition()">Review Position</button>
-                    <a href="index.html" class="action-btn btn-secondary">Back to Overview</a>
-                    <button class="action-btn btn-primary" onclick="continueNext()">Continue to Step 4</button>
-                </div>
-            </aside>
+            </div>
         </div>
     </div>
 
+    <!-- Include JavaScript modules -->
+    <script src="js/env-loader.js"></script>
+    <script src="js/gcpConfig.js"></script>
+    <script src="js/audioRecorder.js"></script>
+    <script src="js/speechAPI.js"></script>
+    <script src="js/negotiationAgent.js"></script>
+    <script src="js/negotiationApp.js"></script>
+    
+    <!-- Initialize the application -->
     <script>
-        // Meter management
-        let perceptionLevel = 75; // Current perception level (0-100)
-        let confidenceLevel = 65; // Current confidence level (0-100)
-        
-        // Speech-to-Text integration
-        let speechService = null;
-        let isRecording = false;
-
-        function updatePerceptionMeter(newLevel) {
-            perceptionLevel = Math.max(0, Math.min(100, newLevel));
-            const perceptionFill = document.querySelector('.perception-fill');
-            const perceptionStatus = document.querySelector('.meter-section:first-child .meter-status span');
-            
-            perceptionFill.style.width = perceptionLevel + '%';
-            
-            // Update status text based on level
-            if (perceptionLevel >= 80) {
-                perceptionStatus.textContent = 'Highly Favorable';
-                perceptionStatus.className = 'status-favorable';
-            } else if (perceptionLevel >= 60) {
-                perceptionStatus.textContent = 'Professional & Reasonable';
-                perceptionStatus.className = 'status-favorable';
-            } else if (perceptionLevel >= 40) {
-                perceptionStatus.textContent = 'Neutral';
-                perceptionStatus.className = 'status-confident';
-            } else if (perceptionLevel >= 20) {
-                perceptionStatus.textContent = 'Skeptical';
-                perceptionStatus.className = 'status-uncertain';
-            } else {
-                perceptionStatus.textContent = 'Hostile';
-                perceptionStatus.className = 'status-hostile';
-            }
-        }
-
-        function updateConfidenceMeter(newLevel) {
-            confidenceLevel = Math.max(0, Math.min(100, newLevel));
-            const confidenceFill = document.querySelector('.confidence-fill');
-            const confidenceStatus = document.querySelector('.meter-section:last-child .meter-status span');
-            
-            confidenceFill.style.width = confidenceLevel + '%';
-            
-            // Update status text based on level
-            if (confidenceLevel >= 85) {
-                confidenceStatus.textContent = 'Commanding';
-                confidenceStatus.className = 'status-favorable';
-            } else if (confidenceLevel >= 70) {
-                confidenceStatus.textContent = 'Confident';
-                confidenceStatus.className = 'status-confident';
-            } else if (confidenceLevel >= 55) {
-                confidenceStatus.textContent = 'Knowledgeable';
-                confidenceStatus.className = 'status-confident';
-            } else if (confidenceLevel >= 35) {
-                confidenceStatus.textContent = 'Hesitant';
-                confidenceStatus.className = 'status-uncertain';
-            } else {
-                confidenceStatus.textContent = 'Uncertain';
-                confidenceStatus.className = 'status-uncertain';
-            }
-        }
-
-        function analyzeMessage(message) {
-            // Simple AI analysis of message tone and content
-            const lowerMessage = message.toLowerCase();
-            
-            // Confidence indicators
-            const confidentWords = ['require', 'need', 'must', 'expect', 'insist', 'demand'];
-            const uncertainWords = ['maybe', 'perhaps', 'might', 'possibly', 'unsure', 'think'];
-            const professionalWords = ['understand', 'appreciate', 'consider', 'propose', 'suggest'];
-            const aggressiveWords = ['unacceptable', 'ridiculous', 'impossible', 'never'];
-            
-            let confidentScore = 0;
-            let uncertainScore = 0;
-            let professionalScore = 0;
-            let aggressiveScore = 0;
-            
-            confidentWords.forEach(word => {
-                if (lowerMessage.includes(word)) confidentScore += 15;
+        // Initialize the negotiation app when the page loads
+        window.addEventListener('DOMContentLoaded', () => {
+            window.negotiationApp = new NegotiationApp();
+            console.log('🚀 GrowToCourt Negotiation Platform initialized');
+            console.log('📊 Features available:', {
+                'Speech-to-Text': 'Enabled',
+                'AI Agent': window.gcpConfig?.isReady() ? 'Ready' : 'Needs Configuration',
+                'GCP Integration': 'Full Support'
             });
-            
-            uncertainWords.forEach(word => {
-                if (lowerMessage.includes(word)) uncertainScore += 10;
-            });
-            
-            professionalWords.forEach(word => {
-                if (lowerMessage.includes(word)) professionalScore += 10;
-            });
-            
-            aggressiveWords.forEach(word => {
-                if (lowerMessage.includes(word)) aggressiveScore += 20;
-            });
-            
-            // Update confidence based on analysis
-            let confidenceDelta = confidentScore - uncertainScore;
-            if (message.length > 100) confidenceDelta += 5; // Longer messages show more confidence
-            
-            // Update perception based on tone
-            let perceptionDelta = professionalScore - aggressiveScore;
-            if (confidentScore > 0 && aggressiveScore === 0) perceptionDelta += 5;
-            
-            updateConfidenceMeter(confidenceLevel + confidenceDelta);
-            updatePerceptionMeter(perceptionLevel + perceptionDelta);
-        }
-
-        function sendMessage() {
-            const input = document.getElementById('chatInput');
-            const messagesContainer = document.getElementById('chatMessages');
-            
-            if (input.value.trim() === '') return;
-            
-            const userMessage = input.value.trim();
-            
-            // Analyze the message for meter updates
-            analyzeMessage(userMessage);
-            
-            // Add user message
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'message user';
-            messageDiv.innerHTML = `
-                <div class="message-content">${userMessage}</div>
-                <div class="message-time">You • Just now</div>
-            `;
-            messagesContainer.appendChild(messageDiv);
-            
-            // Clear input
-            input.value = '';
-            
-            // Simulate AI response after delay
-            setTimeout(() => {
-                const responses = [
-                    "I understand your position. Let me discuss this with my technical team and get back to you with a revised proposal...",
-                    "That's an interesting point. We could potentially accommodate that request with some adjustments to the pricing structure.",
-                    "I appreciate your direct approach. Let me see what flexibility we have on those terms.",
-                    "Your client's requirements are clear. We may need to escalate this to our senior management for approval.",
-                    "I can see this is important to your client. Let's explore some alternative approaches that might work for both parties."
-                ];
-                
-                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-                
-                const aiMessage = document.createElement('div');
-                aiMessage.className = 'message ai';
-                aiMessage.innerHTML = `
-                    <div class="message-content">${randomResponse}</div>
-                    <div class="message-time">AI Assistant • Just now</div>
-                `;
-                messagesContainer.appendChild(aiMessage);
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            }, 1500);
-            
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        }
-
-        function getAIAdvice() {
-            const adviceMessages = [
-                'MentorChat: Your counterparty perception is strong. Consider pushing for more favorable terms while maintaining this professional relationship.',
-                'MentorChat: Your confidence level could be higher. Use more decisive language like "require" instead of "would like".',
-                'MentorChat: Good balance of assertiveness and professionalism. Focus on data security provisions next.',
-                'MentorChat: Consider emphasizing the long-term partnership value to improve counterparty perception.'
-            ];
-            
-            const randomAdvice = adviceMessages[Math.floor(Math.random() * adviceMessages.length)];
-            alert(randomAdvice);
-        }
-
-        function reviewPosition() {
-            alert(`Position Review: 
-            • Counterparty Perception: ${perceptionLevel}% - ${perceptionLevel >= 70 ? 'Strong' : perceptionLevel >= 40 ? 'Neutral' : 'Needs Improvement'}
-            • Confidence Projection: ${confidenceLevel}% - ${confidenceLevel >= 70 ? 'Effective' : confidenceLevel >= 40 ? 'Adequate' : 'Needs Work'}
-            
-            Overall: You're making good progress. The counterpart is showing flexibility on SLA terms.`);
-        }
-
-        function continueNext() {
-            alert('Great progress! In a full implementation, this would advance to Step 4: Acceptance & Contract Conclusion.');
-        }
-
-        // Allow Enter key to send messages
-        document.getElementById('chatInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                sendMessage();
-            }
-        });
-
-        // Speech-to-Text Functions
-        async function initializeSpeechService() {
-            try {
-                const config = initializeConfig();
-                if (!config.isValid) {
-                    console.warn('Speech-to-text disabled: GCP API key not configured');
-                    document.getElementById('micButton').style.display = 'none';
-                    return false;
-                }
-
-                if (!GCPSpeechService.isSupported()) {
-                    console.warn('Speech-to-text not supported in this browser');
-                    document.getElementById('micButton').style.display = 'none';
-                    return false;
-                }
-
-                speechService = new GCPSpeechService(CONFIG.GCP.API_KEY);
-                
-                // Set up callbacks
-                speechService.onTranscription(onTranscriptionReceived);
-                speechService.onError(onSpeechError);
-                
-                // Initialize microphone
-                const initialized = await speechService.initializeMicrophone();
-                if (!initialized) {
-                    document.getElementById('micButton').style.display = 'none';
-                    return false;
-                }
-
-                console.log('✅ Speech-to-text service initialized successfully');
-                return true;
-            } catch (error) {
-                console.error('Failed to initialize speech service:', error);
-                document.getElementById('micButton').style.display = 'none';
-                return false;
-            }
-        }
-
-        function toggleRecording() {
-            if (!speechService) {
-                alert('Speech service not available. Please check your microphone permissions.');
-                return;
-            }
-
-            if (isRecording) {
-                stopRecording();
-            } else {
-                startRecording();
-            }
-        }
-
-        function startRecording() {
-            if (!speechService || isRecording) return;
-
-            const success = speechService.startRecording();
-            if (success) {
-                isRecording = true;
-                updateRecordingUI(true);
-                
-                // Auto-stop after max recording time
-                setTimeout(() => {
-                    if (isRecording) {
-                        stopRecording();
-                    }
-                }, CONFIG.APP.SPEECH_RECOGNITION.MAX_RECORDING_TIME);
-            }
-        }
-
-        function stopRecording() {
-            if (!speechService || !isRecording) return;
-
-            speechService.stopRecording();
-            isRecording = false;
-            updateRecordingUI(false, 'Processing...');
-        }
-
-        function updateRecordingUI(recording, statusText = '') {
-            const micButton = document.getElementById('micButton');
-            const speechStatus = document.getElementById('speechStatus');
-            const statusTextElement = document.getElementById('statusText');
-
-            if (recording) {
-                micButton.classList.add('recording');
-                speechStatus.style.display = 'block';
-                statusTextElement.textContent = 'Listening... Click to stop';
-                micButton.title = 'Click to stop recording';
-            } else if (statusText) {
-                micButton.classList.remove('recording');
-                micButton.classList.add('processing');
-                statusTextElement.textContent = statusText;
-                micButton.title = 'Processing speech...';
-            } else {
-                micButton.classList.remove('recording', 'processing');
-                speechStatus.style.display = 'none';
-                micButton.title = 'Click to speak';
-            }
-        }
-
-        function onTranscriptionReceived(transcript, confidence) {
-            console.log('Transcription received:', transcript, 'Confidence:', confidence);
-            
-            // Display transcription preview
-            const speechStatus = document.getElementById('speechStatus');
-            const statusText = document.getElementById('statusText');
-            
-            if (confidence >= CONFIG.APP.SPEECH_RECOGNITION.CONFIDENCE_THRESHOLD) {
-                // High confidence - add to input
-                const chatInput = document.getElementById('chatInput');
-                chatInput.value = transcript;
-                
-                statusText.innerHTML = `
-                    <div class="transcription-preview">
-                        "${transcript}"
-                        <div class="confidence-indicator">Confidence: ${Math.round(confidence * 100)}%</div>
-                    </div>
-                `;
-                
-                // Auto-send if enabled
-                if (CONFIG.APP.SPEECH_RECOGNITION.AUTO_SEND_TRANSCRIPTION) {
-                    setTimeout(() => {
-                        sendMessage();
-                        updateRecordingUI(false);
-                    }, 1500);
-                } else {
-                    setTimeout(() => updateRecordingUI(false), 3000);
-                }
-            } else {
-                // Low confidence - show for review
-                statusText.innerHTML = `
-                    <div class="transcription-preview" style="border-color: var(--warning-orange);">
-                        "${transcript}"
-                        <div class="confidence-indicator">Low confidence: ${Math.round(confidence * 100)}% - Please review</div>
-                    </div>
-                `;
-                
-                const chatInput = document.getElementById('chatInput');
-                chatInput.value = transcript;
-                chatInput.focus();
-                
-                setTimeout(() => updateRecordingUI(false), 4000);
-            }
-        }
-
-        function onSpeechError(error) {
-            console.error('Speech recognition error:', error);
-            updateRecordingUI(false);
-            
-            // Show user-friendly error
-            const speechStatus = document.getElementById('speechStatus');
-            const statusText = document.getElementById('statusText');
-            
-            speechStatus.style.display = 'block';
-            statusText.innerHTML = `<span style="color: var(--danger-red);">❌ ${error}</span>`;
-            
-            setTimeout(() => {
-                speechStatus.style.display = 'none';
-            }, 3000);
-        }
-
-        // Initialize meters on page load
-        document.addEventListener('DOMContentLoaded', async function() {
-            updatePerceptionMeter(perceptionLevel);
-            updateConfidenceMeter(confidenceLevel);
-            
-            // Initialize speech service
-            await initializeSpeechService();
         });
     </script>
 </body>
-</html> 
+</html>

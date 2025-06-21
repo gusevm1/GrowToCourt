@@ -44,45 +44,57 @@ cd GrowToCourt
 #### Enable the API
 1. Go to [Google Cloud Console](https://console.cloud.google.com/)
 2. Create a new project or select existing project
-3. Enable the **Speech-to-Text API**
-4. Go to **APIs & Services > Credentials**
-5. Create an **API Key**
-6. Restrict the API key to Speech-to-Text API (recommended)
+3. Note your **Project ID** (you'll need this)
+4. Enable the **Speech-to-Text API**
+5. Go to **APIs & Services > Credentials**
 
-#### Configure API Key
-1. Open `js/config.js`
-2. Replace `YOUR_GCP_API_KEY_HERE` with your actual API key:
-```javascript
-GCP: {
-    API_KEY: 'YOUR_ACTUAL_GCP_API_KEY',
-    // ... rest of config
-}
-```
+#### Authentication Setup (Choose One)
 
-### 3. Local Development Server
+**Option A: OAuth 2.0 (Recommended)**
+1. Click **Create Credentials > OAuth client ID**
+2. Choose **Web application**
+3. Add authorized origins:
+   - For local: `http://localhost:8000`
+   - For production: `https://yourdomain.com`
+4. Copy the **Client ID**
 
-#### Option 1: Python Server
+**Option B: API Key (Testing Only)**
+1. Click **Create Credentials > API key**
+2. Copy the API key
+3. Restrict to Speech-to-Text API (recommended)
+
+#### Configure Credentials
+When you first open the negotiations page, click the configuration button (⚙️) and enter:
+- **Project ID**: Your Google Cloud project ID
+- **OAuth Client ID**: Your OAuth client ID (recommended)
+- **API Key**: Your API key (optional, for testing)
+
+**Note**: Credentials are stored securely in your browser's localStorage.
+
+### 3. Start the Application
+
+#### Simple Python Server (Recommended):
 ```bash
-# Python 3
-python -m http.server 8000
-
-# Python 2
-python -m SimpleHTTPServer 8000
+python3 -m http.server 8000
 ```
 
-#### Option 2: Node.js Server
+#### Alternative Options:
+
+**Node.js Server:**
 ```bash
 npx http-server -p 8000
 ```
 
-#### Option 3: Live Server (VS Code Extension)
+**VS Code Live Server:**
 - Install Live Server extension
 - Right-click `index.html` → "Open with Live Server"
 
 ### 4. Access the Application
 - Open browser to `http://localhost:8000`
+- Navigate to Negotiations module
+- Configure Speech-to-Text when prompted (⚙️ button)
 - Grant microphone permissions when prompted
-- Navigate to Negotiations module to test speech-to-text
+- Test with the "Test API" button
 
 ## 🎤 Speech-to-Text Features
 
@@ -105,6 +117,36 @@ npx http-server -p 8000
 - ✅ Firefox 29+
 - ✅ Safari 14+
 - ✅ Edge 79+
+
+## 🔧 Troubleshooting
+
+### Common Issues
+
+**"Access denied" or "403 Forbidden" errors:**
+- Ensure Speech-to-Text API is enabled in your Google Cloud project
+- Verify your API key or OAuth client ID is correct
+- Check that billing is enabled for your Google Cloud project
+- For OAuth: ensure your domain is in authorized JavaScript origins
+
+**"Authentication failed" errors:**
+- Sign in with the Google account that has access to the project
+- Ensure OAuth client ID is configured for web applications
+- Clear browser cache and try again
+
+**"Microphone access denied":**
+- Allow microphone access when prompted by the browser
+- Ensure you're using HTTPS or localhost (required for microphone access)
+- Test your microphone in other applications
+
+**Configuration button (⚙️) not working:**
+- Check browser console for error messages
+- Ensure you're entering the correct Project ID format
+- Try using OAuth instead of API key for better compatibility
+
+### Testing Your Setup
+1. Use the **Test API** button in the right panel
+2. Check browser console for detailed error messages
+3. Verify your Google Cloud setup follows the instructions above
 
 ## 🎯 Demo Scenario: Global Bank Technology Services Agreement
 
