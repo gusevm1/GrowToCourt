@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Consultation - GrowToCourt</title>
+    <style>
+        :root {
+            --primary-black: #1a1a1a;
+            --primary-grey: #2a2a2a;
+            --light-grey: #f5f5f5;
+            --medium-grey: #888888;
+            --white: #ffffff;
+            --accent-grey: #4a4a4a;
+            --success-green: #28a745;
+            --warning-orange: #fd7e14;
+            --danger-red: #dc3545;
+            --info-blue: #17a2b8;
+            --client-blue: #2563eb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--primary-black);
+            background-color: var(--white);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--client-blue) 0%, var(--primary-grey) 100%);
+            color: var(--white);
+            padding: 1.5rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 300;
+            text-decoration: none;
+            color: var(--white);
+        }
+
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .step-number {
+            background: rgba(255, 255, 255, 0.2);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--white);
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Main Layout */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 300px 1fr 300px;
+            gap: 2rem;
+            padding: 2rem 0;
+            min-height: calc(100vh - 80px);
+        }
+
+        .left-sidebar {
+            background: var(--light-grey);
+            border-radius: 8px;
+            padding: 1.5rem;
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+
+        .consultation-area {
+            background: var(--white);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .right-sidebar {
+            background: var(--light-grey);
+            border-radius: 8px;
+            padding: 1.5rem;
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+
+        /* Client Requirements Customization */
+        .requirements-section {
+            margin-bottom: 2rem;
+        }
+
+        .requirements-title {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--primary-black);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .requirement-item {
+            background: var(--white);
+            border-radius: 6px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .requirement-label {
+            font-size: 0.9rem;
+            color: var(--medium-grey);
+            margin-bottom: 0.5rem;
+        }
+
+        .requirement-slider {
+            width: 100%;
+            margin: 0.5rem 0;
+        }
+
+        .requirement-value {
+            font-weight: bold;
+            color: var(--client-blue);
+        }
+
+        .dropdown-select {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: var(--white);
+        }
+
+        /* Phase Progress */
+        .phase-tracker {
+            margin-bottom: 2rem;
+        }
+
+        .phase-title {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--primary-black);
+        }
+
+        .phase-item {
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border-radius: 4px;
+            border-left: 4px solid #ddd;
+            background: var(--white);
+        }
+
+        .phase-item.active {
+            border-left-color: var(--client-blue);
+            background: #f0f9ff;
+        }
+
+        .phase-item.completed {
+            border-left-color: var(--success-green);
+            background: #f0fdf4;
+        }
+
+        .phase-label {
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .phase-description {
+            font-size: 0.85rem;
+            color: var(--medium-grey);
+        }
+
+        /* Chat Interface */
+        .consultation-interface {
+            background: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            height: 600px;
+        }
+
+        .consultation-header {
+            background: linear-gradient(135deg, var(--client-blue) 0%, #1e40af 100%);
+            color: var(--white);
+            padding: 1.5rem;
+            border-radius: 8px 8px 0 0;
+            text-align: center;
+        }
+
+        .consultation-title {
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .current-phase {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .consultation-content {
+            flex: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+            background: #fafafa;
+        }
+
+        .message {
+            margin-bottom: 1.5rem;
+            display: flex;
+            gap: 1rem;
+            max-width: 100%;
+        }
+
+        .message.client {
+            flex-direction: row;
+        }
+
+        .message.user {
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--white);
+            flex-shrink: 0;
+        }
+
+        .message.client .message-avatar {
+            background: var(--client-blue);
+        }
+
+        .message.user .message-avatar {
+            background: var(--primary-grey);
+        }
+
+        .message-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .message-sender {
+            font-size: 0.85rem;
+            color: var(--medium-grey);
+            margin-bottom: 0.25rem;
+        }
+
+        .message-text {
+            background: var(--white);
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            line-height: 1.5;
+        }
+
+        .input-section {
+            padding: 1.5rem;
+            background: var(--white);
+            border-top: 1px solid #eee;
+            border-radius: 0 0 8px 8px;
+        }
+
+        .text-input-row {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .text-input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 2px solid #eee;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .text-input:focus {
+            outline: none;
+            border-color: var(--client-blue);
+        }
+
+        .send-text-btn {
+            background: var(--client-blue);
+            color: var(--white);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+        }
+
+        .send-text-btn:hover {
+            background: #1d4ed8;
+        }
+
+        /* Next Steps Guide */
+        .next-steps {
+            margin-bottom: 2rem;
+        }
+
+        .next-steps-title {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--primary-black);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .next-step-item {
+            background: var(--white);
+            border-radius: 6px;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-left: 4px solid var(--client-blue);
+        }
+
+        .next-step-text {
+            font-size: 0.9rem;
+            color: var(--primary-black);
+        }
+
+        /* MentorChat */
+        .mentor-chat {
+            background: var(--white);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .mentor-header {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: var(--primary-black);
+            text-align: center;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--light-grey);
+        }
+
+        .mentor-content {
+            max-height: 250px;
+            overflow-y: auto;
+            margin-bottom: 1rem;
+        }
+
+        .mentor-message {
+            background: #f8f9fa;
+            padding: 0.75rem;
+            border-radius: 6px;
+            margin-bottom: 0.75rem;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .mentor-input {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .mentor-input input {
+            flex: 1;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        .mentor-input button {
+            background: var(--primary-grey);
+            color: var(--white);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .proceed-btn {
+            background: var(--success-green);
+            color: var(--white);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 1rem;
+            width: 100%;
+            margin-top: 1rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .proceed-btn:hover {
+            background: #1f7a2e;
+        }
+
+        .proceed-btn:disabled {
+            background: var(--medium-grey);
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="header-left">
+                    <a href="index.html" class="logo">GrowToCourt</a>
+                    <div class="step-indicator">
+                        <div class="step-number">1</div>
+                        <span>Client Consultation Phase</span>
+                    </div>
+                </div>
+                <div class="nav-buttons">
+                    <a href="index.html" class="nav-btn">← Back to Overview</a>
+                    <a href="negotiations.html" class="nav-btn disabled" id="proceedBtn">Proceed to Negotiation →</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="scenario-context" style="background: var(--light-grey); padding: 2rem; border-radius: 8px; margin-bottom: 2rem;">
+            <h2 style="color: var(--client-blue); margin-bottom: 1rem;">Initial Client Consultation</h2>
+            <p style="margin-bottom: 1rem;">You are a junior associate at Clifford Chance working with Marcus Thompson, CTO of GlobalBank International. Your task is to understand their requirements for a major cloud technology services agreement before negotiating with the service provider.</p>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1.5rem;">
+                <div>
+                    <h4 style="color: var(--primary-black); margin-bottom: 0.5rem;">Your Role</h4>
+                    <p style="color: var(--medium-grey);">Junior Legal Associate - Ask probing questions, understand business needs, identify legal risks, and prepare for negotiation.</p>
+                </div>
+                <div>
+                    <h4 style="color: var(--primary-black); margin-bottom: 0.5rem;">Client Profile</h4>
+                    <p style="color: var(--medium-grey);">Marcus Thompson, CTO at GlobalBank - Experienced executive leading a critical infrastructure migration project.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-layout">
+            <!-- Left Sidebar - Client Requirements Customization -->
+            <div class="left-sidebar">
+                <div class="requirements-section">
+                    <h3 class="requirements-title">
+                        ⚙️ Client Profile Settings
+                    </h3>
+                    
+                    <div class="requirement-item">
+                        <div class="requirement-label">Project Budget Range</div>
+                        <input type="range" class="requirement-slider" id="budgetSlider" min="35" max="70" value="50">
+                        <div class="requirement-value" id="budgetValue">£50M</div>
+                    </div>
+                    
+                    <div class="requirement-item">
+                        <div class="requirement-label">SLA Requirements</div>
+                        <input type="range" class="requirement-slider" id="slaSlider" min="99.0" max="99.99" step="0.01" value="99.9">
+                        <div class="requirement-value" id="slaValue">99.9%</div>
+                    </div>
+                    
+                    <div class="requirement-item">
+                        <div class="requirement-label">Payment Preference</div>
+                        <select class="dropdown-select" id="paymentSelect">
+                            <option value="monthly">Monthly Payments</option>
+                            <option value="quarterly" selected>Quarterly Payments</option>
+                            <option value="bi-annual">Bi-Annual Payments</option>
+                            <option value="annual">Annual Payments</option>
+                        </select>
+                    </div>
+                    
+                    <div class="requirement-item">
+                        <div class="requirement-label">Liability Cap</div>
+                        <input type="range" class="requirement-slider" id="liabilitySlider" min="25" max="100" value="50">
+                        <div class="requirement-value" id="liabilityValue">£50M</div>
+                    </div>
+                </div>
+
+                <div class="phase-tracker">
+                    <h3 class="phase-title">Consultation Progress</h3>
+                    <div class="phase-item active" id="discoveryPhase">
+                        <div class="phase-label">Discovery</div>
+                        <div class="phase-description">Understanding basic requirements</div>
+                    </div>
+                    <div class="phase-item" id="clarificationPhase">
+                        <div class="phase-label">Clarification</div>
+                        <div class="phase-description">Exploring priorities and constraints</div>
+                    </div>
+                    <div class="phase-item" id="finalizationPhase">
+                        <div class="phase-label">Finalization</div>
+                        <div class="phase-description">Ready for negotiation</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Chat Area -->
+            <div class="consultation-area">
+                <div class="consultation-interface">
+                    <div class="consultation-header">
+                        <h3 class="consultation-title">Client Consultation Session</h3>
+                        <p class="current-phase" id="currentPhaseText">Discovery Phase: Understanding client's basic requirements</p>
+                    </div>
+                    
+                    <div class="consultation-content" id="consultationContent">
+                        <div class="message client">
+                            <div class="message-avatar">MT</div>
+                            <div class="message-content">
+                                <div class="message-sender">Marcus Thompson - GlobalBank CTO</div>
+                                <div class="message-text">
+                                    Thanks for meeting with me today. We're looking at a major cloud migration project - moving our core banking infrastructure to a cloud provider. This is a critical initiative for GlobalBank, and I need to make sure we get the legal framework right. Can you help me think through what we need to consider?
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="input-section">
+                        <div class="text-input-row">
+                            <input type="text" class="text-input" placeholder="Ask about client requirements, concerns, or constraints..." id="clientTextInput">
+                            <button class="send-text-btn" id="sendClientBtn">Send</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Sidebar - Guidance and MentorChat -->
+            <div class="right-sidebar">
+                <div class="next-steps">
+                    <h3 class="next-steps-title">
+                        🎯 Next Steps
+                    </h3>
+                    <div id="nextStepsContainer">
+                        <div class="next-step-item">
+                            <div class="next-step-text">Explore: Financial Terms</div>
+                        </div>
+                        <div class="next-step-item">
+                            <div class="next-step-text">Ask about business drivers</div>
+                        </div>
+                        <div class="next-step-item">
+                            <div class="next-step-text">Understand constraints</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mentor-chat">
+                    <div class="mentor-header">
+                        🤖 MentorChat
+                    </div>
+                    <div class="mentor-content" id="mentorContent">
+                        <div class="mentor-message">
+                            <strong>AI Mentor:</strong> Great start! Remember to ask open-ended questions that help you understand not just what the client wants, but WHY they want it. Understanding business drivers will help you negotiate more effectively.
+                        </div>
+                        <div class="mentor-message">
+                            <strong>Tip:</strong> Focus on discovering the client's priorities, hard constraints, and areas where they might have flexibility. This will be crucial when you negotiate with CloudTech.
+                        </div>
+                    </div>
+                    <div class="mentor-input">
+                        <input type="text" placeholder="Ask the AI mentor..." id="mentorInput">
+                        <button onclick="askMentor()">Ask</button>
+                    </div>
+                </div>
+
+                <button class="proceed-btn" id="proceedToNegotiation" disabled>
+                    Proceed to Negotiation Phase
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include JavaScript modules -->
+    <script src="js/env-loader.js"></script>
+    <script src="js/gcpConfig.js"></script>
+    <script src="js/clientAgent.js"></script>
+    <script src="js/clientConsultationApp.js"></script>
+    
+    <!-- Initialize the application -->
+    <script>
+        // Initialize the client consultation app when the page loads
+        window.addEventListener('DOMContentLoaded', () => {
+            window.clientConsultationApp = new ClientConsultationApp();
+            console.log('🚀 GrowToCourt Client Consultation Platform initialized');
+        });
+    </script>
+</body>
+</html> 

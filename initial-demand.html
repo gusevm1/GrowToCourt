@@ -1,0 +1,2017 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Initial Client Demand - GrowToCourt</title>
+    <style>
+        :root {
+            --primary-black: #1a1a1a;
+            --primary-grey: #2a2a2a;
+            --light-grey: #f8f9fa;
+            --medium-grey: #6c757d;
+            --white: #ffffff;
+            --accent-grey: #495057;
+            --clifford-blue: #0066cc;
+            --clifford-teal: #4a9b9b;
+            --clifford-purple: #8b5a96;
+            --clifford-orange: #e67e22;
+            --clifford-light-blue: #e8f4fd;
+            --clifford-dark: #2c3e50;
+            --document-beige: #faf8f3;
+            --highlight-yellow: #fff3cd;
+            --success-green: #28a745;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--primary-black);
+            background-color: var(--white);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--clifford-dark) 0%, var(--clifford-blue) 100%);
+            color: var(--white);
+            padding: 1.5rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.15);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 300;
+            text-decoration: none;
+            color: var(--white);
+            letter-spacing: -0.5px;
+        }
+
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .step-number {
+            background: rgba(255, 255, 255, 0.2);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.15);
+            color: var(--white);
+            padding: 0.6rem 1.2rem;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            font-weight: 500;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-1px);
+        }
+
+        .nav-btn.disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .nav-btn.disabled:hover {
+            transform: none;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 3rem 0;
+            min-height: calc(100vh - 80px);
+        }
+
+        .intro-section {
+            background: var(--clifford-light-blue);
+            border-radius: 12px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            text-align: center;
+            border-left: 4px solid var(--clifford-blue);
+        }
+
+        .intro-section h2 {
+            color: var(--primary-black);
+            font-size: 2rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+        }
+
+        .intro-section p {
+            color: var(--medium-grey);
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        /* Document Layout */
+        .document-layout {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        .document-section {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 3rem;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.08);
+            border: 1px solid #e5e7eb;
+            position: relative;
+        }
+
+        .document-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--clifford-blue), var(--clifford-teal));
+            border-radius: 12px 12px 0 0;
+        }
+
+        .letterhead {
+            text-align: center;
+            border-bottom: 2px solid var(--light-grey);
+            padding-bottom: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .letterhead h1 {
+            color: var(--clifford-blue);
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        .letterhead p {
+            color: var(--medium-grey);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .letter-meta {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            font-size: 0.9rem;
+        }
+
+        .letter-meta div {
+            padding: 1.5rem;
+            background: var(--light-grey);
+            border-radius: 8px;
+            border-left: 3px solid var(--clifford-blue);
+        }
+
+        .letter-meta strong {
+            display: block;
+            color: var(--primary-black);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .letter-content {
+            line-height: 1.8;
+            color: var(--primary-black);
+            font-size: 1rem;
+        }
+
+        .letter-content h3 {
+            color: var(--clifford-blue);
+            margin: 2rem 0 1rem 0;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .letter-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .letter-content ul {
+            margin: 1rem 0 1.5rem 2rem;
+        }
+
+        .letter-content li {
+            margin-bottom: 0.5rem;
+            color: var(--accent-grey);
+        }
+
+        .signature {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--light-grey);
+        }
+
+        .signature strong {
+            color: var(--clifford-blue);
+        }
+
+        /* Analysis Panel */
+        .analysis-panel {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.08);
+            border: 1px solid #e5e7eb;
+            height: fit-content;
+            position: sticky;
+            top: 120px;
+        }
+
+        .mentor-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--clifford-light-blue);
+        }
+
+        .mentor-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--clifford-blue), var(--clifford-teal));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            box-shadow: 0 4px 15px rgba(0, 102, 204, 0.2);
+        }
+
+        .mentor-icon svg {
+            width: 24px;
+            height: 24px;
+            stroke: var(--white);
+            stroke-width: 2;
+        }
+
+        .mentor-header h3 {
+            color: var(--primary-black);
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .section-icon {
+            width: 32px;
+            height: 32px;
+            background: rgba(0, 102, 204, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6px;
+        }
+
+        .section-icon svg {
+            width: 18px;
+            height: 18px;
+            stroke: var(--clifford-blue);
+            stroke-width: 2;
+        }
+
+        .section-header h4 {
+            color: var(--clifford-blue);
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .analysis-section {
+            margin-bottom: 2rem;
+        }
+
+        .analysis-section h4 {
+            color: var(--clifford-blue);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .issue-list {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .issue-list li {
+            padding: 0.8rem;
+            margin-bottom: 0.5rem;
+            background: var(--highlight-yellow);
+            border-radius: 6px;
+            border-left: 3px solid #f59e0b;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* Chat Interface */
+        .chat-container {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 2px solid var(--clifford-light-blue);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            background: var(--white);
+            box-shadow: 0 4px 15px rgba(0, 102, 204, 0.1);
+        }
+
+        .mentor-message, .user-message {
+            display: flex;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+            align-items: flex-start;
+        }
+
+        .user-message {
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            padding: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .message-avatar svg {
+            width: 20px;
+            height: 20px;
+            stroke: var(--white);
+            stroke-width: 2;
+        }
+
+        .mentor-message .message-avatar {
+            background: linear-gradient(135deg, var(--clifford-blue), var(--clifford-teal));
+        }
+
+        .user-message .message-avatar {
+            background: linear-gradient(135deg, var(--clifford-purple), var(--clifford-orange));
+        }
+
+        .message-content {
+            background: var(--white);
+            padding: 1rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            max-width: 85%;
+            line-height: 1.5;
+        }
+
+        .user-message .message-content {
+            background: linear-gradient(135deg, var(--clifford-purple), var(--clifford-blue));
+            color: var(--white);
+        }
+
+        .message-content p {
+            margin-bottom: 0.5rem;
+        }
+
+        .message-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        .typing-indicator .message-content {
+            font-style: italic;
+            opacity: 0.7;
+        }
+
+        .chat-input-container {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        #chatInput {
+            flex: 1;
+            min-height: 60px;
+            padding: 0.8rem;
+            border: 2px solid var(--light-grey);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            resize: vertical;
+            transition: border-color 0.3s ease;
+        }
+
+        #chatInput:focus {
+            outline: none;
+            border-color: var(--clifford-blue);
+            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+        }
+
+        /* Clarification Section */
+        .clarification-section {
+            margin-bottom: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--light-grey);
+        }
+
+        .section-description {
+            color: var(--medium-grey);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .add-item-container {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        #newClarification {
+            flex: 1;
+            padding: 0.8rem;
+            border: 2px solid var(--light-grey);
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            transition: border-color 0.3s ease;
+        }
+
+        #newClarification:focus {
+            outline: none;
+            border-color: var(--clifford-blue);
+            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+        }
+
+        .user-list {
+            list-style: none;
+            margin-bottom: 1rem;
+        }
+
+        .user-list li {
+            padding: 0.8rem;
+            margin-bottom: 0.5rem;
+            background: var(--light-grey);
+            border-radius: 6px;
+            border-left: 3px solid var(--clifford-blue);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .list-item-text {
+            flex: 1;
+        }
+
+        .remove-btn {
+            background: none;
+            border: none;
+            color: var(--medium-grey);
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            margin-left: 0.5rem;
+            font-weight: bold;
+        }
+
+        .remove-btn:hover {
+            background: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+            transform: scale(1.1);
+        }
+
+        .btn-small {
+            padding: 0.6rem 1rem;
+            font-size: 0.9rem;
+        }
+
+        .notes-section {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--light-grey);
+        }
+
+        .notes-section h4 {
+            color: var(--primary-black);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        #notes {
+            width: 100%;
+            min-height: 120px;
+            padding: 1rem;
+            border: 2px solid var(--light-grey);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            resize: vertical;
+            transition: border-color 0.3s ease;
+        }
+
+        #notes:focus {
+            outline: none;
+            border-color: var(--clifford-blue);
+            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--clifford-blue), var(--clifford-teal));
+            color: var(--white);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--clifford-teal), var(--clifford-blue));
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 102, 204, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--light-grey);
+            color: var(--primary-black);
+            border: 2px solid var(--light-grey);
+        }
+
+        .btn-secondary:hover {
+            background: var(--white);
+            border-color: var(--primary-grey);
+            transform: translateY(-1px);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .document-layout {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .analysis-panel {
+                position: static;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .header-left {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .intro-section {
+                padding: 2rem;
+            }
+
+            .document-section {
+                padding: 2rem;
+            }
+
+            .letter-meta {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+    <script src="js/gcpConfig.js"></script>
+    <script src="js/mentorAgent.js"></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="header-left">
+                    <a href="index.html" class="logo">GrowToCourt</a>
+                    <div class="step-indicator">
+                        <div class="step-number">1</div>
+                        <span>Initial Client Demand</span>
+                    </div>
+                </div>
+                <div class="nav-buttons">
+                    <a href="index.html" class="nav-btn">← Home</a>
+                    <a href="document-review.html" class="nav-btn">Next Step →</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="intro-section">
+                <h2>📋 Task: Build Your Clarification List</h2>
+                <p>
+                    <strong>Your Mission:</strong> Read through QuantumLink AI's demand letter and create a comprehensive list of areas that need clarification before you can properly advise the client. Think like a lawyer - what information is missing? What terms are unclear? What risks need to be explored?
+                </p>
+                <p>
+                    <strong>Goal:</strong> Build a thorough clarification list that demonstrates your analytical thinking. The AI Mentor will guide you with hints and provide feedback on your analysis.
+                </p>
+            </div>
+
+            <div class="document-layout">
+                <div class="document-section">
+                    <div class="letterhead">
+                        <h1>QuantumLink AI Ltd</h1>
+                        <p>
+                            Tech City, London EC1V 2NX<br>
+                            United Kingdom<br>
+                            Email: legal@quantumlink.ai
+                        </p>
+                    </div>
+
+                    <div class="letter-meta">
+                        <div>
+                            <strong>To:</strong>
+                            Clifford Chance LLP<br>
+                            10 Upper Bank Street<br>
+                            London E14 5JJ
+                        </div>
+                        <div>
+                            <strong>Date:</strong> 20 January 2025<br>
+                            <strong>From:</strong> Legal + Product Teams<br>
+                            <strong>Re:</strong> Technology Services Agreement
+                        </div>
+                    </div>
+
+                    <div class="letter-content">
+                        <p><strong>Dear Clifford & Chance,</strong></p>
+
+                        <p>We're QuantumLink AI Ltd, a UK-based startup building advanced AI tools for legal document automation. As we prepare to launch our next-generation SaaS platform, we are entering into a strategic partnership with NeuroSys Technologies Inc., a U.S.-based cloud infrastructure provider.</p>
+
+                        <p>We need help creating a Technology Services Agreement that will govern this relationship and protect our business as we scale. The contract must be future-proof, clearly define each party's responsibilities, and safeguard our key assets—especially our intellectual property and client data.</p>
+
+                        <h3>Here's what we need from the contract:</h3>
+
+                        <h4>1. Ownership of AI and IP</h4>
+                        <p>We will be using NeuroSys's infrastructure to train and deploy proprietary AI models. It's essential that the contract confirms that all AI outputs, models, and derivative works remain fully owned by QuantumLink, even if they are processed or trained on their systems.</p>
+
+                        <h4>2. Service Level Commitments</h4>
+                        <p>Our product's reliability depends on NeuroSys's cloud performance. We want detailed SLAs outlining uptime guarantees, speed/performance benchmarks, and specific penalties or credits for downtime or service failures.</p>
+
+                        <h4>3. Data Privacy and Jurisdiction Controls</h4>
+                        <p>We handle sensitive legal data and are subject to GDPR and other UK/EU privacy laws. We need contract terms that prevent our data from being transferred to or stored in jurisdictions outside the UK/EU, and we want the right to audit compliance.</p>
+
+                        <h4>4. Change Management Clauses</h4>
+                        <p>As we iterate on the product, our infrastructure needs may evolve. We want mechanisms to manage changes in scope without triggering excessive additional costs or giving NeuroSys too much leverage. We've studied cases like <em>De Beers v Atos</em>, and want to avoid similar pitfalls.</p>
+
+                        <h4>5. Exit Strategy and Migration Terms</h4>
+                        <p>If the relationship ends, we want clear, enforceable terms for how data and infrastructure will be handed back to us—without being locked into proprietary systems or penalized. We need to protect our ability to scale or switch providers without business disruption.</p>
+
+                        <h4>6. Liability and Indemnification Structure</h4>
+                        <p>We're open to a reasonable liability cap, but we also want carve-outs for serious issues like IP infringement, data breaches, or failure to comply with privacy laws. The contract should also require NeuroSys to indemnify us in those cases.</p>
+
+                        <h3>Our Vision</h3>
+                        <p>This agreement is a cornerstone of our platform. We're not just looking for legal drafting—we want support building a smart, flexible, and defensible contract, with protections inspired by real-world lessons from high-stakes technology disputes.</p>
+
+                        <p>We're looking for a legal-tech solution that can help us:</p>
+                        <ul>
+                            <li>Generate and customize appropriate contract clauses</li>
+                            <li>Flag potential risks or red flags</li>
+                            <li>Suggest fallback or negotiation strategies</li>
+                            <li>Track key obligations post-signature</li>
+                        </ul>
+
+                        <p>This is a mission-critical engagement for us, and we'd love to collaborate with a team that understands both the legal risks and the technical realities of working at the intersection of AI and infrastructure.</p>
+
+                        <p><strong>Let us know how you can help.</strong></p>
+
+                        <div class="signature">
+                            <p>
+                                <strong>QuantumLink AI Ltd</strong><br>
+                                Legal + Product Teams<br>
+                                London, UK
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="analysis-panel">
+                    <div class="mentor-header">
+                        <div class="mentor-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                            </svg>
+                        </div>
+                        <h3>AI Legal Mentor</h3>
+                    </div>
+                    
+                    <div class="chat-container" id="chatContainer">
+                        <div class="mentor-message">
+                            <div class="message-avatar">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                </svg>
+                            </div>
+                            <div class="message-content">
+                                <p><strong>Welcome! I'm your AI Legal Mentor.</strong></p>
+                                <p>I'm here to help you develop your analytical skills by guiding you through this client demand analysis. My teaching approach is to provide hints and ask probing questions rather than give direct answers.</p>
+                                <p><strong>Let's start:</strong> Read through QuantumLink's letter section by section. As you read, ask yourself: "What would I need to know to properly advise this client?"</p>
+                                <p><strong>Tip:</strong> Look for vague terms, missing details, and potential risks. Focus on key areas like IP ownership, technical SLAs, data privacy, server locations, commercial risk, and liability. Good lawyers ask lots of questions!</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chat-input-container">
+                        <textarea id="chatInput" placeholder="Ask me for hints about what to look for, or share your thoughts..."></textarea>
+                        <button onclick="sendMessage()" class="btn btn-primary">Send</button>
+                    </div>
+
+                    <div class="clarification-section">
+                        <div class="section-header">
+                            <div class="section-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                                </svg>
+                            </div>
+                            <h4>Your Clarification List</h4>
+                        </div>
+                        <p class="section-description">Build your own list of areas that need clarification:</p>
+                        
+                        <div class="add-item-container">
+                            <input type="text" id="newClarification" placeholder="What needs clarification? (e.g., 'Specific SLA requirements')" />
+                            <button onclick="addClarification()" class="btn btn-secondary btn-small">Add</button>
+                        </div>
+                        
+                        <ul id="clarificationList" class="user-list">
+                            <!-- User's clarification items will appear here -->
+                        </ul>
+                        
+                        <button onclick="requestFeedback()" class="btn btn-primary" id="feedbackBtn" style="display: none;">
+                            Get Mentor Feedback 🎯
+                        </button>
+                    </div>
+
+                    <div class="notes-section">
+                        <div class="section-header">
+                            <div class="section-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                </svg>
+                            </div>
+                            <h4>Your Notes</h4>
+                        </div>
+                        <textarea id="notes" placeholder="Record your thoughts and observations..."></textarea>
+                        <button onclick="saveNotes()" class="btn btn-secondary btn-small">Save Notes</button>
+                    </div>
+
+                    <div class="action-buttons">
+                        <a href="document-review.html" class="btn btn-primary">Continue to Research →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        /*
+        ==========================================
+        SIMPLIFIED AI MENTOR SYSTEM - PROVEN APPROACH
+        ==========================================
+        
+        This system provides intelligent mentoring with a focus on what works:
+        
+        🎯 CORE PRINCIPLE: Always try to identify what the user is missing
+        
+        📋 QUESTION DETECTION (Simple & Reliable):
+        - "What am I missing?" → Find gaps in their analysis
+        - "How am I doing?" → Provide feedback on progress  
+        - "What should I focus on?" → Help prioritize items
+        - Topic-specific questions → Find missing items for that topic
+        - Everything else → Default to finding missing items
+        
+        🔧 CORE FUNCTIONS (3 essential ones):
+        - identifyMissingItems - Find gaps in clarification list (PRIMARY)
+        - validateApproach - Provide constructive feedback
+        - prioritizeItems - Help focus on most important areas
+        
+        🎯 SMART DEFAULTS:
+        - Primary default: Always identify missing items
+        - Topic-aware: Focuses on specific areas when detected
+        - Simple pattern matching: Reliable keyword detection
+        - Robust fallback: Always provides helpful response
+        
+        📋 USAGE:
+        - Run exportForAIStudio() in console for Google AI Studio integration
+        - Works great locally with pattern matching
+        - Simple, proven, reliable approach
+        
+        ==========================================
+        */
+
+        // Template solution for mentor guidance
+        const templateSolution = {
+            intellectual_property: [
+                "Definition of 'proprietary AI models' and scope of IP ownership",
+                "Clarification of 'derivative works' and AI training outputs",
+                "Rights to pre-existing IP vs newly created IP",
+                "Background IP ownership and licensing arrangements",
+                "IP indemnification and warranty provisions"
+            ],
+            technical_sla: [
+                "Specific uptime percentage targets and measurement methodology",
+                "Performance benchmarks definition (speed, latency, throughput)",
+                "Service credit calculation and penalty structure",
+                "Planned vs unplanned downtime distinctions",
+                "Escalation procedures for service failures"
+            ],
+            data_privacy: [
+                "Specific data residency requirements and geographic restrictions",
+                "GDPR compliance mechanisms and data processing agreements",
+                "Cross-border data transfer prohibitions and safeguards",
+                "Audit rights scope, frequency, and access procedures",
+                "Data breach notification and response procedures"
+            ],
+            server_location: [
+                "Physical server location and data center jurisdictions",
+                "Where AI computation and model training actually occurs",
+                "Backup and disaster recovery server locations",
+                "Jurisdictional implications for legal compliance",
+                "Right to specify or restrict processing locations"
+            ],
+            commercial_risk: [
+                "Change management cost controls and approval thresholds",
+                "Scope creep prevention mechanisms",
+                "Pricing escalation caps and benchmarking",
+                "Contract value and payment terms clarity",
+                "De Beers v Atos case lessons and protective clauses"
+            ],
+            exit_termination: [
+                "Data extraction and migration assistance requirements",
+                "Proprietary system lock-in prevention measures",
+                "Termination notice periods and transition support",
+                "Data deletion and return procedures",
+                "Business continuity during provider transition"
+            ],
+            liability_indemnity: [
+                "Liability cap definitions and carve-out exceptions",
+                "IP infringement indemnification scope",
+                "Data breach liability allocation",
+                "Privacy law compliance indemnification",
+                "Mutual vs one-sided indemnity provisions"
+            ]
+        };
+
+        // AI Mentor responses for different types of questions
+        const mentorResponses = {
+            hint_general: [
+                "Excellent question! This AI startup scenario has unique complexities. Think systematically: IP ownership, Technical SLAs, Data privacy, Commercial risks, Exit strategies, and Liability structures. What's missing or vague in each area?",
+                "Smart analytical thinking! QuantumLink is a startup dealing with AI and sensitive legal data. What assumptions are they making? What details might seem 'obvious' to tech people but need legal precision? What could go catastrophically wrong?",
+                "Great approach! Consider this: NeuroSys (the US provider) will want maximum flexibility. QuantumLink wants protection. Where are the tension points? What terms could be interpreted differently by each party?"
+            ],
+            hint_sla: [
+                "Sharp thinking on SLAs! QuantumLink's entire business depends on NeuroSys's performance. What specific metrics matter for AI training and deployment? How do you measure 'speed/performance benchmarks'? What happens if AI training jobs fail mid-process?",
+                "Excellent SLA focus! Think like a startup: What's the difference between planned vs unplanned downtime? How do you calculate service credits? What if NeuroSys's failures cause QuantumLink to miss their own customer SLAs?"
+            ],
+            hint_liability: [
+                "Smart liability focus! QuantumLink wants 'carve-outs for serious issues.' What exactly are these? Think: IP theft, data breaches, privacy violations. How do you define these exceptions? What should be excluded from liability caps?",
+                "Excellent liability thinking! Consider the startup perspective: What could kill QuantumLink's business? IP disputes? GDPR fines? Customer data breaches? How do you structure indemnification to protect against existential risks?"
+            ],
+            hint_data: [
+                "Brilliant data privacy focus! QuantumLink handles 'sensitive legal data' and wants UK/EU-only storage. But what exactly constitutes 'transfer'? What about processing? Backup locations? How do you audit a US company's compliance?",
+                "Great data thinking! Consider the AI angle: What happens to client data used for AI training? Is it anonymized? Can it be reconstructed? What about model outputs that might contain traces of input data?"
+            ],
+            hint_server_location: [
+                "Excellent server location thinking! NeuroSys is US-based, but where are their actual servers? QuantumLink wants UK/EU-only - but what about AI computation? Training? Backup servers? Emergency failover locations?",
+                "Smart focus on server locations! Think beyond just 'data storage' - where does the actual AI processing happen? What if NeuroSys uses third-party cloud providers? How do you contractually control physical server locations?"
+            ],
+            hint_commercial: [
+                "Smart commercial thinking! QuantumLink mentions 'De Beers v Atos' - that's about scope creep and cost escalation. What specific protections do they need? How do you define 'excessive additional costs'? What triggers change approval?",
+                "Excellent commercial awareness! Startups are cash-sensitive. What payment terms protect QuantumLink? How do you prevent vendor lock-in through pricing? What happens if their infrastructure needs suddenly spike?"
+            ],
+            encouragement: [
+                "You're developing strong analytical skills! Keep going - what other areas of the letter raise questions? Remember, it's better to ask too many questions than too few.",
+                "Excellent progress! You're thinking systematically like a senior lawyer. What other terms or concepts in the letter seem vague or need more detail?",
+                "Well done! You're building the kind of thorough analysis that impresses clients and senior partners. What else jumps out as needing clarification?"
+            ],
+            feedback_positive: [
+                "Excellent work! You've identified the key areas that need clarification. This shows strong analytical thinking.",
+                "Well done! You've spotted the important gaps in the client's request. This is exactly what a senior lawyer would want to see.",
+                "Great job! You've demonstrated good commercial awareness and attention to detail. These are crucial lawyering skills."
+            ],
+            feedback_suggestions: [
+                "Good start! You might also want to consider the regulatory landscape - what specific FCA/PRA requirements apply to cloud services for banks?",
+                "Nice work! Don't forget to think about the technical integration aspects - how complex will this migration be?",
+                "Well identified! You could also explore the intellectual property aspects - who owns what data and systems?"
+            ]
+        };
+
+        let clarificationItems = [];
+        let chatHistory = [];
+        let mentorAgent = null;
+
+        // Function definitions for Google AI Studio integration
+        const mentorFunctions = {
+            analyzeQuestion: {
+                name: "analyzeQuestion",
+                description: "Analyze the type of question the user is asking and determine the appropriate response strategy",
+                parameters: {
+                    type: "object",
+                    properties: {
+                        questionType: {
+                            type: "string",
+                            enum: ["general_help", "missing_items", "specific_topic", "feedback_request", "clarification_needed", "comparison_request", "priority_question", "example_request", "validation_seeking", "next_steps"],
+                            description: "The type of question being asked"
+                        },
+                        topic: {
+                            type: "string",
+                            enum: ["intellectual_property", "technical_sla", "data_privacy", "server_location", "commercial_risk", "exit_termination", "liability_indemnity", "regulatory_compliance", "contract_structure", "negotiation_strategy", "general"],
+                            description: "The specific topic area the question relates to"
+                        },
+                        responseStrategy: {
+                            type: "string",
+                            enum: ["provide_hint", "ask_probing_question", "suggest_missing_areas", "encourage_exploration", "compare_options", "prioritize_items", "give_example", "validate_approach", "guide_next_steps"],
+                            description: "The recommended response strategy"
+                        },
+                        confidence: {
+                            type: "number",
+                            minimum: 0,
+                            maximum: 1,
+                            description: "Confidence level in question type detection (0-1)"
+                        }
+                    },
+                    required: ["questionType", "topic", "responseStrategy"]
+                }
+            },
+
+            identifyMissingItems: {
+                name: "identifyMissingItems",
+                description: "Compare user's clarification list against the template solution to identify missing critical items",
+                parameters: {
+                    type: "object",
+                    properties: {
+                        userItems: {
+                            type: "array",
+                            items: { type: "string" },
+                            description: "The user's current clarification list items"
+                        },
+                        missingCategories: {
+                            type: "array",
+                            items: {
+                                type: "object",
+                                properties: {
+                                    category: {
+                                        type: "string",
+                                        enum: ["intellectual_property", "technical_sla", "data_privacy", "server_location", "commercial_risk", "exit_termination", "liability_indemnity"]
+                                    },
+                                    missingItems: {
+                                        type: "array",
+                                        items: { type: "string" }
+                                    },
+                                    priority: {
+                                        type: "string",
+                                        enum: ["critical", "high", "medium", "low"]
+                                    },
+                                    completionPercentage: {
+                                        type: "number",
+                                        minimum: 0,
+                                        maximum: 100
+                                    }
+                                }
+                            }
+                        },
+                        suggestedHints: {
+                            type: "array",
+                            items: { type: "string" },
+                            description: "Specific hints to guide the user toward missing items"
+                        },
+                        overallCompleteness: {
+                            type: "number",
+                            minimum: 0,
+                            maximum: 100,
+                            description: "Overall completion percentage of clarification list"
+                        }
+                    },
+                    required: ["userItems", "missingCategories", "suggestedHints", "overallCompleteness"]
+                }
+            },
+
+            prioritizeItems: {
+                name: "prioritizeItems",
+                description: "Help user understand which clarification items are most important to focus on first",
+                parameters: {
+                    type: "object",
+                    properties: {
+                        userItems: {
+                            type: "array",
+                            items: { type: "string" },
+                            description: "Current user clarification items"
+                        },
+                        prioritizedList: {
+                            type: "array",
+                            items: {
+                                type: "object",
+                                properties: {
+                                    item: { type: "string" },
+                                    priority: { type: "string", enum: ["critical", "high", "medium", "low"] },
+                                    reasoning: { type: "string" }
+                                }
+                            }
+                        },
+                        nextSteps: {
+                            type: "array",
+                            items: { type: "string" },
+                            description: "Recommended next steps based on priorities"
+                        }
+                    },
+                    required: ["userItems", "prioritizedList"]
+                }
+            },
+
+            validateApproach: {
+                name: "validateApproach",
+                description: "Validate user's approach and provide constructive feedback",
+                parameters: {
+                    type: "object",
+                    properties: {
+                        userItems: {
+                            type: "array",
+                            items: { type: "string" }
+                        },
+                        strengths: {
+                            type: "array",
+                            items: { type: "string" },
+                            description: "What the user is doing well"
+                        },
+                        improvements: {
+                            type: "array",
+                            items: { type: "string" },
+                            description: "Areas for improvement"
+                        },
+                        encouragement: {
+                            type: "string",
+                            description: "Encouraging message about progress"
+                        },
+                        confidenceLevel: {
+                            type: "string",
+                            enum: ["beginner", "developing", "proficient", "advanced"],
+                            description: "Assessment of user's current level"
+                        }
+                    },
+                    required: ["userItems", "strengths", "improvements", "encouragement"]
+                }
+            },
+
+            compareOptions: {
+                name: "compareOptions",
+                description: "Help user compare different approaches or options for a specific issue",
+                parameters: {
+                    type: "object",
+                    properties: {
+                        topic: {
+                            type: "string",
+                            enum: ["intellectual_property", "technical_sla", "data_privacy", "server_location", "commercial_risk", "exit_termination", "liability_indemnity"]
+                        },
+                        options: {
+                            type: "array",
+                            items: {
+                                type: "object",
+                                properties: {
+                                    option: { type: "string" },
+                                    pros: { type: "array", items: { type: "string" } },
+                                    cons: { type: "array", items: { type: "string" } },
+                                    riskLevel: { type: "string", enum: ["low", "medium", "high"] }
+                                }
+                            }
+                        },
+                        recommendation: { type: "string" }
+                    },
+                    required: ["topic", "options"]
+                }
+            },
+
+            provideExample: {
+                name: "provideExample",
+                description: "Provide relevant examples or analogies to help understanding",
+                parameters: {
+                    type: "object",
+                    properties: {
+                        topic: {
+                            type: "string",
+                            enum: ["intellectual_property", "technical_sla", "data_privacy", "server_location", "commercial_risk", "exit_termination", "liability_indemnity"]
+                        },
+                        exampleType: {
+                            type: "string",
+                            enum: ["case_study", "analogy", "precedent", "best_practice", "common_mistake"]
+                        },
+                        example: { type: "string" },
+                        explanation: { type: "string" },
+                        applicationToScenario: { type: "string" }
+                    },
+                    required: ["topic", "exampleType", "example", "explanation"]
+                }
+            },
+
+            guideNextSteps: {
+                name: "guideNextSteps",
+                description: "Provide guidance on what the user should do next",
+                parameters: {
+                    type: "object",
+                    properties: {
+                        currentProgress: {
+                            type: "object",
+                            properties: {
+                                completionPercentage: { type: "number" },
+                                strongAreas: { type: "array", items: { type: "string" } },
+                                weakAreas: { type: "array", items: { type: "string" } }
+                            }
+                        },
+                        recommendedActions: {
+                            type: "array",
+                            items: {
+                                type: "object",
+                                properties: {
+                                    action: { type: "string" },
+                                    priority: { type: "string", enum: ["immediate", "soon", "later"] },
+                                    timeEstimate: { type: "string" },
+                                    difficulty: { type: "string", enum: ["easy", "medium", "challenging"] }
+                                }
+                            }
+                        },
+                        readinessForNextPhase: {
+                            type: "boolean",
+                            description: "Whether user is ready to move to document review phase"
+                        }
+                    },
+                    required: ["currentProgress", "recommendedActions", "readinessForNextPhase"]
+                }
+            },
+
+            explainConcept: {
+                name: "explainConcept",
+                description: "Explain legal or commercial concepts in accessible terms",
+                parameters: {
+                    type: "object",
+                    properties: {
+                        concept: { type: "string" },
+                        simpleExplanation: { type: "string" },
+                        whyItMatters: { type: "string" },
+                        commonMistakes: {
+                            type: "array",
+                            items: { type: "string" }
+                        },
+                        relatedConcepts: {
+                            type: "array",
+                            items: { type: "string" }
+                        }
+                    },
+                    required: ["concept", "simpleExplanation", "whyItMatters"]
+                }
+            }
+        };
+
+        // Send message to AI Mentor
+        async function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            // Add user message to chat
+            addMessageToChat(message, 'user');
+            input.value = '';
+
+            // Show typing indicator
+            addMessageToChat('Thinking...', 'mentor', true);
+
+            try {
+                // Generate mentor response using GCP agent
+                if (mentorAgent) {
+                    const response = await mentorAgent.generateResponse(message, clarificationItems);
+                    
+                    // Remove typing indicator
+                    removeTypingIndicator();
+                    
+                    // Add mentor response
+                    addMessageToChat(response.message, 'mentor');
+                } else {
+                    // Fallback to static response if agent not initialized
+                    removeTypingIndicator();
+                    const fallbackResponse = generateMentorResponse(message);
+                    addMessageToChat(fallbackResponse, 'mentor');
+                }
+            } catch (error) {
+                console.error('Error getting mentor response:', error);
+                removeTypingIndicator();
+                addMessageToChat("I'm having some technical difficulties. Let me try a different approach to help you with your analysis.", 'mentor');
+            }
+        }
+
+        // Clean up message formatting for chat display
+        function cleanMessageForDisplay(message) {
+            // Remove markdown-style formatting that doesn't render well in chat
+            return message
+                .replace(/\*\*(.*?)\*\*/g, '$1')  // Remove ** bold markers
+                .replace(/\*(.*?)\*/g, '$1')      // Remove * italic markers  
+                .replace(/•/g, '-')               // Replace bullet points with dashes
+                .replace(/🔴\s*/g, '')            // Remove red circle emoji
+                .replace(/🟡\s*/g, '')            // Remove yellow circle emoji
+                .replace(/🎯\s*/g, '')            // Remove target emoji
+                .replace(/✅\s*/g, '')            // Remove checkmark emoji
+                .trim();
+        }
+
+        // Add message to chat container
+        function addMessageToChat(message, sender, isTyping = false) {
+            const chatContainer = document.getElementById('chatContainer');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = sender === 'user' ? 'user-message' : 'mentor-message';
+            
+            if (isTyping) {
+                messageDiv.classList.add('typing-indicator');
+                messageDiv.id = 'typing-indicator';
+            }
+            
+            // Clean message for better display if it's from mentor
+            const displayMessage = sender === 'mentor' ? cleanMessageForDisplay(message) : message;
+            
+            const mentorIcon = `
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                </svg>
+            `;
+            
+            const userIcon = `
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+            `;
+            
+            const avatar = sender === 'user' ? userIcon : mentorIcon;
+            
+            messageDiv.innerHTML = `
+                <div class="message-avatar">${avatar}</div>
+                <div class="message-content">
+                    <p>${displayMessage}</p>
+                </div>
+            `;
+            
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+            
+            // Store in history (don't store typing indicators)
+            if (!isTyping) {
+                chatHistory.push({ sender, message });
+            }
+        }
+
+        // Remove typing indicator
+        function removeTypingIndicator() {
+            const typingIndicator = document.getElementById('typing-indicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+
+        // Function to call Google AI Studio with function calling
+        async function callAIStudioWithFunctions(userMessage) {
+            // This would be your actual Google AI Studio API call
+            // For now, we'll simulate the response structure
+            
+            const context = {
+                userMessage: userMessage,
+                currentClarificationItems: clarificationItems,
+                templateSolution: templateSolution,
+                chatHistory: chatHistory.slice(-5) // Last 5 messages for context
+            };
+
+            // Simulate AI Studio function calling response
+            return simulateAIStudioResponse(userMessage, context);
+        }
+
+        // Simulate AI Studio response with function calling
+        function simulateAIStudioResponse(userMessage, context) {
+            const msg = userMessage.toLowerCase();
+            
+            // Initialize with default values
+            let questionType = "missing_items"; // DEFAULT: Always try to find what's missing
+            let topic = "general";
+            let responseStrategy = "suggest_missing_areas";
+            let confidence = 0.5;
+
+            // Pattern matching for specific question types
+            
+            // MISSING ITEMS - Highest priority patterns
+            if (msg.includes('missing') || msg.includes('what am i missing') || msg.includes('what else') || 
+                msg.includes('have i covered') || msg.includes('anything else') || msg.includes('what about') ||
+                msg.includes('forgot') || msg.includes('overlooked') || msg.includes('left out')) {
+                questionType = "missing_items";
+                responseStrategy = "suggest_missing_areas";
+                confidence = 0.9;
+            }
+            
+            // PRIORITY QUESTIONS
+            else if (msg.includes('priority') || msg.includes('most important') || msg.includes('first') ||
+                     msg.includes('urgent') || msg.includes('critical') || msg.includes('focus on') ||
+                     msg.includes('start with') || msg.includes('which should i')) {
+                questionType = "priority_question";
+                responseStrategy = "prioritize_items";
+                confidence = 0.8;
+            }
+            
+            // VALIDATION SEEKING
+            else if (msg.includes('how am i doing') || msg.includes('is this good') || msg.includes('on the right track') ||
+                     msg.includes('feedback') || msg.includes('assess') || msg.includes('evaluate') ||
+                     msg.includes('check my work') || msg.includes('review my') || msg.includes('thoughts on')) {
+                questionType = "validation_seeking";
+                responseStrategy = "validate_approach";
+                confidence = 0.8;
+            }
+            
+            // COMPARISON REQUESTS
+            else if (msg.includes('compare') || msg.includes('versus') || msg.includes('vs') || msg.includes('better') ||
+                     msg.includes('difference') || msg.includes('pros and cons') || msg.includes('options') ||
+                     msg.includes('alternatives') || msg.includes('which approach')) {
+                questionType = "comparison_request";
+                responseStrategy = "compare_options";
+                confidence = 0.8;
+            }
+            
+            // EXAMPLE REQUESTS
+            else if (msg.includes('example') || msg.includes('instance') || msg.includes('case study') ||
+                     msg.includes('precedent') || msg.includes('similar') || msg.includes('like') ||
+                     msg.includes('for example') || msg.includes('such as') || msg.includes('analogous')) {
+                questionType = "example_request";
+                responseStrategy = "give_example";
+                confidence = 0.8;
+            }
+            
+            // NEXT STEPS
+            else if (msg.includes('next') || msg.includes('what should i do') || msg.includes('where do i go') ||
+                     msg.includes('ready for') || msg.includes('move on') || msg.includes('proceed') ||
+                     msg.includes('continue') || msg.includes('then what') || msg.includes('after this')) {
+                questionType = "next_steps";
+                responseStrategy = "guide_next_steps";
+                confidence = 0.8;
+            }
+            
+            // CLARIFICATION NEEDED
+            else if (msg.includes('what does') || msg.includes('what is') || msg.includes('explain') ||
+                     msg.includes('define') || msg.includes('meaning') || msg.includes('understand') ||
+                     msg.includes('confused') || msg.includes('clarify') || msg.includes('help me understand')) {
+                questionType = "clarification_needed";
+                responseStrategy = "ask_probing_question";
+                confidence = 0.7;
+            }
+            
+            // SPECIFIC TOPIC DETECTION (but still suggest missing items for that topic)
+            if (msg.includes('ip') || msg.includes('intellectual property') || msg.includes('ownership') ||
+                msg.includes('proprietary') || msg.includes('ai models') || msg.includes('derivative')) {
+                topic = "intellectual_property";
+                if (questionType === "missing_items") {
+                    responseStrategy = "suggest_missing_areas";
+                    confidence = 0.9;
+                }
+            } else if (msg.includes('sla') || msg.includes('service level') || msg.includes('uptime') ||
+                       msg.includes('performance') || msg.includes('availability') || msg.includes('benchmarks')) {
+                topic = "technical_sla";
+                if (questionType === "missing_items") {
+                    responseStrategy = "suggest_missing_areas";
+                    confidence = 0.9;
+                }
+            } else if (msg.includes('data') || msg.includes('gdpr') || msg.includes('privacy') ||
+                       msg.includes('protection') || msg.includes('residency') || msg.includes('compliance')) {
+                topic = "data_privacy";
+                if (questionType === "missing_items") {
+                    responseStrategy = "suggest_missing_areas";
+                    confidence = 0.9;
+                }
+            } else if (msg.includes('liability') || msg.includes('indemnity') || msg.includes('insurance') ||
+                       msg.includes('risk') || msg.includes('breach') || msg.includes('infringement')) {
+                topic = "liability_indemnity";
+                if (questionType === "missing_items") {
+                    responseStrategy = "suggest_missing_areas";
+                    confidence = 0.9;
+                }
+            } else if (msg.includes('exit') || msg.includes('termination') || msg.includes('migration') ||
+                       msg.includes('vendor lock') || msg.includes('transition') || msg.includes('end')) {
+                topic = "exit_termination";
+                if (questionType === "missing_items") {
+                    responseStrategy = "suggest_missing_areas";
+                    confidence = 0.9;
+                }
+            } else if (msg.includes('cost') || msg.includes('commercial') || msg.includes('change') ||
+                       msg.includes('budget') || msg.includes('payment') || msg.includes('scope') ||
+                       msg.includes('de beers') || msg.includes('atos')) {
+                topic = "commercial_risk";
+                if (questionType === "missing_items") {
+                    responseStrategy = "suggest_missing_areas";
+                    confidence = 0.9;
+                }
+            } else if (msg.includes('regulatory') || msg.includes('fca') || msg.includes('pra') ||
+                       msg.includes('regulation') || msg.includes('compliance') || msg.includes('legal requirement')) {
+                topic = "regulatory_compliance";
+                if (questionType === "missing_items") {
+                    responseStrategy = "suggest_missing_areas";
+                    confidence = 0.9;
+                }
+            } else if (msg.includes('contract') || msg.includes('structure') || msg.includes('clause') ||
+                       msg.includes('provision') || msg.includes('term') || msg.includes('agreement')) {
+                topic = "contract_structure";
+                if (questionType === "missing_items") {
+                    responseStrategy = "suggest_missing_areas";
+                    confidence = 0.9;
+                }
+            } else if (msg.includes('negotiation') || msg.includes('strategy') || msg.includes('approach') ||
+                       msg.includes('tactics') || msg.includes('position') || msg.includes('leverage')) {
+                topic = "negotiation_strategy";
+                if (questionType === "missing_items") {
+                    responseStrategy = "suggest_missing_areas";
+                    confidence = 0.9;
+                }
+            }
+
+            // GENERAL HELP - Only if really generic
+            if (msg.includes('help') && !msg.includes('help me understand') && !msg.includes('help with') &&
+                questionType === "missing_items" && topic === "general") {
+                questionType = "general_help";
+                responseStrategy = "suggest_missing_areas"; // Still default to finding missing items
+                confidence = 0.6;
+            }
+
+            // If user has very few items, always suggest missing areas regardless of question type
+            if (context.currentClarificationItems.length < 3) {
+                questionType = "missing_items";
+                responseStrategy = "suggest_missing_areas";
+                confidence = Math.max(confidence, 0.8);
+            }
+
+            return {
+                questionType,
+                topic,
+                responseStrategy,
+                confidence,
+                functionCalls: [
+                    {
+                        name: "analyzeQuestion",
+                        parameters: { questionType, topic, responseStrategy, confidence }
+                    }
+                ]
+            };
+        }
+
+        // Generate appropriate mentor response using function calling
+        function generateMentorResponse(userMessage) {
+            const msg = userMessage.toLowerCase();
+            
+            // Primary detection: What am I missing?
+            if (msg.includes('missing') || msg.includes('what am i missing') || msg.includes('what else') || 
+                msg.includes('have i covered') || msg.includes('anything else') || msg.includes('forgot') ||
+                msg.includes('overlooked') || msg.includes('left out')) {
+                return handleMissingItemsQuery();
+            }
+            
+            // Feedback/validation requests
+            if (msg.includes('how am i doing') || msg.includes('feedback') || msg.includes('review my') ||
+                msg.includes('is this good') || msg.includes('on the right track')) {
+                return analyzeClarificationList();
+            }
+            
+            // Priority questions
+            if (msg.includes('priority') || msg.includes('most important') || msg.includes('first') ||
+                msg.includes('focus on') || msg.includes('start with')) {
+                return handlePriorityQuestion();
+            }
+            
+            // Topic-specific questions with missing items focus
+            if (msg.includes('sla') || msg.includes('service level') || msg.includes('uptime')) {
+                return handleTopicMissingItems('technical_sla');
+            } else if (msg.includes('ip') || msg.includes('intellectual property') || msg.includes('ownership')) {
+                return handleTopicMissingItems('intellectual_property');
+            } else if (msg.includes('data') || msg.includes('gdpr') || msg.includes('privacy')) {
+                return handleTopicMissingItems('data_privacy');
+            } else if (msg.includes('liability') || msg.includes('indemnity') || msg.includes('risk')) {
+                return handleTopicMissingItems('liability_indemnity');
+            } else if (msg.includes('exit') || msg.includes('termination') || msg.includes('migration')) {
+                return handleTopicMissingItems('exit_termination');
+            } else if (msg.includes('cost') || msg.includes('commercial') || msg.includes('change')) {
+                return handleTopicMissingItems('commercial_risk');
+            }
+            
+            // Default: Always try to find what's missing
+            return handleMissingItemsQuery();
+        }
+
+        // Handle "what am I missing?" - the core function
+        function handleMissingItemsQuery() {
+            const missingAnalysis = identifyMissingCriticalItems();
+            
+            if (missingAnalysis.totalMissing === 0) {
+                return "Excellent work! You've covered all the major areas. Your clarification list is comprehensive. Consider whether you need more detail in any specific area, or if you're ready to move on to research!";
+            }
+
+            let response = "Great question! Let me help you identify what might be missing:\n\n";
+            
+            if (missingAnalysis.highPriority.length > 0) {
+                response += "🔴 **Critical areas to consider:**\n";
+                missingAnalysis.highPriority.forEach(hint => {
+                    response += `• ${hint}\n`;
+                });
+                response += "\n";
+            }
+
+            if (missingAnalysis.mediumPriority.length > 0) {
+                response += "🟡 **Additional areas to explore:**\n";
+                missingAnalysis.mediumPriority.forEach(hint => {
+                    response += `• ${hint}\n`;
+                });
+                response += "\n";
+            }
+
+            response += "Focus on the critical areas first. What questions do these raise for you?";
+            return response;
+        }
+
+        // Handle topic-specific missing items
+        function handleTopicMissingItems(topic) {
+            const topicAnalysis = getTopicSpecificMissing(topic);
+            const topicName = formatTopicName(topic);
+            
+            if (topicAnalysis.missing.length === 0) {
+                return `✅ You've covered the key ${topicName} areas well! Let me check what else might be missing overall...`;
+            }
+
+            let response = `🎯 **For ${topicName}, consider these areas:**\n`;
+            topicAnalysis.missing.forEach(hint => {
+                response += `• ${hint}\n`;
+            });
+            
+            response += `\nThese are important ${topicName.toLowerCase()} considerations. What questions do these raise for you?`;
+            return response;
+        }
+
+        // Handle priority questions - simplified
+        function handlePriorityQuestion() {
+            if (clarificationItems.length === 0) {
+                return "Great question about priorities! Since you're just starting, I'd suggest focusing on these critical areas first:\n\n🔴 **Start with these high-impact areas:**\n• Intellectual Property ownership and scope\n• Data privacy and GDPR compliance\n• Liability allocation and caps\n\nThese tend to be deal-breakers if not handled properly. What questions do you have about IP ownership?";
+            }
+
+            const analysis = identifyMissingCriticalItems();
+            let response = "Smart to think about priorities! Based on your current list:\n\n";
+            
+            if (analysis.highPriority.length > 0) {
+                response += "🔴 **Focus on these critical areas first:**\n";
+                analysis.highPriority.slice(0, 3).forEach(item => {
+                    response += `• ${item}\n`;
+                });
+                response += "\nThese are typically the most complex and important. Which would you like to explore first?";
+            } else {
+                response += "You've covered the critical areas well! Consider adding more detail or moving to the next phase.";
+            }
+
+            return response;
+        }
+
+        // Handle validation/feedback requests
+        function handleValidationRequest() {
+            return analyzeClarificationList();
+        }
+
+        // Handle topic-specific queries (simplified)
+        function handleTopicSpecificQuery(topic) {
+            // For topic-specific questions, focus on missing items for that topic
+            return handleTopicMissingItems(topic);
+        }
+
+        // Helper function to format topic names
+        function formatTopicName(topic) {
+            const names = {
+                'intellectual_property': 'Intellectual Property',
+                'technical_sla': 'Technical SLAs',
+                'data_privacy': 'Data Privacy',
+                'commercial_risk': 'Commercial Risk',
+                'exit_termination': 'Exit & Termination',
+                'liability_indemnity': 'Liability & Indemnity',
+                'regulatory_compliance': 'Regulatory Compliance',
+                'contract_structure': 'Contract Structure',
+                'negotiation_strategy': 'Negotiation Strategy'
+            };
+            return names[topic] || topic;
+        }
+
+        // Get topic-specific missing items
+        function getTopicSpecificMissing(topic) {
+            const userItems = clarificationItems.map(item => item.toLowerCase());
+            const topicItems = templateSolution[topic] || [];
+            const missing = [];
+
+            topicItems.forEach(templateItem => {
+                const keywords = templateItem.toLowerCase().split(' ');
+                const isPartialMatch = keywords.some(keyword => 
+                    userItems.some(userItem => userItem.includes(keyword))
+                );
+                
+                if (!isPartialMatch) {
+                    const hint = generateHintForItem(topic, templateItem);
+                    if (hint) missing.push(hint);
+                }
+            });
+
+            return { missing: missing.slice(0, 3) };
+        }
+
+        // Calculate overall completeness percentage
+        function calculateCompleteness() {
+            const totalTemplateItems = Object.values(templateSolution).flat().length;
+            const coverage = Object.keys(templateSolution).reduce((total, category) => {
+                const categoryItems = templateSolution[category];
+                const covered = checkCoverage(clarificationItems.map(item => item.toLowerCase()), categoryItems);
+                return total + covered.covered;
+            }, 0);
+            
+            return Math.round((coverage / totalTemplateItems) * 100);
+        }
+
+        // Check how many items in a category are covered by user's list
+        function checkCoverage(userItems, templateCategory) {
+            let covered = 0;
+            templateCategory.forEach(templateItem => {
+                const keywords = templateItem.toLowerCase().split(' ');
+                const isPartialMatch = keywords.some(keyword => 
+                    userItems.some(userItem => userItem.includes(keyword))
+                );
+                if (isPartialMatch) covered++;
+            });
+            return { covered, total: templateCategory.length };
+        }
+
+        // Save notes to localStorage
+        function saveNotes() {
+            const notes = document.getElementById('notes').value;
+            localStorage.setItem('initialDemandNotes', notes);
+            localStorage.setItem('clarificationItems', JSON.stringify(clarificationItems));
+            
+            // Show feedback
+            const button = event.target;
+            const originalText = button.textContent;
+            button.textContent = 'Saved ✓';
+            button.style.background = 'var(--success-green)';
+            button.style.color = 'white';
+            
+            setTimeout(() => {
+                button.textContent = originalText;
+                button.style.background = '';
+                button.style.color = '';
+            }, 2000);
+        }
+
+        // Enter key to send message
+        document.getElementById('chatInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        // Enter key to add clarification
+        document.getElementById('newClarification').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                addClarification();
+            }
+        });
+
+        // Load saved data on page load
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Initialize mentor agent with API key
+            try {
+                const apiKey = await loadGCPApiKey();
+                mentorAgent = new MentorAgent(apiKey);
+                console.log('✅ Mentor Agent initialized');
+            } catch (error) {
+                console.error('❌ Failed to initialize Mentor Agent:', error);
+            }
+            
+            // Load saved notes
+            const savedNotes = localStorage.getItem('initialDemandNotes');
+            if (savedNotes) {
+                document.getElementById('notes').value = savedNotes;
+            }
+            
+            // Load saved clarification items
+            const savedItems = localStorage.getItem('clarificationItems');
+            if (savedItems) {
+                clarificationItems = JSON.parse(savedItems);
+                updateClarificationList();
+                if (clarificationItems.length > 0) {
+                    document.getElementById('feedbackBtn').style.display = 'block';
+                }
+            }
+        });
+
+        // Auto-save notes on typing (debounced)
+        let saveTimeout;
+        document.getElementById('notes').addEventListener('input', function() {
+            clearTimeout(saveTimeout);
+            saveTimeout = setTimeout(() => {
+                localStorage.setItem('initialDemandNotes', this.value);
+            }, 1000);
+        });
+
+        // Add Enter key support for chat input
+        document.getElementById('chatInput').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        // Get random response from category
+        function getRandomResponse(category) {
+            const responses = mentorResponses[category];
+            return responses[Math.floor(Math.random() * responses.length)];
+        }
+
+        // Google AI Studio Integration Functions
+        // ===================================
+        
+        // Function to export for Google AI Studio - SIMPLIFIED
+        function exportFunctionDefinitions() {
+            return {
+                functions: [
+                    {
+                        name: "identifyMissingItems",
+                        description: "Compare user's clarification list against template solution to identify what's missing - this is the core function",
+                        parameters: {
+                            type: "object",
+                            properties: {
+                                userItems: {
+                                    type: "array",
+                                    items: { type: "string" },
+                                    description: "Current clarification items from user"
+                                }
+                            },
+                            required: ["userItems"]
+                        }
+                    },
+                    {
+                        name: "validateApproach",
+                        description: "Provide feedback on user's current progress and approach",
+                        parameters: {
+                            type: "object",
+                            properties: {
+                                userItems: { type: "array", items: { type: "string" } },
+                                feedback: { type: "string", description: "Constructive feedback on their approach" }
+                            },
+                            required: ["userItems", "feedback"]
+                        }
+                    },
+                    {
+                        name: "prioritizeItems", 
+                        description: "Help user understand what to focus on first",
+                        parameters: {
+                            type: "object",
+                            properties: {
+                                userItems: { type: "array", items: { type: "string" } },
+                                priorities: { type: "string", description: "Guidance on what to prioritize" }
+                            },
+                            required: ["userItems", "priorities"]
+                        }
+                    }
+                ],
+                templateSolution: templateSolution,
+                samplePrompts: [
+                    "What am I missing from my clarification list?",
+                    "Have I covered everything important?",
+                    "What else should I consider?",
+                    "What should I focus on first?",
+                    "How am I doing so far?",
+                    "What about IP ownership issues?",
+                    "What data privacy concerns should I have?",
+                    "What SLA issues should I think about?",
+                    "What commercial risks am I missing?",
+                    "What about exit and termination?"
+                ],
+                instructions: `
+                CORE PRINCIPLE: Always try to identify what the user is missing from their analysis.
+
+                DEFAULT BEHAVIOR: When in doubt, call identifyMissingItems to help find gaps.
+
+                QUESTION PATTERNS:
+                - "What am I missing?" → identifyMissingItems
+                - "How am I doing?" → validateApproach  
+                - "What should I focus on?" → prioritizeItems
+                - Topic-specific questions → identifyMissingItems for that topic
+
+                MENTORING APPROACH:
+                - Use Socratic method - ask questions, don't give direct answers
+                - Provide hints that guide discovery
+                - Focus on critical areas: IP, data privacy, liability
+                - Encourage self-reflection and critical thinking
+                `
+            };
+        }
+
+        // Function to handle Google AI Studio responses
+        function handleAIStudioResponse(functionName, parameters, result) {
+            switch(functionName) {
+                case "analyzeUserQuestion":
+                    return handleQuestionAnalysis(result);
+                case "identifyMissingItems": 
+                    return handleMissingItemsAnalysis(result);
+                case "generateHint":
+                    return handleHintGeneration(result);
+                default:
+                    return "I'm here to help! What would you like to know about the QuantumLink contract?";
+            }
+        }
+
+        // Console function to export definitions for Google AI Studio setup
+        function exportForAIStudio() {
+            const exportData = exportFunctionDefinitions();
+            console.log("=== GOOGLE AI STUDIO FUNCTION DEFINITIONS ===");
+            console.log(JSON.stringify(exportData.functions, null, 2));
+            console.log("\n=== TEMPLATE SOLUTION FOR CONTEXT ===");
+            console.log(JSON.stringify(exportData.templateSolution, null, 2));
+            console.log("\n=== SAMPLE PROMPTS FOR TESTING ===");
+            exportData.samplePrompts.forEach((prompt, i) => {
+                console.log(`${i + 1}. ${prompt}`);
+            });
+            console.log("\n=== USAGE INSTRUCTIONS ===");
+            console.log("1. Copy the function definitions above into Google AI Studio");
+            console.log("2. Use the template solution as context for the AI");
+            console.log("3. Test with the sample prompts");
+            console.log("4. The AI should call the appropriate functions based on user questions");
+            
+            return exportData;
+        }
+
+        // Add to window for easy access in console
+        window.exportForAIStudio = exportForAIStudio;
+        window.mentorFunctions = mentorFunctions;
+        window.templateSolution = templateSolution;
+
+        // Add clarification item
+        function addClarification() {
+            const input = document.getElementById('newClarification');
+            const text = input.value.trim();
+            
+            if (text) {
+                clarificationItems.push(text);
+                input.value = '';
+                updateClarificationList();
+                
+                // Show feedback button if this is the first item
+                if (clarificationItems.length === 1) {
+                    document.getElementById('feedbackBtn').style.display = 'block';
+                }
+                
+                // Save to localStorage
+                localStorage.setItem('clarificationItems', JSON.stringify(clarificationItems));
+            }
+        }
+
+        // Update the clarification list display
+        function updateClarificationList() {
+            const list = document.getElementById('clarificationList');
+            list.innerHTML = '';
+            
+            clarificationItems.forEach((item, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <span class="list-item-text">${item}</span>
+                    <button onclick="removeClarification(${index})" class="remove-btn" title="Remove item">×</button>
+                `;
+                list.appendChild(li);
+            });
+        }
+
+        // Remove clarification item
+        function removeClarification(index) {
+            clarificationItems.splice(index, 1);
+            updateClarificationList();
+            
+            // Hide feedback button if no items left
+            if (clarificationItems.length === 0) {
+                document.getElementById('feedbackBtn').style.display = 'none';
+            }
+            
+            // Save to localStorage
+            localStorage.setItem('clarificationItems', JSON.stringify(clarificationItems));
+        }
+
+        // Request feedback on clarification list
+        async function requestFeedback() {
+            // Add user request to chat
+            addMessageToChat('Can you provide feedback on my clarification list?', 'user');
+            
+            // Show typing indicator
+            addMessageToChat('Analyzing your list...', 'mentor', true);
+            
+            try {
+                if (mentorAgent) {
+                    // Use GCP agent for feedback
+                    const response = await mentorAgent.provideFeedback(clarificationItems);
+                    
+                    // Remove typing indicator
+                    removeTypingIndicator();
+                    
+                    // Add mentor feedback
+                    addMessageToChat(response.message, 'mentor');
+                } else {
+                    // Fallback to static analysis
+                    removeTypingIndicator();
+                    const feedback = analyzeClarificationList();
+                    addMessageToChat(feedback, 'mentor');
+                }
+            } catch (error) {
+                console.error('Error getting feedback:', error);
+                removeTypingIndicator();
+                
+                // Fallback response
+                const fallback = `You've identified ${clarificationItems.length} areas - that's solid analytical work! I can see you're thinking systematically about the contract. Consider whether you've covered the high-risk areas like IP ownership and data privacy comprehensively. What aspect of this AI startup's relationship with the cloud provider concerns you most from a legal risk perspective?`;
+                addMessageToChat(fallback, 'mentor');
+            }
+        }
+    </script>
+</body>
+</html> 

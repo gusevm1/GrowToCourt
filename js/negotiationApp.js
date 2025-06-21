@@ -220,6 +220,92 @@ class NegotiationApp {
                 this.showConfigurationStatus('🎲 Demo mode enabled - using intelligent fallback responses');
             }
         }
+        
+        // Check for client consultation data
+        this.loadAndIntegrateClientData();
+    }
+
+    loadAndIntegrateClientData() {
+        try {
+            const clientData = this.loadClientConsultationData();
+            if (clientData) {
+                console.log('📋 Client consultation data found:', clientData);
+                this.integrateClientContext(clientData);
+                this.showClientSummary(clientData);
+            } else {
+                console.log('ℹ️ No client consultation data found. User can start with direct negotiation.');
+            }
+        } catch (error) {
+            console.error('Error loading client consultation data:', error);
+        }
+    }
+
+    loadClientConsultationData() {
+        const data = localStorage.getItem('clientConsultationData');
+        if (data) {
+            try {
+                return JSON.parse(data);
+            } catch (error) {
+                console.error('Error parsing client consultation data:', error);
+                return null;
+            }
+        }
+        return null;
+    }
+
+    integrateClientContext(clientData) {
+        if (this.negotiationAgent && clientData.clientRequirements) {
+            // Update Sarah Chen's knowledge of the client's requirements
+            // This will affect how she negotiates
+            this.negotiationAgent.updateClientContext(clientData.clientRequirements);
+            console.log('🔄 Sarah Chen updated with client context');
+        }
+    }
+
+    showClientSummary(clientData) {
+        if (clientData.clientRequirements) {
+            const requirements = clientData.clientRequirements;
+            const summaryMessage = document.createElement('div');
+            summaryMessage.className = 'message system client-summary';
+            
+            const budgetInfo = requirements.financial ? requirements.financial.budget : { preferred: 'Not specified' };
+            const slaInfo = requirements.technical ? requirements.technical.sla : { preferred: 'Not specified' };
+            const liabilityInfo = requirements.legal ? requirements.legal.liability : { minimumCap: 'Not specified' };
+            
+            summaryMessage.innerHTML = `
+                <div style="background: #e3f2fd; border: 2px solid #2563eb; border-radius: 8px; padding: 1.5rem; margin: 1rem 0;">
+                    <h4 style="color: #1565c0; margin: 0 0 1rem 0; display: flex; align-items: center; gap: 0.5rem;">
+                        <span>📋</span> Client Requirements Summary
+                    </h4>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                        <div>
+                            <strong>Budget:</strong><br>
+                            Preferred: ${budgetInfo.preferred || 'Not specified'}<br>
+                            Maximum: ${budgetInfo.maximum || 'Not specified'}
+                        </div>
+                        <div>
+                            <strong>SLA Requirements:</strong><br>
+                            Minimum: ${slaInfo.minimum || 'Not specified'}<br>
+                            Preferred: ${slaInfo.preferred || 'Not specified'}
+                        </div>
+                        <div>
+                            <strong>Liability Cap:</strong><br>
+                            Minimum: ${liabilityInfo.minimumCap || 'Not specified'}
+                        </div>
+                    </div>
+                    <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #90caf9;">
+                        <strong>Consultation Phase:</strong> ${clientData.phase || 'Completed'} | 
+                        <strong>Data Residency:</strong> ${requirements.technical?.dataResidency?.requirement || 'EU only'}
+                    </div>
+                    <div style="margin-top: 0.5rem; font-size: 0.9rem; color: #1565c0;">
+                        💡 <em>Sarah Chen is now aware of your client's requirements and will negotiate accordingly.</em>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('negotiationContent').appendChild(summaryMessage);
+            this.scrollToBottom();
+        }
     }
 
     showConfigurationDialog() {

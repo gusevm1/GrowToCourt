@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Review & Research - GrowToCourt</title>
+    <style>
+        :root {
+            --primary-black: #1a1a1a;
+            --primary-grey: #2a2a2a;
+            --light-grey: #f5f5f5;
+            --medium-grey: #888888;
+            --white: #ffffff;
+            --accent-grey: #4a4a4a;
+            --success-green: #28a745;
+            --warning-orange: #fd7e14;
+            --danger-red: #dc3545;
+            --info-blue: #17a2b8;
+            --client-blue: #2563eb;
+            --document-beige: #faf8f3;
+            --knowledge-purple: #6366f1;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--primary-black);
+            background-color: var(--white);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--knowledge-purple) 0%, var(--primary-grey) 100%);
+            color: var(--white);
+            padding: 1.5rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 300;
+            text-decoration: none;
+            color: var(--white);
+        }
+
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .step-number {
+            background: rgba(255, 255, 255, 0.2);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--white);
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Main Layout */
+        .main-content {
+            padding: 2rem 0;
+            min-height: calc(100vh - 80px);
+        }
+
+        .scenario-intro {
+            background: var(--light-grey);
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .scenario-intro h2 {
+            color: var(--knowledge-purple);
+            margin-bottom: 1rem;
+        }
+
+        .scenario-intro p {
+            color: var(--medium-grey);
+            font-size: 1.1rem;
+        }
+
+        .document-library {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .documents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .document-card {
+            background: var(--white);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            border-left: 4px solid var(--knowledge-purple);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .document-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(0,0,0,0.15);
+        }
+
+        .document-card.read {
+            border-left-color: var(--success-green);
+            background: #f8fff8;
+        }
+
+        .document-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .document-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: var(--white);
+        }
+
+        .document-icon.policy {
+            background: var(--info-blue);
+        }
+
+        .document-icon.precedent {
+            background: var(--warning-orange);
+        }
+
+        .document-icon.regulation {
+            background: var(--danger-red);
+        }
+
+        .document-icon.template {
+            background: var(--success-green);
+        }
+
+        .document-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary-black);
+        }
+
+        .document-type {
+            font-size: 0.8rem;
+            color: var(--medium-grey);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .document-description {
+            color: var(--accent-grey);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .document-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: var(--medium-grey);
+        }
+
+        .read-status {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--medium-grey);
+        }
+
+        .read-status.read {
+            background: var(--success-green);
+        }
+
+        /* Progress Tracker */
+        .progress-tracker {
+            background: var(--white);
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+
+        .progress-title {
+            font-size: 1.3rem;
+            color: var(--primary-black);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .progress-bar {
+            background: var(--light-grey);
+            border-radius: 10px;
+            height: 20px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, var(--knowledge-purple), var(--success-green));
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .progress-text {
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--medium-grey);
+            margin-bottom: 1.5rem;
+        }
+
+        .document-checklist {
+            list-style: none;
+        }
+
+        .document-checklist li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--light-grey);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .document-checklist li:last-child {
+            border-bottom: none;
+        }
+
+        .checklist-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--light-grey);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+
+        .checklist-icon.completed {
+            background: var(--success-green);
+            color: var(--white);
+        }
+
+        .mentor-section {
+            background: #f0f9ff;
+            border: 1px solid var(--info-blue);
+            border-radius: 6px;
+            padding: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .mentor-section h4 {
+            color: var(--info-blue);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .mentor-tip {
+            font-size: 0.9rem;
+            color: var(--accent-grey);
+            margin-bottom: 0.5rem;
+        }
+
+        .proceed-button {
+            background: var(--success-green);
+            color: var(--white);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 1rem;
+            width: 100%;
+            margin-top: 1rem;
+            transition: background-color 0.3s ease;
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .proceed-button.enabled {
+            opacity: 1;
+            cursor: pointer;
+        }
+
+        .proceed-button:hover.enabled {
+            background: #1f7a2e;
+        }
+
+        /* Modal for document content */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: var(--white);
+            margin: 2% auto;
+            padding: 2rem;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--light-grey);
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            color: var(--primary-black);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--medium-grey);
+        }
+
+        .close-modal:hover {
+            color: var(--primary-black);
+        }
+
+        .modal-body {
+            line-height: 1.8;
+            color: var(--primary-black);
+        }
+
+        .modal-body h3 {
+            color: var(--knowledge-purple);
+            margin: 1.5rem 0 1rem 0;
+        }
+
+        .modal-body p {
+            margin-bottom: 1rem;
+        }
+
+        .modal-body ul {
+            margin: 1rem 0 1rem 2rem;
+        }
+
+        .modal-body li {
+            margin-bottom: 0.5rem;
+        }
+
+        .mark-read-btn {
+            background: var(--success-green);
+            color: var(--white);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 1.5rem;
+            font-weight: 500;
+        }
+
+        .mark-read-btn:hover {
+            background: #1f7a2e;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="header-left">
+                    <a href="index.html" class="logo">GrowToCourt</a>
+                    <div class="step-indicator">
+                        <div class="step-number">2</div>
+                        <span>Document Review & Research</span>
+                    </div>
+                </div>
+                <div class="nav-buttons">
+                    <a href="initial-demand.html" class="nav-btn">← Previous: Initial Demand</a>
+                    <a href="client-consultation.html" class="nav-btn" id="nextBtn">Next: Client Consultation →</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="main-content">
+            <div class="scenario-intro">
+                <h2>Research & Preparation Phase</h2>
+                <p>Before meeting with the client, review these essential documents to understand the legal landscape, industry standards, and best practices for cloud services agreements.</p>
+            </div>
+
+            <div class="document-library">
+                <div class="documents-grid">
+                    <!-- Document 1: Firm Policy -->
+                    <div class="document-card" onclick="openDocument('policy1')" data-doc="policy1">
+                        <div class="read-status" id="status-policy1"></div>
+                        <div class="document-header">
+                            <div class="document-icon policy">📋</div>
+                            <div>
+                                <div class="document-title">Cloud Services Agreement Guidelines</div>
+                                <div class="document-type">Firm Policy</div>
+                            </div>
+                        </div>
+                        <div class="document-description">
+                            Clifford Chance's internal guidelines for negotiating cloud technology services agreements, including key risk areas and standard positions.
+                        </div>
+                        <div class="document-meta">
+                            <span>Internal Policy • 8 pages</span>
+                            <span>Updated: Jan 2025</span>
+                        </div>
+                    </div>
+
+                    <!-- Document 2: Precedent Agreement -->
+                    <div class="document-card" onclick="openDocument('precedent1')" data-doc="precedent1">
+                        <div class="read-status" id="status-precedent1"></div>
+                        <div class="document-header">
+                            <div class="document-icon precedent">📄</div>
+                            <div>
+                                <div class="document-title">Similar Banking Client Agreement</div>
+                                <div class="document-type">Precedent</div>
+                            </div>
+                        </div>
+                        <div class="document-description">
+                            Anonymized cloud services agreement negotiated for a major UK bank, showing successful terms and negotiation outcomes.
+                        </div>
+                        <div class="document-meta">
+                            <span>Precedent • 12 pages</span>
+                            <span>Completed: Nov 2024</span>
+                        </div>
+                    </div>
+
+                    <!-- Document 3: Regulatory Guidance -->
+                    <div class="document-card" onclick="openDocument('regulation1')" data-doc="regulation1">
+                        <div class="read-status" id="status-regulation1"></div>
+                        <div class="document-header">
+                            <div class="document-icon regulation">⚖️</div>
+                            <div>
+                                <div class="document-title">FCA Cloud Computing Guidance</div>
+                                <div class="document-type">Regulation</div>
+                            </div>
+                        </div>
+                        <div class="document-description">
+                            Financial Conduct Authority guidance on cloud computing arrangements for financial services firms, including operational resilience requirements.
+                        </div>
+                        <div class="document-meta">
+                            <span>FCA Guidance • 15 pages</span>
+                            <span>Published: Dec 2024</span>
+                        </div>
+                    </div>
+
+                    <!-- Document 4: Industry Standards -->
+                    <div class="document-card" onclick="openDocument('template1')" data-doc="template1">
+                        <div class="read-status" id="status-template1"></div>
+                        <div class="document-header">
+                            <div class="document-icon template">📊</div>
+                            <div>
+                                <div class="document-title">Banking Industry SLA Benchmarks</div>
+                                <div class="document-type">Industry Data</div>
+                            </div>
+                        </div>
+                        <div class="document-description">
+                            Market research on typical service level agreements, liability caps, and payment terms in banking cloud services contracts.
+                        </div>
+                        <div class="document-meta">
+                            <span>Market Analysis • 6 pages</span>
+                            <span>Q4 2024</span>
+                        </div>
+                    </div>
+
+                    <!-- Document 5: GDPR Compliance -->
+                    <div class="document-card" onclick="openDocument('regulation2')" data-doc="regulation2">
+                        <div class="read-status" id="status-regulation2"></div>
+                        <div class="document-header">
+                            <div class="document-icon regulation">🔒</div>
+                            <div>
+                                <div class="document-title">GDPR Cloud Services Checklist</div>
+                                <div class="document-type">Compliance</div>
+                            </div>
+                        </div>
+                        <div class="document-description">
+                            Essential GDPR compliance requirements for cloud services agreements, including data processing agreements and cross-border transfer mechanisms.
+                        </div>
+                        <div class="document-meta">
+                            <span>Compliance Guide • 10 pages</span>
+                            <span>Updated: Jan 2025</span>
+                        </div>
+                    </div>
+
+                    <!-- Document 6: Negotiation Strategies -->
+                    <div class="document-card" onclick="openDocument('policy2')" data-doc="policy2">
+                        <div class="read-status" id="status-policy2"></div>
+                        <div class="document-header">
+                            <div class="document-icon policy">🎯</div>
+                            <div>
+                                <div class="document-title">Tech Contract Negotiation Playbook</div>
+                                <div class="document-type">Strategy Guide</div>
+                            </div>
+                        </div>
+                        <div class="document-description">
+                            Proven negotiation strategies and tactics for technology agreements, including common vendor positions and effective counter-arguments.
+                        </div>
+                        <div class="document-meta">
+                            <span>Strategy Guide • 14 pages</span>
+                            <span>Updated: Dec 2024</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Progress Tracker -->
+                <div class="progress-tracker">
+                    <h3 class="progress-title">
+                        📚 Reading Progress
+                    </h3>
+                    
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="progress-text" id="progressText">0 of 6 documents read</div>
+
+                    <ul class="document-checklist">
+                        <li id="check-policy1">
+                            <div class="checklist-icon" id="icon-policy1">📋</div>
+                            <span>Firm Guidelines</span>
+                        </li>
+                        <li id="check-precedent1">
+                            <div class="checklist-icon" id="icon-precedent1">📄</div>
+                            <span>Banking Precedent</span>
+                        </li>
+                        <li id="check-regulation1">
+                            <div class="checklist-icon" id="icon-regulation1">⚖️</div>
+                            <span>FCA Guidance</span>
+                        </li>
+                        <li id="check-template1">
+                            <div class="checklist-icon" id="icon-template1">📊</div>
+                            <span>Industry Benchmarks</span>
+                        </li>
+                        <li id="check-regulation2">
+                            <div class="checklist-icon" id="icon-regulation2">🔒</div>
+                            <span>GDPR Compliance</span>
+                        </li>
+                        <li id="check-policy2">
+                            <div class="checklist-icon" id="icon-policy2">🎯</div>
+                            <span>Negotiation Playbook</span>
+                        </li>
+                    </ul>
+
+                    <div class="mentor-section">
+                        <h4>🤖 Mentor Tip</h4>
+                        <div class="mentor-tip">
+                            Focus on understanding the regulatory requirements and industry standards first, then review the negotiation strategies. This will help you ask better questions during the client consultation.
+                        </div>
+                    </div>
+
+                    <button class="proceed-button" id="proceedBtn" onclick="proceedToClientConsultation()">
+                        Proceed to Client Consultation
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Document Modal -->
+    <div id="documentModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Document Title</h2>
+                <button class="close-modal" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Document content will be inserted here -->
+            </div>
+            <button class="mark-read-btn" onclick="markAsRead()">Mark as Read & Close</button>
+        </div>
+    </div>
+
+    <script src="js/documentContent.js"></script>
+    <script>
+        let currentDocument = null;
+        let readDocuments = new Set();
+
+        function openDocument(docId) {
+            currentDocument = docId;
+            const modal = document.getElementById('documentModal');
+            const title = document.getElementById('modalTitle');
+            const body = document.getElementById('modalBody');
+            
+            // Get document content from documentContent.js
+            const content = getDocumentContent(docId);
+            title.textContent = content.title;
+            body.innerHTML = content.body;
+            
+            modal.style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('documentModal').style.display = 'none';
+        }
+
+        function markAsRead() {
+            if (currentDocument) {
+                readDocuments.add(currentDocument);
+                updateDocumentStatus(currentDocument);
+                updateProgress();
+                closeModal();
+            }
+        }
+
+        function updateDocumentStatus(docId) {
+            // Update visual status
+            const statusEl = document.getElementById(`status-${docId}`);
+            const iconEl = document.getElementById(`icon-${docId}`);
+            const cardEl = document.querySelector(`[data-doc="${docId}"]`);
+            
+            if (statusEl) statusEl.classList.add('read');
+            if (iconEl) iconEl.classList.add('completed');
+            if (cardEl) cardEl.classList.add('read');
+        }
+
+        function updateProgress() {
+            const totalDocs = 6;
+            const readCount = readDocuments.size;
+            const percentage = (readCount / totalDocs) * 100;
+            
+            document.getElementById('progressFill').style.width = percentage + '%';
+            document.getElementById('progressText').textContent = `${readCount} of ${totalDocs} documents read`;
+            
+            // Enable proceed button when all documents are read
+            const proceedBtn = document.getElementById('proceedBtn');
+            if (readCount === totalDocs) {
+                proceedBtn.classList.add('enabled');
+                proceedBtn.textContent = 'All Documents Read - Proceed to Client Consultation →';
+            }
+        }
+
+        function proceedToClientConsultation() {
+            if (readDocuments.size === 6) {
+                // Save completion status
+                localStorage.setItem('stepCompleted_documentReview', 'true');
+                localStorage.setItem('documentsRead', JSON.stringify([...readDocuments]));
+                
+                // Navigate to client consultation
+                window.location.href = 'client-consultation.html';
+            }
+        }
+
+        // Load saved progress
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedDocs = localStorage.getItem('documentsRead');
+            if (savedDocs) {
+                readDocuments = new Set(JSON.parse(savedDocs));
+                readDocuments.forEach(docId => {
+                    updateDocumentStatus(docId);
+                });
+                updateProgress();
+            }
+        });
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('documentModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html> 

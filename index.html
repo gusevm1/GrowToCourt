@@ -8,10 +8,16 @@
         :root {
             --primary-black: #1a1a1a;
             --primary-grey: #2a2a2a;
-            --light-grey: #f5f5f5;
-            --medium-grey: #888888;
+            --light-grey: #f8f9fa;
+            --medium-grey: #6c757d;
             --white: #ffffff;
-            --accent-grey: #4a4a4a;
+            --accent-grey: #495057;
+            --clifford-blue: #0066cc;
+            --clifford-teal: #4a9b9b;
+            --clifford-purple: #8b5a96;
+            --clifford-orange: #e67e22;
+            --clifford-light-blue: #e8f4fd;
+            --clifford-dark: #2c3e50;
         }
 
         * {
@@ -35,7 +41,7 @@
 
         /* Header */
         header {
-            background: linear-gradient(135deg, var(--primary-black) 0%, var(--primary-grey) 100%);
+            background: linear-gradient(135deg, var(--clifford-dark) 0%, var(--clifford-blue) 100%);
             color: var(--white);
             padding: 2rem 0;
             position: relative;
@@ -90,7 +96,7 @@
             border-radius: 8px;
             padding: 3rem;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            border-left: 4px solid var(--primary-black);
+            border-left: 4px solid var(--clifford-blue);
         }
 
         .scenario-title {
@@ -180,7 +186,7 @@
             position: absolute;
             top: -22px;
             right: 20px;
-            background: var(--primary-black);
+            background: linear-gradient(135deg, var(--clifford-blue), var(--clifford-teal));
             color: var(--white);
             width: 44px;
             height: 44px;
@@ -352,34 +358,55 @@
             <h2 class="section-title">The Complete Contract Journey</h2>
             
             <div class="steps-grid">
-                <div class="step-card">
+                <div class="step-card clickable-card" onclick="window.location.href='initial-demand.html'">
                     <div class="step-number">1</div>
-                    <h3 class="step-title">Initial Demand</h3>
-                    <p class="step-description">Client approaches with technology service needs</p>
+                    <h3 class="step-title">Initial Client Demand</h3>
+                    <p class="step-description">Review client's initial request and identify clarification needs</p>
                     <ul class="step-features">
-                        <li>MentorChat: Understanding client objectives</li>
-                        <li>Risk assessment framework</li>
-                        <li>Regulatory landscape mapping</li>
-                        <li>Speech-to-text client interviews</li>
+                        <li>Realistic client demand letter</li>
+                        <li>Issue identification framework</li>
+                        <li>Initial risk assessment</li>
+                        <li>Preparation for client consultation</li>
                     </ul>
+                    <div class="card-overlay">
+                        <span class="enter-text">Enter Module →</span>
+                    </div>
                 </div>
-
-                <div class="step-card">
+                
+                <div class="step-card clickable-card" onclick="window.location.href='document-review.html'">
                     <div class="step-number">2</div>
-                    <h3 class="step-title">Client Onboarding & Offer Development</h3>
-                    <p class="step-description">Structure the deal and develop negotiation strategy</p>
+                    <h3 class="step-title">Document Review & Research</h3>
+                    <p class="step-description">Study firm policies, precedents, and regulatory guidance</p>
                     <ul class="step-features">
-                        <li>Due diligence checklist automation</li>
-                        <li>Contract template selection</li>
-                        <li>Term sheet development</li>
-                        <li>Video: Clifford Chance deal structuring</li>
+                        <li>Interactive document library</li>
+                        <li>Regulatory compliance guides</li>
+                        <li>Industry benchmarks and precedents</li>
+                        <li>Negotiation strategy playbooks</li>
                     </ul>
+                    <div class="card-overlay">
+                        <span class="enter-text">Enter Module →</span>
+                    </div>
                 </div>
-
-                <div class="step-card clickable-card" onclick="window.location.href='negotiations.html'">
+                
+                <div class="step-card clickable-card" onclick="window.location.href='client-consultation.html'">
                     <div class="step-number">3</div>
-                    <h3 class="step-title">Negotiations</h3>
-                    <p class="step-description">Navigate complex commercial and legal negotiations</p>
+                    <h3 class="step-title">Client Consultation</h3>
+                    <p class="step-description">Establish client requirements and negotiation baselines</p>
+                    <ul class="step-features">
+                        <li>Interactive client meetings</li>
+                        <li>Requirements gathering framework</li>
+                        <li>Risk assessment and prioritization</li>
+                        <li>Real-time MentorChat guidance</li>
+                    </ul>
+                    <div class="card-overlay">
+                        <span class="enter-text">Enter Module →</span>
+                    </div>
+                </div>
+                
+                <div class="step-card clickable-card" onclick="window.location.href='negotiations.html'">
+                    <div class="step-number">4</div>
+                    <h3 class="step-title">Final Negotiation</h3>
+                    <p class="step-description">Negotiate with counterparty using established baselines</p>
                     <ul class="step-features">
                         <li>AI-powered negotiation simulator</li>
                         <li>Real-time drafting feedback</li>
@@ -389,42 +416,6 @@
                     <div class="card-overlay">
                         <span class="enter-text">Enter Module →</span>
                     </div>
-                </div>
-
-                <div class="step-card">
-                    <div class="step-number">4</div>
-                    <h3 class="step-title">Acceptance & Contract Conclusion</h3>
-                    <p class="step-description">Finalize terms and execute the agreement</p>
-                    <ul class="step-features">
-                        <li>Final review checklist</li>
-                        <li>Execution process guidance</li>
-                        <li>Conditions precedent tracking</li>
-                        <li>Post-signature obligations</li>
-                    </ul>
-                </div>
-
-                <div class="step-card">
-                    <div class="step-number">5</div>
-                    <h3 class="step-title">Non-Performance & Notifications</h3>
-                    <p class="step-description">Handle breaches and performance issues</p>
-                    <ul class="step-features">
-                        <li>Breach identification and assessment</li>
-                        <li>Notice drafting and timing</li>
-                        <li>Remedy analysis and strategy</li>
-                        <li>Client communication protocols</li>
-                    </ul>
-                </div>
-
-                <div class="step-card">
-                    <div class="step-number">6</div>
-                    <h3 class="step-title">Court Proceedings</h3>
-                    <p class="step-description">Prepare for and navigate litigation</p>
-                    <ul class="step-features">
-                        <li>Litigation risk assessment</li>
-                        <li>Court filing preparation</li>
-                        <li>Evidence gathering strategy</li>
-                        <li>Settlement negotiation tactics</li>
-                    </ul>
                 </div>
             </div>
         </div>
@@ -501,9 +492,15 @@
     <section class="cta-section">
         <div class="container">
             <h2>Ready to Transform Legal Education?</h2>
-            <p>Experience the future of legal mentorship and training</p>
-            <a href="negotiations.html" class="cta-button">Start Demo Journey</a>
-            <a href="test-speech.html" class="cta-button" style="background: var(--medium-grey); margin-left: 1rem;">🎤 Test Speech-to-Text</a>
+            <p>Experience the complete legal workflow - from initial demand to final negotiation</p>
+            <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem; flex-wrap: wrap;">
+                <a href="initial-demand.html" class="cta-button">Step 1: Initial Demand →</a>
+                <a href="document-review.html" class="cta-button" style="background: var(--accent-grey);">Step 2: Document Review →</a>
+                <a href="client-consultation.html" class="cta-button" style="background: var(--medium-grey);">Step 3: Client Consultation →</a>
+            </div>
+            <div style="margin-top: 1rem;">
+                <a href="test-speech.html" class="cta-button" style="background: var(--info-blue);">🎤 Test Speech-to-Text</a>
+            </div>
         </div>
     </section>
 

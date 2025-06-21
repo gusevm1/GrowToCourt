@@ -1,7 +1,7 @@
 class NegotiationAgent {
     constructor(apiKey) {
         this.apiKey = apiKey;
-        this.baseURL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
+        this.baseURL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent';
         
         // Agent profile and company information
         this.agentProfile = {
@@ -40,6 +40,27 @@ class NegotiationAgent {
         };
 
         this.conversationHistory = [];
+        this.clientContext = null; // Will be populated from client consultation
+    }
+
+    // Method to update Sarah Chen's knowledge of client requirements
+    updateClientContext(clientRequirements) {
+        this.clientContext = clientRequirements;
+        console.log('🔄 Sarah Chen updated with client requirements:', clientRequirements);
+        
+        // Reset some negotiation state to adjust strategy based on client context
+        if (clientRequirements.financial?.budget) {
+            this.negotiationState.clientBudgetRange = clientRequirements.financial.budget;
+        }
+        if (clientRequirements.technical?.sla) {
+            this.negotiationState.clientSLARequirements = clientRequirements.technical.sla;
+        }
+        if (clientRequirements.legal?.liability) {
+            this.negotiationState.clientLiabilityExpectations = clientRequirements.legal.liability;
+        }
+        if (clientRequirements.technical?.dataResidency) {
+            this.negotiationState.clientDataRequirements = clientRequirements.technical.dataResidency;
+        }
     }
 
     async generateResponse(userMessage, messageType = 'text') {
@@ -98,6 +119,18 @@ DEAL CONTEXT:
 - Client: ${this.contractContext.clientCompany} (major international bank)
 - Value: ${this.contractContext.dealValue}
 - Critical requirements: ${this.contractContext.criticalRequirements.join(', ')}
+
+${this.clientContext ? `
+CLIENT'S REQUIREMENTS (from their lawyer's consultation):
+- Budget: ${this.clientContext.financial?.budget?.preferred || 'Not specified'} (max: ${this.clientContext.financial?.budget?.maximum || 'Not specified'})
+- SLA: Minimum ${this.clientContext.technical?.sla?.minimum || 'Not specified'}, preferred ${this.clientContext.technical?.sla?.preferred || 'Not specified'}
+- Liability Cap: Minimum ${this.clientContext.legal?.liability?.minimumCap || 'Not specified'}
+- Data Residency: ${this.clientContext.technical?.dataResidency?.requirement || 'EU only'} (${this.clientContext.technical?.dataResidency?.flexibility || 'no flexibility'})
+- Payment Terms: Prefer ${this.clientContext.financial?.paymentTerms?.preferred || 'quarterly payments'}
+- Key Priorities: ${this.clientContext.priorities?.map(p => `${p.item} (${p.importance})`).join(', ') || 'Data security, Service availability, Cost control'}
+
+NOTE: You know these requirements because you're negotiating with their legal team. Adjust your strategy accordingly - be more flexible where they have flexibility, firm where they have hard requirements.
+` : ''}
 
 CURRENT NEGOTIATION STATE:
 - Current topic: ${this.negotiationState.currentTopic}
