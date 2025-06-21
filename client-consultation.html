@@ -341,13 +341,7 @@
             box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
         }
 
-        .voice-controls {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .voice-btn, .send-btn {
+        .send-btn {
             background: linear-gradient(135deg, var(--clifford-teal), var(--primary-black));
             color: var(--white);
             border: none;
@@ -357,29 +351,15 @@
             font-weight: 600;
             transition: all 0.3s ease;
             font-size: 0.9rem;
+            margin-top: 1rem;
         }
 
-        .voice-btn:hover, .send-btn:hover {
+        .send-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(74, 155, 155, 0.4);
         }
 
-        .voice-btn.recording {
-            background: linear-gradient(135deg, var(--danger-red), #b91c1c);
-            animation: pulse 1.5s infinite;
-        }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
-        }
-
-        .voice-status {
-            font-size: 0.8rem;
-            color: var(--medium-grey);
-            text-align: center;
-            margin-top: 0.5rem;
-        }
 
         /* Right Side - Requirements Tracking */
         .requirements-panel {
@@ -657,10 +637,8 @@
                     <div class="input-section">
                         <div class="input-controls">
                             <textarea id="messageInput" class="text-input" placeholder="Ask about client requirements, priorities, or concerns..."></textarea>
-                            <div class="voice-controls">
-                                <button id="voiceBtn" class="voice-btn">🎤 Voice</button>
+                            <div class="input-controls">
                                 <button id="sendBtn" class="send-btn">Send</button>
-                                <div id="voiceStatus" class="voice-status"></div>
                             </div>
                         </div>
                     </div>
@@ -851,7 +829,6 @@
 
     <!-- Include JavaScript modules -->
     <script src="js/gcpConfig.js"></script>
-    <script src="js/speechAPI.js"></script>
     <script src="js/clientAgent.js"></script>
     <script>
         // Global variables
@@ -912,15 +889,19 @@
         document.addEventListener('DOMContentLoaded', async () => {
             try {
                 // Load GCP configuration
-                const config = await loadGCPConfig();
+                const gcpConfig = new GCPConfig();
+                const config = gcpConfig.getConfig();
+                
+                // Check if configuration is valid
+                if (!gcpConfig.isReady()) {
+                    console.warn('⚠️ GCP not fully configured, using demo mode');
+                    const status = gcpConfig.getConfigurationStatus();
+                    console.log('Configuration status:', status);
+                }
                 
                 // Initialize client agent
-                clientAgent = new ClientAgent(config.apiKey);
+                clientAgent = new ClientAgent(config.generativeAI.apiKey);
                 console.log('🏦 Client Agent initialized');
-
-                // Initialize speech API
-                speechAPI = new SpeechAPI(config.apiKey);
-                console.log('🎤 Speech API initialized');
 
                 // Load saved progress
                 loadProgress();
@@ -928,9 +909,30 @@
                 // Set up event listeners
                 setupEventListeners();
 
+
+
+                // Add initial greeting message
+                setTimeout(() => {
+                    addMessageToChat("Hi there! I'm Dr. Rachel Chen, CTO at QuantumLink AI. Thanks for taking the time to help us with this NeuroSys agreement. We're excited to get our AI platform properly set up with reliable cloud infrastructure. What would you like to know about our requirements?", 'client');
+                }, 1000);
+
             } catch (error) {
                 console.error('❌ Failed to initialize application:', error);
-                document.getElementById('voiceStatus').textContent = 'Voice features unavailable';
+                
+                // Still try to initialize without API keys for demo purposes
+                try {
+                    clientAgent = new ClientAgent('');
+                    loadProgress();
+                    setupEventListeners();
+                    console.log('🔧 Running in demo mode without API keys');
+                    
+                    // Add initial greeting message
+                    setTimeout(() => {
+                        addMessageToChat("Hi there! I'm Dr. Rachel Chen, CTO at QuantumLink AI. Thanks for taking the time to help us with this NeuroSys agreement. We're excited to get our AI platform properly set up with reliable cloud infrastructure. What would you like to know about our requirements?", 'client');
+                    }, 1000);
+                } catch (demoError) {
+                    console.error('❌ Failed to initialize even in demo mode:', demoError);
+                }
             }
         });
 
@@ -945,9 +947,6 @@
                     sendMessage();
                 }
             });
-
-            // Voice button
-            document.getElementById('voiceBtn').addEventListener('click', toggleRecording);
         }
 
         async function sendMessage() {
@@ -976,58 +975,7 @@
             }
         }
 
-        async function toggleRecording() {
-            const voiceBtn = document.getElementById('voiceBtn');
-            const voiceStatus = document.getElementById('voiceStatus');
 
-            if (!isRecording) {
-                try {
-                    // Start recording
-                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                    mediaRecorder = new MediaRecorder(stream);
-                    audioChunks = [];
-
-                    mediaRecorder.ondataavailable = (event) => {
-                        audioChunks.push(event.data);
-                    };
-
-                    mediaRecorder.onstop = async () => {
-                        const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
-                        voiceStatus.textContent = 'Transcribing...';
-                        
-                        try {
-                            const result = await speechAPI.transcribeAudio(audioBlob);
-                            if (result.success && result.transcription) {
-                                document.getElementById('messageInput').value = result.transcription;
-                                voiceStatus.textContent = `Transcribed (${Math.round(result.confidence * 100)}% confidence)`;
-                            } else {
-                                voiceStatus.textContent = 'Transcription failed. Please try again.';
-                            }
-                        } catch (error) {
-                            console.error('Transcription error:', error);
-                            voiceStatus.textContent = 'Voice recognition error';
-                        }
-                    };
-
-                    mediaRecorder.start();
-                    isRecording = true;
-                    voiceBtn.classList.add('recording');
-                    voiceBtn.textContent = '⏹️ Stop';
-                    voiceStatus.textContent = 'Recording... Click stop when finished';
-
-                } catch (error) {
-                    console.error('Error starting recording:', error);
-                    voiceStatus.textContent = 'Microphone access denied';
-                }
-            } else {
-                // Stop recording
-                mediaRecorder.stop();
-                mediaRecorder.stream.getTracks().forEach(track => track.stop());
-                isRecording = false;
-                voiceBtn.classList.remove('recording');
-                voiceBtn.textContent = '🎤 Voice';
-            }
-        }
 
         function addMessageToChat(message, sender) {
             const chatContainer = document.getElementById('chatContainer');

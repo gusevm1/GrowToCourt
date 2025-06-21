@@ -194,6 +194,12 @@ Your response should sound like a real startup CTO working with their legal team
     async callGeminiAPI(prompt) {
         console.log('🏦 Calling Gemini API for Client Agent');
         
+        // Handle demo mode when no API key is available
+        if (!this.apiKey || this.apiKey.trim() === '') {
+            console.log('🔧 Running in demo mode - generating simulated client response');
+            return this.generateDemoResponse(prompt);
+        }
+        
         const requestBody = {
             contents: [{
                 parts: [{
@@ -237,6 +243,54 @@ Your response should sound like a real startup CTO working with their legal team
             return data.candidates[0].content.parts[0].text.trim();
         } else {
             throw new Error('No response generated from Client Agent API');
+        }
+    }
+
+    generateDemoResponse(prompt) {
+        // Extract key topics from the user's message to generate contextual responses
+        const userMessage = prompt.split('LAWYER\'S LATEST MESSAGE: "')[1]?.split('"')[0]?.toLowerCase() || '';
+        
+        const demoResponses = {
+            greeting: "Hi there! I'm Rachel Chen, CTO at QuantumLink. Thanks for taking the time to help us with this NeuroSys agreement. We're excited to get our AI platform properly set up with reliable cloud infrastructure. What would you like to know about our requirements?",
+            
+            ip: "IP ownership is absolutely critical for us. We're building proprietary AI models for legal document automation, and we can't have NeuroSys claiming any rights to our algorithms or training data. We also need to be careful about open-source datasets - some have licensing restrictions. What's the best way to structure this?",
+            
+            sla: "Our end-users are law firms who need consistent AI performance. If our platform goes down or runs slowly, it directly impacts their client work. We're thinking 99.9% uptime minimum, but what's realistic? And how do service credits typically work for AI workloads?",
+            
+            privacy: "Data privacy is huge for us - we're processing legal documents that contain sensitive client information. We need UK/EU data residency for GDPR compliance, but might need some redundancy elsewhere for business continuity. What certifications should we require from NeuroSys?",
+            
+            commercial: "As a startup, we need predictable costs. Our budget is around £2.5-3M annually, but we're worried about unexpected fee increases. We also need to understand what happens if our usage scales rapidly - can we get volume discounts? What's typical for liability insurance requirements?",
+            
+            exit: "We've heard horror stories about vendor lock-in. If this partnership doesn't work out, we need a clear exit strategy. How long should transition support last? And what's reasonable for data migration assistance? We can't afford lengthy service interruptions.",
+            
+            liability: "Given we're a startup, we're concerned about liability exposure. What's a reasonable cap - maybe £5-10M? But we'd want carve-outs for data breaches and IP claims since those could be existential risks for us. What's market standard for cyber insurance requirements?",
+            
+            timeline: "We're under pressure to launch our enhanced platform by Q3. The integration with NeuroSys is critical path. How long do these negotiations typically take? We need to balance getting good terms with moving quickly - what are the key issues we should focus on first?",
+            
+            budget: "Our Series A gives us runway for about £3M annually on infrastructure, but we need to be careful about cost escalation. Monthly payments would be ideal for cash flow, but we might accept quarterly if there's a discount. What payment terms are typical?",
+            
+            default: "That's a great question. As a startup CTO, I'm always balancing technical requirements with business constraints. We need to make sure this agreement supports our growth while protecting our core IP. Can you help me understand the legal implications of what you're suggesting?"
+        };
+
+        // Simple keyword matching to return contextual responses
+        if (userMessage.includes('hello') || userMessage.includes('hi') || userMessage.includes('start')) {
+            return demoResponses.greeting;
+        } else if (userMessage.includes('ip') || userMessage.includes('intellectual') || userMessage.includes('property') || userMessage.includes('ownership')) {
+            return demoResponses.ip;
+        } else if (userMessage.includes('sla') || userMessage.includes('service level') || userMessage.includes('uptime') || userMessage.includes('availability')) {
+            return demoResponses.sla;
+        } else if (userMessage.includes('data') || userMessage.includes('privacy') || userMessage.includes('gdpr') || userMessage.includes('security')) {
+            return demoResponses.privacy;
+        } else if (userMessage.includes('cost') || userMessage.includes('budget') || userMessage.includes('money') || userMessage.includes('payment')) {
+            return demoResponses.commercial;
+        } else if (userMessage.includes('exit') || userMessage.includes('termination') || userMessage.includes('transition')) {
+            return demoResponses.exit;
+        } else if (userMessage.includes('liability') || userMessage.includes('insurance') || userMessage.includes('risk')) {
+            return demoResponses.liability;
+        } else if (userMessage.includes('timeline') || userMessage.includes('schedule') || userMessage.includes('when')) {
+            return demoResponses.timeline;
+        } else {
+            return demoResponses.default;
         }
     }
 
